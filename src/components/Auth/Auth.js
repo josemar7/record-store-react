@@ -12,16 +12,14 @@ class Auth extends Component {
 
     state = {
         authForm: {
-            email: {
+            user: {
                 elementType: 'input',
                 elementConfig: {
-                    type: 'email',
-                    placeholder: 'Mail Address'
+                    type: 'text',
+                    placeholder: 'User'
                 },
-                value: 'test@test.com',
                 validation: {
-                    required: true,
-                    isEmail: true
+                    required: true
                 },
                 valid: false,
                 touched: false
@@ -32,10 +30,9 @@ class Auth extends Component {
                     type: 'password',
                     placeholder: 'Password'
                 },
-                value: 'testtest',
                 validation: {
                     required: true,
-                    minLength: 6
+                    minLength: 4
                 },
                 valid: false,
                 touched: false
@@ -99,15 +96,19 @@ class Auth extends Component {
             });
         }
         let form = formElementsArray.map(formElement => (
-            <Input
-                key={formElement.id}
-                elementType={formElement.config.elementType}
-                elementConfig={formElement.config.elementConfig}
-                value={formElement.config.value}
-                invalid={!formElement.config.valid}
-                shouldValidate={formElement.config.validation}
-                touched={formElement.config.touched}
-                changed={(event) => this.inputChangedHandler(event, formElement.id)}/>
+            <div className={classes.DivForm} key={formElement.id}>
+                <Input
+                    label={formElement.config.elementConfig.placeholder}
+                    id={formElement.id}
+                    key={formElement.id}
+                    elementType={formElement.config.elementType}
+                    elementConfig={formElement.config.elementConfig}
+                    value={formElement.config.value}
+                    invalid={!formElement.config.valid}
+                    shouldValidate={formElement.config.validation}
+                    touched={formElement.config.touched}
+                    changed={(event) => this.inputChangedHandler(event, formElement.id)}/>
+            </div>
         ));
         if (this.props.loading) {
             form = <Spinner/>;
