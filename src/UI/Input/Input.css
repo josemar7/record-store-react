@@ -8,7 +8,14 @@
     box-sizing: border-box;
   }
   
-  .Invalid {
+ .Invalid {
     border: 1px solid red;
     background-color: #fda49a;
+}
+
+.Label {
+  width: 100%;
+  margin: 1px 0;
+  display: inline-block;
+  text-align: left;
 }
