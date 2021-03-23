@@ -37,7 +37,6 @@ class App extends Component {
                 <Route path="/about" render={(props) => <About {...props}/>}/>
                 <Route path="/auth" render={(props) => <Auth {...props}/>}/>
                 <Route path="/params" render={(props) => <Test {...props}/>}/>
-                <Route path="/artists" render={(props) => <Artists {...props}/>}/>
                 <Route path="/test" render={(props) => <Test {...props}/>}/>
                 <Route path="/:id" render={(props) => <Test {...props}/>}/>
                 <Route render={() => <h1>Not found</h1>}/>

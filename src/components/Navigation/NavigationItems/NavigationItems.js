@@ -9,7 +9,7 @@ const navigationItems = (props) => (
         <NavigationItem link="/1">Test with ID</NavigationItem>
         <NavigationItem link="/params?quick-submit=true#submit">Test with params</NavigationItem>
         <NavigationItem link="/about">About</NavigationItem>
-        <NavigationItem link="/artists">Artists</NavigationItem>
+        {props.isAuthenticated ? <NavigationItem link="/artists">Artists</NavigationItem> : null}        
         {props.isAuthenticated ? <NavigationItem link="/logout">Logout</NavigationItem> :
             <NavigationItem link="/auth">Authenticate</NavigationItem>}
     </ul>
