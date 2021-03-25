@@ -5,6 +5,7 @@ import axios from '../../axios-orders';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import Input from '../../UI/Input/Input';
 import Button from '../../UI/Button/Button';
+import Label from '../../UI/Label/Label';
 import classes from './Artist.css';
 import * as actions from '../../store/actions/index';
 
@@ -16,7 +17,8 @@ class Artist extends Component {
                 elementType: 'input',
                 elementConfig: {
                     type: 'text',
-                    placeholder: 'Artist name...'
+                    placeholder: 'Artist name...',
+                    label: 'Name'
                 },
                 value: '',
                 validation: {
@@ -28,25 +30,27 @@ class Artist extends Component {
             nationality: {
                 elementType: 'select',
                 elementConfig: {
-                    options: []
+                    options: [],
+                    label: 'Nationality'
                 },
                 value: '',
                 validation: {
                     required: true
                 },
-                valid: false,
+                valid: true,
                 touched: false
             },
             style: {
                 elementType: 'select',
                 elementConfig: {
-                    options: []
+                    options: [],
+                    label: 'Style'
                 },
                 value: '',
                 validation: {
                     required: true
                 },
-                valid: false,
+                valid: true,
                 touched: false
             }
         },
@@ -136,6 +140,7 @@ class Artist extends Component {
             <form onSubmit={this.artistHandler}>
                 {formElementsArray.map(formElement => (
                     <Input key={formElement.id}
+                            label={formElement.config.elementConfig.label}
                             elementType={formElement.config.elementType}
                             elementConfig={formElement.config.elementConfig}
                             value={formElement.config.value} 
@@ -150,6 +155,7 @@ class Artist extends Component {
         );
         return (
                 <div className={classes.Artist}>
+                    <Label>Edit Artist</Label>
                     {form}                    
                 </div>
         );            
