@@ -124,12 +124,18 @@ class Artist extends Component {
                     return {value: style.id, displayValue: style.name};
                 });
                 formElement.elementConfig.options = optionsStyle;
+                if (optionsStyle.length > 0 && formElement.value === '') {
+                    formElement.value = optionsStyle[0].value;
+                }                
             }
             else if (key === 'nationality') {
                 const optionsNationality = nationalitiesCpy.map(nationality => {
                     return {value: nationality.id, displayValue: nationality.name};
                 });
                 formElement.elementConfig.options = optionsNationality;
+                if (optionsNationality.length > 0 && formElement.value === '') {
+                    formElement.value = optionsNationality[0].value;
+                }                
             }
             formElementsArray.push({
                 id: key,
