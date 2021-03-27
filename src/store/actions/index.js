@@ -1,5 +1,6 @@
 export {
-    getArtists
+    getArtists,
+    saveArtist
 } from './recordStore';
 
 export {

@@ -39,10 +39,15 @@ export const fetchNationalitiesStart = () => {
     };
 };
 
-export const getStyles = () => {
+export const getStyles = (token) => {
+    const config = {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    };
     return dispatch => {
         dispatch(fetchStylesStart());
-        axios.get('style/all')
+        axios.get('style/all', config)
         .then(response => {
             dispatch(setStyles(response.data));
         })
@@ -52,10 +57,15 @@ export const getStyles = () => {
     };
 };
 
-export const getNationalities = () => {
+export const getNationalities = (token) => {
+    const config = {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    };
     return dispatch => {
         dispatch(fetchNationalitiesStart());
-        axios.get('nationality/all')
+        axios.get('nationality/all', config)
         .then(response => {
             dispatch(setNationalities(response.data));
         })

@@ -6,6 +6,7 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import Input from '../../UI/Input/Input';
 import Button from '../../UI/Button/Button';
 import Label from '../../UI/Label/Label';
+import Spinner from '../../UI/Spinner/Spinner';
 import classes from './Artist.css';
 import * as actions from '../../store/actions/index';
 
@@ -59,25 +60,38 @@ class Artist extends Component {
     };
 
     componentDidMount() {        
-        this.props.onGetStyles();
-        this.props.onGetNationalities();
+        this.props.onGetStyles(this.props.access_token);
+        this.props.onGetNationalities(this.props.access_token);
     }
 
     artistHandler = (event) => {
         event.preventDefault();
         this.setState({loading: true});
-        const formData = {};
+        let name;
+        let idNationality;
+        let idStyle;
         for (let formElementIdentifier in this.state.artistForm) {
-            formData[formElementIdentifier] = this.state.artistForm[formElementIdentifier].value;
+            // formData[formElementIdentifier] = this.state.artistForm[formElementIdentifier].value;
+            if (formElementIdentifier === 'name') {
+                name = this.state.artistForm[formElementIdentifier].value;
+            }
+            else if (formElementIdentifier === 'nationality') {
+                idNationality = this.state.artistForm[formElementIdentifier].value;
+            }
+            else if (formElementIdentifier === 'style') {
+                idStyle = this.state.artistForm[formElementIdentifier].value;
+            }
         }
-        console.log(formData);
-        // axios.post('/orders.json', formData)
-        // .then(response => {
-        //     this.setState({loading: false});
-        //     this.props.history.push('/');
-        // })
-        // .catch(error => this.setState({loading: false}))
-
+        const artist = {
+            name: name,
+            nationality: {
+                id: idNationality
+            },
+            style: {
+                id: idStyle
+            }
+        };
+        this.props.onSaveArtist(artist, this.props.access_token, this.props.history);
     };
 
 
@@ -142,23 +156,29 @@ class Artist extends Component {
                 config: formElement
             });
         }
-        let form = (
-            <form onSubmit={this.artistHandler}>
-                {formElementsArray.map(formElement => (
-                    <Input key={formElement.id}
-                            label={formElement.config.elementConfig.label}
-                            elementType={formElement.config.elementType}
-                            elementConfig={formElement.config.elementConfig}
-                            value={formElement.config.value} 
-                            changed={(event) => this.inputChangedHandler(event, formElement.id)}
-                            invalid={!formElement.config.valid}
-                            shouldValidate={formElement.config.validation}
-                            touched={formElement.config.touched}/>
-                ))}             
-                <Button 
-                    disabled={!this.state.formIsValid}>Add Artist</Button>   
-            </form>            
-        );
+        let form = null;
+        if (this.props.loading) {
+            form = <Spinner/>;
+        }
+        else {
+            form = (
+                <form onSubmit={this.artistHandler}>
+                    {formElementsArray.map(formElement => (
+                        <Input key={formElement.id}
+                                label={formElement.config.elementConfig.label}
+                                elementType={formElement.config.elementType}
+                                elementConfig={formElement.config.elementConfig}
+                                value={formElement.config.value} 
+                                changed={(event) => this.inputChangedHandler(event, formElement.id)}
+                                invalid={!formElement.config.valid}
+                                shouldValidate={formElement.config.validation}
+                                touched={formElement.config.touched}/>
+                    ))}             
+                    <Button 
+                        disabled={!this.state.formIsValid}>Add Artist</Button>   
+                </form>            
+            );    
+        }    
         return (
                 <div className={classes.Artist}>
                     <Label>Edit Artist</Label>
@@ -172,14 +192,16 @@ const mapStateToProps = state => {
     return {
         styles: state.commons.styles,
         nationalities: state.commons.nationalities,
-        loading: state.commons.loading
+        loading: state.commons.loading,
+        access_token: state.auth.access_token
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onGetStyles: () => dispatch(actions.getStyles()),
-        onGetNationalities: () => dispatch(actions.getNationalities())
+        onGetStyles: (token) => dispatch(actions.getStyles(token)),
+        onGetNationalities: (token) => dispatch(actions.getNationalities(token)),
+        onSaveArtist: (artist, token, history) => dispatch(actions.saveArtist(artist, token, history))
     };
 };
 

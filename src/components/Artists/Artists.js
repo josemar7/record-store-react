@@ -12,7 +12,7 @@ import Spinner from '../../UI/Spinner/Spinner';
 class Artists extends Component {
 
     componentDidMount() {
-        this.props.onGetArtists();     
+        this.props.onGetArtists(this.props.access_token);     
     }
 
     onAddArtistHandler = () => {        
@@ -53,13 +53,14 @@ class Artists extends Component {
 const mapStateToProps = state => {
     return {
         artists: state.recordStore.artists,
-        loading: state.recordStore.loading
+        loading: state.recordStore.loading,
+        access_token: state.auth.access_token
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onGetArtists: () => dispatch(actions.getArtists())
+        onGetArtists: (token) => dispatch(actions.getArtists(token))
     };
 };
 

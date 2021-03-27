@@ -8,11 +8,11 @@ export const authStart = () => {
   };
 };
 
-export const authSuccess = (token, userId) => {
+export const authSuccess = (access_token, jti) => {
   return {
     type: actionTypes.AUTH_SUCCESS,
-    idToken: token,
-    userId: userId,
+    access_token: access_token,
+    jti: jti,
   };
 };
 
@@ -24,9 +24,9 @@ export const authFail = (error) => {
 };
 
 export const logout = () => {
-  localStorage.removeItem("token");
+  localStorage.removeItem("access_token");
   localStorage.removeItem("expirationDate");
-  localStorage.removeItem("userId");
+  localStorage.removeItem("jti");
   return {
     type: actionTypes.AUTH_LOGOUT,
   };
@@ -64,14 +64,13 @@ export const auth = (user, password, isSignup) => {
       };
       axios(config)
         .then((response) => {
-          console.log(JSON.stringify(response.data));
           const expirationDate = new Date(
             new Date().getTime() + response.data.expiresIn * 1000
           );
-          localStorage.setItem("token", response.data.idToken);
+          localStorage.setItem("access_token", response.data.access_token);
           localStorage.setItem("expirationDate", expirationDate);
-          localStorage.setItem("userId", response.data.localId);
-          dispatch(authSuccess(response.data.idToken, response.data.localId));
+          localStorage.setItem("jti", response.data.jti);
+          dispatch(authSuccess(response.data.access_token, response.data.jti));
           // dispatch(checkAuthTimeout(response.data.expiresIn));
         })
         .catch((err) => {

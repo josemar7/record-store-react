@@ -2,8 +2,8 @@ import * as actionTypes from '../actions/actionTypes';
 import {updateObject} from "../../shared/utility";
 
 const initialState = {
-    token: null,
-    userId: null,
+    access_token: null,
+    jti: null,
     error: null,
     loading: false
 };
@@ -14,8 +14,8 @@ const authStart = (state) => {
 
 const authSuccess = (state, action) => {
     return updateObject(state, {
-        token: action.idToken,
-        userId: action.userId,
+        access_token: action.access_token,
+        jti: action.jti,
         error: null,
         loading: false
     })
@@ -29,7 +29,7 @@ const authFail = (state, action) => {
 };
 
 const authLogout = (state) => {
-    return updateObject(state, {token: null, userId: null});
+    return updateObject(state, {access_token: null, jti: null});
 };
 
 const reducer = (state = initialState, action) => {

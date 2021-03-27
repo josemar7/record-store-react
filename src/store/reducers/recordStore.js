@@ -23,6 +23,21 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 loading: false
             };   
+        case actionTypes.SAVE_ARTIST_START:
+            return {
+                ...state,
+                loading: true
+            };
+        case actionTypes.SAVE_ARTIST_SUCCESS:
+            return {
+                ...state,
+                loading: false
+            };
+        case actionTypes.SAVE_ARTIST_FAILED:
+            return {
+                ...state,
+                loading: false
+            };
     }
     return state;
 

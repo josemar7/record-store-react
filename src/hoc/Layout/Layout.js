@@ -18,7 +18,7 @@ const layout = props => {
 
 const mapStateToProps = state => {
     return {
-        isAuthenticated: state.auth.token !== null
+        isAuthenticated: state.auth.access_token !== null
     };
 };
 
