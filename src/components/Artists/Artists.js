@@ -32,7 +32,8 @@ class Artists extends Component {
             artists = (
                 <Aux>
                     <Table header={header}
-                    data={artistsCpy}/>
+                    data={artistsCpy}
+                    actions={true}/>
                     <div style={{paddingTop: '10px'}}>
                         <Button
                         clicked={this.onAddArtistHandler}

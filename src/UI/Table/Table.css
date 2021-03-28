@@ -20,3 +20,18 @@
     background-color: #703b09;
     color: white;
   }
+
+
+  td a:link, td a:visited {
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    padding-right: 40px;
+  }
+  
+  td a:hover, td a:active {
+    background-color: green;
+    color: white;
+  }
+  

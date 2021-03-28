@@ -38,7 +38,7 @@ const Auth = props => {
             touched: false
         }
     });
-    const [isSignup, setIsSignup] = useState(true);
+    const [isSignup, setIsSignup] = useState(false);
 
     const checkValidity = (value, rules) => {
         let isValid = true;
