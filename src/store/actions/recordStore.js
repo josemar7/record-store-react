@@ -74,3 +74,40 @@ export const saveArtist = (artist, token, history) => {
         });
     };
 };
+
+export const getArtistById = (token, id) => {
+    const config = {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    };
+    return dispatch => {
+        dispatch(getArtistByIdStart());
+        axios.get(`/artist/${id}`, config)
+        .then(response => {
+            dispatch(setArtistById(response.data));
+        })
+        .catch(error => {
+            dispatch(getArtistByIdFailed());
+        });
+    };
+};
+
+export const getArtistByIdFailed = () => {
+    return {
+        type: actionTypes.GET_ARTIST_BY_ID_FAILED
+    };
+};
+
+export const getArtistByIdStart = () => {
+    return {
+        type: actionTypes.GET_ARTIST_BY_ID_START
+    };
+};
+
+export const setArtistById = (artist) => {
+    return {
+        type: actionTypes.SET_ARTIST_BY_ID,
+        artist: artist
+    };
+};

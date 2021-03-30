@@ -62,6 +62,9 @@ class Artist extends Component {
     componentDidMount() {        
         this.props.onGetStyles(this.props.access_token);
         this.props.onGetNationalities(this.props.access_token);
+        if (this.props.match.params.id !== undefined) {
+            this.props.onGetArtistById(this.props.access_token, this.props.match.params.id);
+        }        
     }
 
     artistHandler = (event) => {
@@ -127,20 +130,40 @@ class Artist extends Component {
         this.setState({artistForm: updatedArtistForm, formIsValid: formIsValid});
     };
 
-    render() {
+    transformArtistForEdition = (stylesCpy, nationalitiesCpy, artist) => {
+        if (stylesCpy.length > 0 && nationalitiesCpy.length > 0 && artist !== null) {
+            const styleFound = stylesCpy.find(e => e.name === artist.style);
+            const nationalityFound = nationalitiesCpy.find(n => n.name === artist.nationality);
+            return {
+                style: styleFound.id,
+                nationality: nationalityFound.id,
+                name: artist.name
+            };
+        }
+        return null;
+    };
+
+    render() {        
         const stylesCpy = [...this.props.styles];
         const nationalitiesCpy = [...this.props.nationalities];
         const formElementsArray = [];
+        const artistTransformed = this.transformArtistForEdition(stylesCpy, nationalitiesCpy, this.props.artist);
         for (let key in this.state.artistForm) {
             const formElement = this.state.artistForm[key];
-            if (key === 'style') {
+            if (key === 'name' && artistTransformed !== null) {
+                formElement.value = artistTransformed.name;
+            }
+            else if (key === 'style') {
                 const optionsStyle = stylesCpy.map(style => {
                     return {value: style.id, displayValue: style.name};
                 });
                 formElement.elementConfig.options = optionsStyle;
                 if (optionsStyle.length > 0 && formElement.value === '') {
                     formElement.value = optionsStyle[0].value;
-                }                
+                }        
+                if (artistTransformed !== null) {
+                    formElement.value = artistTransformed.style;
+                }            
             }
             else if (key === 'nationality') {
                 const optionsNationality = nationalitiesCpy.map(nationality => {
@@ -149,7 +172,10 @@ class Artist extends Component {
                 formElement.elementConfig.options = optionsNationality;
                 if (optionsNationality.length > 0 && formElement.value === '') {
                     formElement.value = optionsNationality[0].value;
-                }                
+                }        
+                if (artistTransformed !== null) {
+                    formElement.value = artistTransformed.nationality;
+                }            
             }
             formElementsArray.push({
                 id: key,
@@ -179,9 +205,13 @@ class Artist extends Component {
                 </form>            
             );    
         }    
+        let artistLbl = 'Edit Artist';
+        if (this.props.match.params.id === undefined) {
+            artistLbl = 'New Artist';
+        }
         return (
                 <div className={classes.Artist}>
-                    <Label>Edit Artist</Label>
+                    <Label>{artistLbl}</Label>
                     {form}                    
                 </div>
         );            
@@ -193,7 +223,8 @@ const mapStateToProps = state => {
         styles: state.commons.styles,
         nationalities: state.commons.nationalities,
         loading: state.commons.loading,
-        access_token: state.auth.access_token
+        access_token: state.auth.access_token,
+        artist: state.recordStore.artist,
     };
 };
 
@@ -201,7 +232,8 @@ const mapDispatchToProps = dispatch => {
     return {
         onGetStyles: (token) => dispatch(actions.getStyles(token)),
         onGetNationalities: (token) => dispatch(actions.getNationalities(token)),
-        onSaveArtist: (artist, token, history) => dispatch(actions.saveArtist(artist, token, history))
+        onSaveArtist: (artist, token, history) => dispatch(actions.saveArtist(artist, token, history)),
+        onGetArtistById: (token, id) => dispatch(actions.getArtistById(token, id))
     };
 };
 

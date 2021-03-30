@@ -2,7 +2,8 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
     artists: [],
-    loading: false
+    loading: false,
+    artist: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -38,6 +39,22 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 loading: false
             };
+        case actionTypes.GET_ARTIST_BY_ID_START:
+            return {
+                ...state,
+                loading: true
+            };
+        case actionTypes.SET_ARTIST_BY_ID:
+            return {
+                ...state,
+                loading: false,
+                artist: action.artist
+            };
+        case actionTypes.GET_ARTIST_BY_ID_FAILED:
+            return {
+                ...state,
+                loading: false
+            }
     }
     return state;
 
