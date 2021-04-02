@@ -1,14 +1,15 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import axios from '../../axios-orders';
-import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
-import Input from '../../UI/Input/Input';
-import Button from '../../UI/Button/Button';
-import Label from '../../UI/Label/Label';
-import Spinner from '../../UI/Spinner/Spinner';
+import axios from '../../../axios-orders';
+import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
+import Input from '../../../UI/Input/Input';
+import Button from '../../../UI/Button/Button';
+import Label from '../../../UI/Label/Label';
+import Spinner from '../../../UI/Spinner/Spinner';
 import classes from './Artist.css';
-import * as actions from '../../store/actions/index';
+import * as actions from '../../../store/actions/index';
+import { updateObject } from "../../../shared/utility";
 
 class Artist extends Component {
 
@@ -56,15 +57,59 @@ class Artist extends Component {
             }
         },
         formIsValid: false,
-        loading: false
+        loading: false,
+        isEdit: false,
+        loaded: false
     };
 
     componentDidMount() {        
         this.props.onGetStyles(this.props.access_token);
         this.props.onGetNationalities(this.props.access_token);
         if (this.props.match.params.id !== undefined) {
-            this.props.onGetArtistById(this.props.access_token, this.props.match.params.id);
+            this.props.onGetArtistById(this.props.access_token, this.props.match.params.id);   
         }        
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        if (!state.loaded && props.match.params.id !== undefined 
+            && props.styles.length > 0 && props.nationalities.length > 0 && props.artist !== null) {
+            const stylesCpy = [...props.styles];
+            const nationalitiesCpy = [...props.nationalities];    
+            const styleFound = stylesCpy.find(e => e.name === props.artist.style);
+            const nationalityFound = nationalitiesCpy.find(n => n.name === props.artist.nationality);
+            const updatedControls = updateObject(state.artistForm, {
+                'style': updateObject(state.artistForm['style'], {
+                    value: styleFound.id,
+                    valid: true
+                }),
+                'nationality': updateObject(state.artistForm['nationality'], {
+                    value: nationalityFound.id,
+                    valid: true
+                }),
+                'name': updateObject(state.artistForm['name'], {
+                    value: props.artist.name,
+                    valid: true
+                })
+            });
+            return {artistForm: updatedControls, formIsValid: true, isEdit: true, loaded: true };    
+        }
+        else if (!state.loaded && props.match.params.id === undefined 
+            && props.styles.length > 0 && props.nationalities.length > 0) {
+                const stylesCpy = [...props.styles];
+                const nationalitiesCpy = [...props.nationalities];    
+                const updatedControls = updateObject(state.artistForm, {
+                    'style': updateObject(state.artistForm['style'], {
+                        value: stylesCpy[0].id,
+                        valid: true
+                    }),
+                    'nationality': updateObject(state.artistForm['nationality'], {
+                        value: nationalitiesCpy[0].id,
+                        valid: true
+                    })
+                });  
+                return {artistForm: updatedControls, loaded: true };      
+            }
+        return state;
     }
 
     artistHandler = (event) => {
@@ -74,7 +119,6 @@ class Artist extends Component {
         let idNationality;
         let idStyle;
         for (let formElementIdentifier in this.state.artistForm) {
-            // formData[formElementIdentifier] = this.state.artistForm[formElementIdentifier].value;
             if (formElementIdentifier === 'name') {
                 name = this.state.artistForm[formElementIdentifier].value;
             }
@@ -94,9 +138,13 @@ class Artist extends Component {
                 id: idStyle
             }
         };
-        this.props.onSaveArtist(artist, this.props.access_token, this.props.history);
+        if (!this.state.isEdit) {
+            this.props.onSaveArtist(artist, this.props.access_token, this.props.history);
+        }
+        else {
+            this.props.onUpdateArtistById(artist, this.props.access_token, this.props.match.params.id, this.props.history);
+        }        
     };
-
 
     checkValidity(value, rules) {
         let isValid = true;
@@ -130,52 +178,29 @@ class Artist extends Component {
         this.setState({artistForm: updatedArtistForm, formIsValid: formIsValid});
     };
 
-    transformArtistForEdition = (stylesCpy, nationalitiesCpy, artist) => {
-        if (stylesCpy.length > 0 && nationalitiesCpy.length > 0 && artist !== null) {
-            const styleFound = stylesCpy.find(e => e.name === artist.style);
-            const nationalityFound = nationalitiesCpy.find(n => n.name === artist.nationality);
-            return {
-                style: styleFound.id,
-                nationality: nationalityFound.id,
-                name: artist.name
-            };
-        }
-        return null;
-    };
-
     render() {        
         const stylesCpy = [...this.props.styles];
         const nationalitiesCpy = [...this.props.nationalities];
         const formElementsArray = [];
-        const artistTransformed = this.transformArtistForEdition(stylesCpy, nationalitiesCpy, this.props.artist);
         for (let key in this.state.artistForm) {
             const formElement = this.state.artistForm[key];
-            if (key === 'name' && artistTransformed !== null) {
-                formElement.value = artistTransformed.name;
-            }
-            else if (key === 'style') {
+            if (key === 'style') {
                 const optionsStyle = stylesCpy.map(style => {
                     return {value: style.id, displayValue: style.name};
                 });
                 formElement.elementConfig.options = optionsStyle;
-                if (optionsStyle.length > 0 && formElement.value === '') {
-                    formElement.value = optionsStyle[0].value;
-                }        
-                if (artistTransformed !== null) {
-                    formElement.value = artistTransformed.style;
-                }            
+                // if (optionsStyle.length > 0 && formElement.value === '') {
+                //     formElement.value = optionsStyle[0].value;
+                // }        
             }
             else if (key === 'nationality') {
                 const optionsNationality = nationalitiesCpy.map(nationality => {
                     return {value: nationality.id, displayValue: nationality.name};
                 });
                 formElement.elementConfig.options = optionsNationality;
-                if (optionsNationality.length > 0 && formElement.value === '') {
-                    formElement.value = optionsNationality[0].value;
-                }        
-                if (artistTransformed !== null) {
-                    formElement.value = artistTransformed.nationality;
-                }            
+                // if (optionsNationality.length > 0 && formElement.value === '') {
+                //     formElement.value = optionsNationality[0].value;
+                // }        
             }
             formElementsArray.push({
                 id: key,
@@ -201,7 +226,7 @@ class Artist extends Component {
                                 touched={formElement.config.touched}/>
                     ))}             
                     <Button 
-                        disabled={!this.state.formIsValid}>Add Artist</Button>   
+                        disabled={!this.state.formIsValid}>Save</Button>   
                 </form>            
             );    
         }    
@@ -224,7 +249,7 @@ const mapStateToProps = state => {
         nationalities: state.commons.nationalities,
         loading: state.commons.loading,
         access_token: state.auth.access_token,
-        artist: state.recordStore.artist,
+        artist: state.artist.artist,
     };
 };
 
@@ -233,9 +258,10 @@ const mapDispatchToProps = dispatch => {
         onGetStyles: (token) => dispatch(actions.getStyles(token)),
         onGetNationalities: (token) => dispatch(actions.getNationalities(token)),
         onSaveArtist: (artist, token, history) => dispatch(actions.saveArtist(artist, token, history)),
-        onGetArtistById: (token, id) => dispatch(actions.getArtistById(token, id))
+        onGetArtistById: (token, id) => dispatch(actions.getArtistById(token, id)),
+        onUpdateArtistById: (artist, token, id, history) => 
+                                            dispatch(actions.updateArtistById(artist, token, id, history))
     };
 };
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Artist, axios));

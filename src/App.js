@@ -21,13 +21,12 @@ const Artists = React.lazy(() => {
 });
 
 const Artist = React.lazy(() => {
-    return import('./components/Artist/Artist');
+    return import('./components/Artists/Artist/Artist');
 });
 
 const Auth = React.lazy(() => {
     return import('./components/Auth/Auth');
 });
-
 class App extends Component {
 
     componentDidMount() {
@@ -55,7 +54,7 @@ class App extends Component {
                     <Route path="/logout" component={Logout}/>
                     <Route path="/params" render={(props) => <Test {...props}/>}/>
                     <Route path="/artists/new" render={(props) => <Artist {...props}/>}/>
-                    <Route path="/artists/delete/:id" render={(props) => <Artist {...props}/>}/>
+                    <Route path="/artists/delete/:id" render={(props) => <Artists {...props}/>}/>
                     <Route path="/artists/:id" render={(props) => <Artist {...props}/>}/>
                     <Route path="/artists" render={(props) => <Artists {...props}/>}/>                    
                     <Route path="/test" render={(props) => <Test {...props}/>}/>

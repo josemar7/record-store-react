@@ -1,8 +1,10 @@
 export {
     getArtists,
     saveArtist,
-    getArtistById
-} from './recordStore';
+    getArtistById,
+    deleteArtistById,
+    updateArtistById
+} from './artist';
 
 export {
     getStyles,

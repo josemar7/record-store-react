@@ -11,8 +11,8 @@ import Spinner from '../../UI/Spinner/Spinner';
 
 class Artists extends Component {
 
-    componentDidMount() {
-        this.props.onGetArtists(this.props.access_token);     
+    componentDidMount() {        
+        this.props.onGetArtists(this.props.access_token);   
     }
 
     onAddArtistHandler = () => {        
@@ -22,10 +22,22 @@ class Artists extends Component {
     render() {
         const artistsCpy = [...this.props.artists];
         const header = {
-            id: 'Id',
-            name: 'Name',
-            style: 'Style',
-            nationality: 'Nationality'
+            id: {
+                label: 'Id',
+                width: '30px'
+            },
+            name: {
+                label: 'Name',
+                width: '400px'
+            },
+            style: {
+                label: 'Style',
+                width: '50px'
+            },
+            nationality: {
+                label: 'Nationality',
+                width: '50px'
+            }
         };
         let artists = <Spinner/>;
         if (!this.props.loading) {
@@ -33,7 +45,9 @@ class Artists extends Component {
                 <Aux>
                     <Table header={header}
                     data={artistsCpy}
-                    actions={true}/>
+                    actions={true}
+                    delete={this.props.onDeleteArtistById}
+                    token={this.props.access_token}/>
                     <div style={{paddingTop: '10px'}}>
                         <Button
                         clicked={this.onAddArtistHandler}
@@ -53,15 +67,16 @@ class Artists extends Component {
 
 const mapStateToProps = state => {
     return {
-        artists: state.recordStore.artists,
-        loading: state.recordStore.loading,
+        artists: state.artist.artists,
+        loading: state.artist.loading,
         access_token: state.auth.access_token
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onGetArtists: (token) => dispatch(actions.getArtists(token))
+        onGetArtists: (token) => dispatch(actions.getArtists(token)),
+        onDeleteArtistById: (token, id) => dispatch(actions.deleteArtistById(token, id))
     };
 };
 

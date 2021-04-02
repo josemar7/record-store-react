@@ -65,13 +65,13 @@ export const auth = (user, password, isSignup) => {
       axios(config)
         .then((response) => {
           const expirationDate = new Date(
-            new Date().getTime() + response.data.expiresIn * 1000
+            new Date().getTime() + response.data.expires_in * 1000
           );
           localStorage.setItem("access_token", response.data.access_token);
           localStorage.setItem("expirationDate", expirationDate);
           localStorage.setItem("jti", response.data.jti);
           dispatch(authSuccess(response.data.access_token, response.data.jti));
-          // dispatch(checkAuthTimeout(response.data.expiresIn));
+          dispatch(checkAuthTimeout(response.data.expires_in));
         })
         .catch((err) => {
           console.log(err);
@@ -83,7 +83,7 @@ export const auth = (user, password, isSignup) => {
 
 export const authCheckState = () => {
   return (dispatch) => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("access_token");
     if (!token) {
       dispatch(logout());
     } else {
@@ -91,8 +91,8 @@ export const authCheckState = () => {
       if (expirationDate <= new Date()) {
         dispatch(logout());
       } else {
-        const userId = localStorage.getItem("userId");
-        dispatch(authSuccess(token, userId));
+        const jti = localStorage.getItem("jti");
+        dispatch(authSuccess(token, jti));
         dispatch(
           checkAuthTimeout(
             (expirationDate.getTime() - new Date().getTime()) / 1000
