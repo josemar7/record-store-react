@@ -65,10 +65,15 @@ export const saveStyle = (token, style) => {
     return dispatch => {
         dispatch(saveStyleStart());
         axios.post('/style/new', style, config)
-        .then(() => {
-            dispatch(saveStyleSuccess());
+        .then((response) => {
+            if (response === undefined) {
+                dispatch(saveStyleFailed());
+            }
+            else {
+                dispatch(saveStyleSuccess());
+            }            
         })
-        .catch(() => {
+        .catch((error) => {
             dispatch(saveStyleFailed());
         });
     };

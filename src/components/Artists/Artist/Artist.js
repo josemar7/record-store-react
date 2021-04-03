@@ -71,13 +71,21 @@ class Artist extends Component {
     }
 
     static getDerivedStateFromProps(props, state) {
-        if (!state.loaded && props.match.params.id !== undefined 
-            && props.styles.length > 0 && props.nationalities.length > 0 && props.artist !== null) {
-            const stylesCpy = [...props.styles];
-            const nationalitiesCpy = [...props.nationalities];    
+        if (!state.loaded && props.styles.length > 0 && props.nationalities.length > 0) {
+            return Artist.loadArtistForm(props, state);
+        }
+        return state;
+    }
+
+    static loadArtistForm = (props, state) => {
+        const stylesCpy = [...props.styles];
+        const nationalitiesCpy = [...props.nationalities];    
+        let updatedControls = null;
+        let stateUpdated = state;
+        if (props.match.params.id !== undefined && props.artist !== null) {
             const styleFound = stylesCpy.find(e => e.name === props.artist.style);
             const nationalityFound = nationalitiesCpy.find(n => n.name === props.artist.nationality);
-            const updatedControls = updateObject(state.artistForm, {
+            updatedControls = updateObject(state.artistForm, {
                 'style': updateObject(state.artistForm['style'], {
                     value: styleFound.id,
                     valid: true
@@ -91,26 +99,23 @@ class Artist extends Component {
                     valid: true
                 })
             });
-            return {artistForm: updatedControls, formIsValid: true, isEdit: true, loaded: true };    
+            stateUpdated = {artistForm: updatedControls, formIsValid: true, isEdit: true, loaded: true };
         }
-        else if (!state.loaded && props.match.params.id === undefined 
-            && props.styles.length > 0 && props.nationalities.length > 0) {
-                const stylesCpy = [...props.styles];
-                const nationalitiesCpy = [...props.nationalities];    
-                const updatedControls = updateObject(state.artistForm, {
-                    'style': updateObject(state.artistForm['style'], {
-                        value: stylesCpy[0].id,
-                        valid: true
-                    }),
-                    'nationality': updateObject(state.artistForm['nationality'], {
-                        value: nationalitiesCpy[0].id,
-                        valid: true
-                    })
-                });  
-                return {artistForm: updatedControls, loaded: true };      
-            }
-        return state;
-    }
+        else if (props.match.params.id === undefined) {
+            updatedControls = updateObject(state.artistForm, {
+                'style': updateObject(state.artistForm['style'], {
+                    value: stylesCpy[0].id,
+                    valid: true
+                }),
+                'nationality': updateObject(state.artistForm['nationality'], {
+                    value: nationalitiesCpy[0].id,
+                    valid: true
+                })
+            });  
+            stateUpdated = {artistForm: updatedControls, loaded: true };
+        }
+        return stateUpdated;
+    };
 
     artistHandler = (event) => {
         event.preventDefault();

@@ -2,7 +2,8 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
     styles: [],
-    loading: false
+    loading: false,
+    error: undefined
 };
 
 const reducer = (state = initialState, action) => {
@@ -17,15 +18,23 @@ const reducer = (state = initialState, action) => {
         action.type === actionTypes.SAVE_STYLE_START) {
         return {
             ...state,
-            loading: true
+            loading: true,
+            error: undefined
         };
     }
     else if (action.type === actionTypes.FETCH_STYLES_FAILED ||
-        action.type === actionTypes.SAVE_STYLE_SUCCESS ||
-        action.type === actionTypes.SAVE_STYLE_FAILED) {
+        action.type === actionTypes.SAVE_STYLE_SUCCESS) {
         return {
             ...state,
-            loading: false
+            loading: false,
+            error: false
+        };
+    }
+    else if (action.type === actionTypes.SAVE_STYLE_FAILED) {
+        return {
+            ...state,
+            loading: false,
+            error: true
         };
     }
     return state;
