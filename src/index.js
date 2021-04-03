@@ -9,15 +9,17 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import artistReducer from './store/reducers/artist';
-import commonsReducer from './store/reducers/commons';
+import commonsReducer from './store/reducers/nationality';
 import testReducer from './store/reducers/test';
 import authReducer from './store/reducers/auth';
+import styleReducer from './store/reducers/style';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
     artist: artistReducer,
     commons: commonsReducer,
+    style: styleReducer,
     test: testReducer,
     auth: authReducer
 });

@@ -62,7 +62,7 @@ class Artist extends Component {
         loaded: false
     };
 
-    componentDidMount() {        
+    componentDidMount() {     
         this.props.onGetStyles(this.props.access_token);
         this.props.onGetNationalities(this.props.access_token);
         if (this.props.match.params.id !== undefined) {
@@ -189,18 +189,12 @@ class Artist extends Component {
                     return {value: style.id, displayValue: style.name};
                 });
                 formElement.elementConfig.options = optionsStyle;
-                // if (optionsStyle.length > 0 && formElement.value === '') {
-                //     formElement.value = optionsStyle[0].value;
-                // }        
             }
             else if (key === 'nationality') {
                 const optionsNationality = nationalitiesCpy.map(nationality => {
                     return {value: nationality.id, displayValue: nationality.name};
                 });
                 formElement.elementConfig.options = optionsNationality;
-                // if (optionsNationality.length > 0 && formElement.value === '') {
-                //     formElement.value = optionsNationality[0].value;
-                // }        
             }
             formElementsArray.push({
                 id: key,
@@ -245,7 +239,7 @@ class Artist extends Component {
 
 const mapStateToProps = state => {
     return {
-        styles: state.commons.styles,
+        styles: state.style.styles,
         nationalities: state.commons.nationalities,
         loading: state.commons.loading,
         access_token: state.auth.access_token,

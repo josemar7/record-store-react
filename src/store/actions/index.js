@@ -7,9 +7,13 @@ export {
 } from './artist';
 
 export {
-    getStyles,
     getNationalities
-} from './commons';
+} from './nationality';
+
+export {
+    getStyles,
+    saveStyle
+} from './style';
 
 export {
     getRecordsTest

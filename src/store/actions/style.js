@@ -8,34 +8,15 @@ export const setStyles = (styles) => {
     };
 };
 
-export const setNationalities = (nationalities) => {
-    return {
-        type: actionTypes.SET_NATIONALITIES,
-        nationalities: nationalities
-    };
-};
-
 export const fetchStylesFailed = () => {
     return {
         type: actionTypes.FETCH_STYLES_FAILED
     };
 };
 
-export const fetchNationalitiesFailed = () => {
-    return {
-        type: actionTypes.FETCH_NATIONALITIES_FAILED
-    };
-};
-
 export const fetchStylesStart = () => {
     return {
         type: actionTypes.FETCH_STYLES_START
-    };
-};
-
-export const fetchNationalitiesStart = () => {
-    return {
-        type: actionTypes.FETCH_NATIONALITIES_START
     };
 };
 
@@ -57,20 +38,39 @@ export const getStyles = (token) => {
     };
 };
 
-export const getNationalities = (token) => {
+export const saveStyleStart = () => {
+    return {
+        type: actionTypes.SAVE_STYLE_START
+    };
+};
+
+export const saveStyleSuccess = () => {
+    return {
+        type: actionTypes.SAVE_STYLE_SUCCESS
+    };
+};
+
+export const saveStyleFailed = () => {
+    return {
+        type: actionTypes.SAVE_STYLE_FAILED
+    };
+};
+
+export const saveStyle = (token, style) => {
     const config = {
         headers: {
             'Authorization': `Bearer ${token}`
         }
     };
     return dispatch => {
-        dispatch(fetchNationalitiesStart());
-        axios.get('nationality/all', config)
-        .then(response => {
-            dispatch(setNationalities(response.data));
+        dispatch(saveStyleStart());
+        axios.post('/style/new', style, config)
+        .then(() => {
+            dispatch(saveStyleSuccess());
         })
-        .catch(error => {
-            dispatch(fetchNationalitiesFailed()); 
+        .catch(() => {
+            dispatch(saveStyleFailed());
         });
     };
 };
+
