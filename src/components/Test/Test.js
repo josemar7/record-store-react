@@ -10,10 +10,12 @@ import Button from '../../UI/Button/Button';
 import * as actions from '../../store/actions/index';
 import Modal from '../../UI/Modal/Modal';
 import Style from '../Style/Style';
+import DialogConfirm from '../../UI/DialogConfirm/DialogConfirm';
 class Test extends Component {
 
     state = {
-        show: false
+        show: false,
+        showConfirm: false
     };
 
     componentDidMount() {
@@ -53,18 +55,39 @@ class Test extends Component {
                 <br/>
                 {records} 
                 <Route path={this.props.match.url + '/:id'} component={TestItem}/>    
-                <Button clicked={this.onClickDialogButton}>Click me</Button>
+                <div>
+                    <Button clicked={this.onClickDialogButton}>Click me</Button>
+                    <Button clicked={this.onClickConfirmButton}>Confirm me</Button>
+                </div>
                 <Modal modalClosed={() => {this.setState({show: false});}}
                     show={this.state.show}>
                         <Style origin={this}/>
                 </Modal>
-
+                <Modal modalClosed={() => {this.setState({showConfirm: false});}}
+                    show={this.state.showConfirm}>
+                        <DialogConfirm onClickYes={this.onClickYes} onClickNo={this.onClickNo}
+                        message="Are you sure want to click me?"/>
+                </Modal>
             </Aux>
         );
     }
 
+    onClickYes = () => {
+        console.log('yeeeeeeeeees');
+        this.setState({showConfirm: false});
+    };
+
+    onClickNo = () => {
+        console.log('nooooooooooo');
+        this.setState({showConfirm: false});
+    };
+
     onClickDialogButton = () => {
         this.setState({show: !this.state.show});
+    };
+
+    onClickConfirmButton = () => {
+        this.setState({showConfirm: !this.state.showConfirm});
     };
 
     onClickHandler(id) {
