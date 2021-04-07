@@ -8,8 +8,14 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import * as actions from '../../store/actions/index';
 import Aux from '../../hoc/Aux/Aux';
 import Spinner from '../../UI/Spinner/Spinner';
+import Modal from '../../UI/Modal/Modal';
+import DialogConfirm from '../../UI/DialogConfirm/DialogConfirm';
 
 class Artists extends Component {
+
+    state = {
+        show: false
+    };
 
     componentDidMount() {        
         this.props.onGetArtists(this.props.access_token);   
@@ -17,6 +23,21 @@ class Artists extends Component {
 
     onAddArtistHandler = () => {        
         this.props.history.replace('/artists/new');
+    }
+
+    onClickDelete = (token, id) => {        
+        this.setState({show: !this.state.show,
+            token: token,
+            id: id});
+    }
+
+    onClickYes = () => {
+        this.props.onDeleteArtistById(this.state.token, this.state.id);
+        this.setState({show: false});
+    };
+
+    onClickNo = () => {
+        this.setState({show: false});
     };
 
     render() {
@@ -46,7 +67,7 @@ class Artists extends Component {
                     <Table header={header}
                     data={artistsCpy}
                     actions={true}
-                    delete={this.props.onDeleteArtistById}
+                    delete={this.onClickDelete}
                     token={this.props.access_token}/>
                     <div style={{paddingTop: '10px'}}>
                         <Button
@@ -57,10 +78,16 @@ class Artists extends Component {
             );
         }
         return (
-            <div>
-                {artists}
-            </div>
-            
+            <Aux>
+                <Modal modalClosed={() => {this.setState({show: false});}}
+                show={this.state.show}>
+                    <DialogConfirm onClickYes={this.onClickYes} onClickNo={this.onClickNo}
+                    message="Are you sure want to delete the artist?"/>
+                </Modal>    
+                <div>
+                    {artists}
+                </div>
+            </Aux>            
         );
     }
 }
