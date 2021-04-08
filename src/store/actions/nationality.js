@@ -37,3 +37,45 @@ export const getNationalities = (token) => {
         });
     };
 };
+
+export const saveNationalityStart = () => {
+    return {
+        type: actionTypes.SAVE_NATIONALITY_START
+    };
+};
+
+export const saveNationalitySuccess = () => {
+    return {
+        type: actionTypes.SAVE_NATIONALITY_SUCCESS
+    };
+};
+
+export const saveNationalityFailed = () => {
+    return {
+        type: actionTypes.SAVE_NATIONALITY_FAILED
+    };
+};
+
+export const saveNationality = (token, nationality) => {
+    const config = {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    };
+    return dispatch => {
+        dispatch(saveNationalityStart());
+        axios.post('/nationality/new', nationality, config)
+        .then((response) => {
+            if (response === undefined) {
+                dispatch(saveNationalityFailed());
+            }
+            else {
+                dispatch(saveNationalitySuccess());
+                dispatch(getNationalities(token));
+            }            
+        })
+        .catch((error) => {
+            dispatch(saveNationalityFailed());
+        });
+    };
+};

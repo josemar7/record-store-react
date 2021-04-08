@@ -7,7 +7,8 @@ export {
 } from './artist';
 
 export {
-    getNationalities
+    getNationalities,
+    saveNationality
 } from './nationality';
 
 export {

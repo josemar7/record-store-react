@@ -9,10 +9,10 @@ import * as actions from '../../store/actions/index';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import axios from '../../axios-orders';
 
-class Style extends Component {
+class Nationality extends Component {
 
     state = {
-        styleForm: {
+        nationalityForm: {
             name: {
                 elementType: 'input',
                 elementConfig: {
@@ -28,28 +28,28 @@ class Style extends Component {
         }
     };
 
-    static getDerivedStateFromProps(props, state) {
+    static getDerivedStateFromProps(props, state) {  
         if (props.error !== undefined && !props.error) {
-            const updatedControls = updateObject(state.styleForm, {
-                name: updateObject(state.styleForm['name'], {
+            const updatedControls = updateObject(state.nationalityForm, {
+                name: updateObject(state.nationalityForm['name'], {
                     value: ''
                 })
             });
-            props.origin.setState({showStyle: false});
-            return {styleForm: updatedControls};
+            props.origin.setState({showNationality: false});
+            return {nationalityForm: updatedControls};
         }    
         return state;
     }
 
     inputChangedHandler = (event, controlName) => {
-        const updatedControls = updateObject(this.state.styleForm, {
-            [controlName]: updateObject(this.state.styleForm[controlName], {
+        const updatedControls = updateObject(this.state.nationalityForm, {
+            [controlName]: updateObject(this.state.nationalityForm[controlName], {
                 value: event.target.value,
-                valid: this.checkValidity(event.target.value, this.state.styleForm[controlName].validation),
+                valid: this.checkValidity(event.target.value, this.state.nationalityForm[controlName].validation),
                 touched: true
             })
         });
-        this.setState({styleForm: updatedControls});
+        this.setState({nationalityForm: updatedControls});
     };
 
 
@@ -63,15 +63,15 @@ class Style extends Component {
 
     submitHandler = (event) => {
         event.preventDefault();
-        this.props.onSaveStyle(this.props.access_token, {name: this.state.styleForm.name.value});
+        this.props.onSaveNationality(this.props.access_token, {name: this.state.nationalityForm.name.value});
     };
 
     render() {
         const formElementsArray = [];
-        for (let key in this.state.styleForm) {
+        for (let key in this.state.nationalityForm) {
             formElementsArray.push({
                 id: key,
-                config: this.state.styleForm[key]
+                config: this.state.nationalityForm[key]
             });
         }
         let form = formElementsArray.map(formElement => (
@@ -107,15 +107,15 @@ class Style extends Component {
 const mapStateToProps = state => {
     return {
         access_token: state.auth.access_token,
-        error: state.style.error,
-        loading: state.style.loading
+        error: state.nationality.error,
+        loading: state.nationality.loading
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onSaveStyle: (token, style) => dispatch(actions.saveStyle(token, style))
+        onSaveNationality: (token, nationality) => dispatch(actions.saveNationality(token, nationality))
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Style, axios));
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Nationality, axios));

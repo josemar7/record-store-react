@@ -14,7 +14,7 @@ import DialogConfirm from '../../UI/DialogConfirm/DialogConfirm';
 class Test extends Component {
 
     state = {
-        show: false,
+        showStyle: false,
         showConfirm: false
     };
 
@@ -59,8 +59,8 @@ class Test extends Component {
                     <Button clicked={this.onClickDialogButton}>Click me</Button>
                     <Button clicked={this.onClickConfirmButton}>Confirm me</Button>
                 </div>
-                <Modal modalClosed={() => {this.setState({show: false});}}
-                    show={this.state.show}>
+                <Modal modalClosed={() => {this.setState({showStyle: false});}}
+                    show={this.state.showStyle}>
                         <Style origin={this}/>
                 </Modal>
                 <Modal modalClosed={() => {this.setState({showConfirm: false});}}
@@ -83,7 +83,7 @@ class Test extends Component {
     };
 
     onClickDialogButton = () => {
-        this.setState({show: !this.state.show});
+        this.setState({showStyle: !this.state.showStyle});
     };
 
     onClickConfirmButton = () => {

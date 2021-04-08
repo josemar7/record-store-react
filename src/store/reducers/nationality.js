@@ -14,16 +14,27 @@ const reducer = (state = initialState, action) => {
             loading: false
         };      
     }
-    else if (action.type === actionTypes.FETCH_NATIONALITIES_START) {
+    else if (action.type === actionTypes.FETCH_NATIONALITIES_START ||
+        action.type === actionTypes.SAVE_NATIONALITY_START) {
         return {
             ...state,
-            loading: true
+            loading: true,
+            error: undefined
         };
     }
-    else if (action.type === actionTypes.FETCH_NATIONALITIES_FAILED) {
+    else if (action.type === actionTypes.FETCH_NATIONALITIES_FAILED ||
+        action.type === actionTypes.SAVE_NATIONALITY_SUCCESS) {
         return {
             ...state,
-            loading: false
+            loading: false,
+            error: false
+        };
+    }
+    else if (action.type === actionTypes.SAVE_NATIONALITY_FAILED) {
+        return {
+            ...state,
+            loading: false,
+            error: true
         };
     }
     return state;

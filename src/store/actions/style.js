@@ -71,11 +71,11 @@ export const saveStyle = (token, style) => {
             }
             else {
                 dispatch(saveStyleSuccess());
+                dispatch(getStyles(token));
             }            
         })
         .catch((error) => {
-            dispatch(saveStyleFailed());
+            dispatch(saveStyleFailed());            
         });
     };
 };
-

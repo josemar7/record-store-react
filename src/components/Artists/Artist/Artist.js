@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import { FaPlusCircle } from 'react-icons/fa';
 
 import axios from '../../../axios-orders';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
@@ -10,6 +11,9 @@ import Spinner from '../../../UI/Spinner/Spinner';
 import classes from './Artist.css';
 import * as actions from '../../../store/actions/index';
 import { updateObject } from "../../../shared/utility";
+import Modal from '../../../UI/Modal/Modal';
+import Style from '../../Style/Style';
+import Nationality from '../../Nationality/Nationality';
 
 class Artist extends Component {
 
@@ -59,7 +63,35 @@ class Artist extends Component {
         formIsValid: false,
         loading: false,
         isEdit: false,
-        loaded: false
+        loaded: false,
+        showStyle: false,
+        showNationality: false
+    };
+
+    styleModal = () => {
+        return (
+            <Modal modalClosed={() => {this.setState({showStyle: false});}}
+            show={this.state.showStyle}>
+                <Style origin={this}/>
+            </Modal>    
+        );
+    };
+
+    nationalityModal = () => {
+        return (
+            <Modal modalClosed={() => {this.setState({showNationality: false});}}
+            show={this.state.showNationality}>
+                <Nationality origin={this}/>
+            </Modal>    
+        );
+    };
+
+    onClickModalStyle = () => {
+        this.setState({showStyle: !this.state.showStyle});
+    };
+
+    onClickModalNationality = () => {
+        this.setState({showNationality: !this.state.showNationality});
     };
 
     componentDidMount() {     
@@ -214,15 +246,19 @@ class Artist extends Component {
             form = (
                 <form onSubmit={this.artistHandler}>
                     {formElementsArray.map(formElement => (
-                        <Input key={formElement.id}
-                                label={formElement.config.elementConfig.label}
-                                elementType={formElement.config.elementType}
-                                elementConfig={formElement.config.elementConfig}
-                                value={formElement.config.value} 
-                                changed={(event) => this.inputChangedHandler(event, formElement.id)}
-                                invalid={!formElement.config.valid}
-                                shouldValidate={formElement.config.validation}
-                                touched={formElement.config.touched}/>
+                        <div>
+                            <Input key={formElement.id}
+                                    label={formElement.config.elementConfig.label}
+                                    elementType={formElement.config.elementType}
+                                    elementConfig={formElement.config.elementConfig}
+                                    value={formElement.config.value} 
+                                    changed={(event) => this.inputChangedHandler(event, formElement.id)}
+                                    invalid={!formElement.config.valid}
+                                    shouldValidate={formElement.config.validation}
+                                    touched={formElement.config.touched}/>
+                            
+                            {this.drawAddButton(formElement.id)}
+                        </div>
                     ))}             
                     <Button 
                         disabled={!this.state.formIsValid}>Save</Button>   
@@ -236,10 +272,23 @@ class Artist extends Component {
         return (
                 <div className={classes.Artist}>
                     <Label>{artistLbl}</Label>
-                    {form}                    
+                    {form}       
+                    {this.styleModal()}
+                    {this.nationalityModal()}
                 </div>
         );            
     }
+
+    drawAddButton = (id) => {
+        let addButton = null;
+        if (id === 'style') {
+            addButton = <a href='#' style={{padding: '15px'}} onClick={this.onClickModalStyle}><FaPlusCircle/></a>;
+        }
+        else if (id === 'nationality') {
+            addButton = <a href='#' style={{padding: '15px'}} onClick={this.onClickModalNationality}><FaPlusCircle/></a>;
+        }
+        return addButton;
+    };
 }
 
 const mapStateToProps = state => {

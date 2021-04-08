@@ -13,6 +13,7 @@ import commonsReducer from './store/reducers/nationality';
 import testReducer from './store/reducers/test';
 import authReducer from './store/reducers/auth';
 import styleReducer from './store/reducers/style';
+import nationalityReducer from './store/reducers/nationality';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -21,7 +22,8 @@ const rootReducer = combineReducers({
     commons: commonsReducer,
     style: styleReducer,
     test: testReducer,
-    auth: authReducer
+    auth: authReducer,
+    nationality: nationalityReducer
 });
 const store = createStore(rootReducer, composeEnhancers(
     applyMiddleware(thunk)
