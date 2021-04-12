@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import Input from '../../UI/Input/Input';
 import Spinner from '../../UI/Spinner/Spinner';
 import Button from '../../UI/Button/Button';
-import { updateObject } from "../../shared/utility";
+import { checkValidity, updateObject } from "../../shared/utility";
 import * as actions from '../../store/actions/index';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import axios from '../../axios-orders';
@@ -45,20 +45,11 @@ class Nationality extends Component {
         const updatedControls = updateObject(this.state.nationalityForm, {
             [controlName]: updateObject(this.state.nationalityForm[controlName], {
                 value: event.target.value,
-                valid: this.checkValidity(event.target.value, this.state.nationalityForm[controlName].validation),
+                valid: checkValidity(event.target.value, this.state.nationalityForm[controlName].validation),
                 touched: true
             })
         });
         this.setState({nationalityForm: updatedControls});
-    };
-
-
-    checkValidity = (value, rules) => {
-        let isValid = true;
-        if (rules !== undefined && rules.required) {
-            isValid = value.trim() !== '' && isValid;
-        }
-        return isValid;
     };
 
     submitHandler = (event) => {

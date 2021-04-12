@@ -10,7 +10,7 @@ import Label from '../../../UI/Label/Label';
 import Spinner from '../../../UI/Spinner/Spinner';
 import classes from './Artist.css';
 import * as actions from '../../../store/actions/index';
-import { updateObject } from "../../../shared/utility";
+import { checkValidity, updateObject } from "../../../shared/utility";
 import Modal from '../../../UI/Modal/Modal';
 import Style from '../../Style/Style';
 import Nationality from '../../Nationality/Nationality';
@@ -183,20 +183,6 @@ class Artist extends Component {
         }        
     };
 
-    checkValidity(value, rules) {
-        let isValid = true;
-        if (rules !== undefined && rules.required) {
-            isValid = value.trim() !== '' && isValid;
-        }
-        if (rules !== undefined &&rules.minLength) {
-            isValid = value.length >= rules.minLength && isValid;
-        }
-        if (rules !== undefined &&rules.maxLength) {
-            isValid = value.length <= rules.maxLength && isValid;
-        }
-        return isValid;
-    }
-
     inputChangedHandler = (event, inputIdentifier) => {
         const updatedArtistForm = {
             ...this.state.artistForm
@@ -205,7 +191,7 @@ class Artist extends Component {
             ...updatedArtistForm[inputIdentifier]
         };
         updatedFormElement.value = event.target.value;
-        updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
+        updatedFormElement.valid = checkValidity(updatedFormElement.value, updatedFormElement.validation);
         updatedFormElement.touched = true;
         updatedArtistForm[inputIdentifier] = updatedFormElement;
         let formIsValid = true;
