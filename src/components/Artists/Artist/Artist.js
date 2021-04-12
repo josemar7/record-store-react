@@ -225,6 +225,7 @@ class Artist extends Component {
             });
         }
         let form = null;
+        let i = 0;
         if (this.props.loading) {
             form = <Spinner/>;
         }
@@ -232,7 +233,7 @@ class Artist extends Component {
             form = (
                 <form onSubmit={this.artistHandler}>
                     {formElementsArray.map(formElement => (
-                        <div>
+                        <div key={++i}>
                             <Input key={formElement.id}
                                     label={formElement.config.elementConfig.label}
                                     elementType={formElement.config.elementType}
