@@ -40,9 +40,8 @@ class Artists extends Component {
         this.setState({show: false});
     };
 
-    render() {
-        const artistsCpy = [...this.props.artists];
-        const header = {
+    getHeader = () => {
+        return {
             id: {
                 label: 'Id',
                 width: '30px'
@@ -60,12 +59,29 @@ class Artists extends Component {
                 width: '50px'
             }
         };
+    };
+
+    getData = () => {
+        const artistsCpy = [...this.props.artists];
+        return artistsCpy.map(artistCpy => {
+            return ({
+                id: artistCpy.id,
+                name: artistCpy.name,
+                style: artistCpy.style.name,
+                nationality: artistCpy.nationality.name
+            });
+        });
+    };
+
+    render() {
+        const header = this.getHeader();
+        const artistsTransformed = this.getData();
         let artists = <Spinner/>;
         if (!this.props.loading) {
             artists = (
                 <Aux>
                     <Table header={header}
-                    data={artistsCpy}
+                    data={artistsTransformed}
                     actions={true}
                     delete={this.onClickDelete}
                     token={this.props.access_token}/>

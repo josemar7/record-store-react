@@ -115,8 +115,8 @@ class Artist extends Component {
         let updatedControls = null;
         let stateUpdated = state;
         if (props.match.params.id !== undefined && props.artist !== null) {
-            const styleFound = stylesCpy.find(e => e.name === props.artist.style);
-            const nationalityFound = nationalitiesCpy.find(n => n.name === props.artist.nationality);
+            const styleFound = stylesCpy.find(e => e.name === props.artist.style.name);
+            const nationalityFound = nationalitiesCpy.find(n => n.name === props.artist.nationality.name);
             updatedControls = updateObject(state.artistForm, {
                 'style': updateObject(state.artistForm['style'], {
                     value: styleFound.id,
