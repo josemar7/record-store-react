@@ -5,7 +5,7 @@ import * as actionTypes from './actionTypes';
 export const setRecords = (records) => {
     return {
         type: actionTypes.SET_RECORDS,
-        artists: records
+        records: records
     };
 };
 
@@ -29,6 +29,7 @@ export const getRecords = (token) => {
             dispatch(setRecords(response.data));
         })
         .catch(error => {
+            console.log(error);
             dispatch(fetchRecordsFailed());
         });
     };
