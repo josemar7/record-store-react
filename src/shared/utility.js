@@ -26,3 +26,11 @@ export const checkValidity = (value, rules) => {
     }
     return isValid;
 };
+
+export const getConfigBearer = (token) => {
+    return {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    };    
+};

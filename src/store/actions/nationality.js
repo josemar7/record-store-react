@@ -1,4 +1,5 @@
 import axios from '../../axios-orders';
+import { getConfigBearer } from '../../shared/utility';
 import * as actionTypes from './actionTypes';
 
 export const setNationalities = (nationalities) => {
@@ -21,14 +22,9 @@ export const fetchNationalitiesStart = () => {
 };
 
 export const getNationalities = (token) => {
-    const config = {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    };
     return dispatch => {
         dispatch(fetchNationalitiesStart());
-        axios.get('nationality/all', config)
+        axios.get('nationality/all', getConfigBearer(token))
         .then(response => {
             dispatch(setNationalities(response.data));
         })
@@ -57,14 +53,9 @@ export const saveNationalityFailed = () => {
 };
 
 export const saveNationality = (token, nationality) => {
-    const config = {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    };
     return dispatch => {
         dispatch(saveNationalityStart());
-        axios.post('/nationality/new', nationality, config)
+        axios.post('/nationality/new', nationality, getConfigBearer(token))
         .then((response) => {
             if (response === undefined) {
                 dispatch(saveNationalityFailed());

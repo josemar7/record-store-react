@@ -7,6 +7,14 @@ export {
 } from './artist';
 
 export {
+    getRecords,
+    saveRecord,
+    getRecordById,
+    deleteRecordById,
+    updateRecordById
+} from './record';
+
+export {
     getNationalities,
     saveNationality
 } from './nationality';

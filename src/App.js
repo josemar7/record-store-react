@@ -6,14 +6,11 @@ import {connect} from 'react-redux';
 import Layout from './hoc/Layout/Layout';
 import Logout from "./components/Auth/Logout/Logout";
 import * as actions from './store/actions/index';
+import Records from './components/Records/Records';
 
 const Test = React.lazy(() => {
     console.log('Test');
     return import('./components/Test/Test');
-});
-
-const About = React.lazy(() => {
-    return import('./components/About/About');
 });
 
 const Artists = React.lazy(() => {
@@ -37,7 +34,6 @@ class App extends Component {
         let routes = (
             <Switch>
                 <Route path="/home" render={(props) => <Test {...props}/>}/>
-                <Route path="/about" render={(props) => <About {...props}/>}/>
                 <Route path="/auth" render={(props) => <Auth {...props}/>}/>
                 <Route path="/params" render={(props) => <Test {...props}/>}/>
                 <Route path="/test" render={(props) => <Test {...props}/>}/>
@@ -50,7 +46,6 @@ class App extends Component {
             routes = (
                 <Switch>
                     <Route path="/home" render={(props) => <Test {...props}/>}/>
-                    <Route path="/about" render={(props) => <About {...props}/>}/>
                     <Route path="/logout" component={Logout}/>
                     <Route path="/params" render={(props) => <Test {...props}/>}/>
                     <Route path="/artists/new" render={(props) => <Artist {...props}/>}/>
@@ -58,7 +53,8 @@ class App extends Component {
                     <Route path="/artists/:id" render={(props) => <Artist {...props}/>}/>
                     <Route path="/artists" render={(props) => <Artists {...props}/>}/>                    
                     <Route path="/test" render={(props) => <Test {...props}/>}/>
-                    <Route path="/:id" render={(props) => <Test {...props}/>}/>
+                    <Route path="/records" render={(props) => <Records {...props}/>}/>
+                    <Route path="/:id" render={(props) => <Test {...props}/>}/>                    
                     <Redirect to="/"/>
                     {/*<Route render={() => <h1>Not found</h1>}/>*/}
 

@@ -43,8 +43,7 @@ export const checkAuthTimeout = (expirationDate) => {
 export const auth = (user, password, isSignup) => {
   return (dispatch) => {
     dispatch(authStart());
-    let url =
-      "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyD_7PzgaSCU8al4tgPEEDuMEXpD9vHKJHA";
+    let url = null;
     if (!isSignup) {
       url = "https://laboauth2full.herokuapp.com/oauth/token";
       // url = 'http://localhost:9000/oauth/token';

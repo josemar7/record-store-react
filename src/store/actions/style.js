@@ -1,4 +1,5 @@
 import axios from '../../axios-orders';
+import { getConfigBearer } from '../../shared/utility';
 import * as actionTypes from './actionTypes';
 
 export const setStyles = (styles) => {
@@ -21,14 +22,9 @@ export const fetchStylesStart = () => {
 };
 
 export const getStyles = (token) => {
-    const config = {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    };
     return dispatch => {
         dispatch(fetchStylesStart());
-        axios.get('style/all', config)
+        axios.get('style/all', getConfigBearer(token))
         .then(response => {
             dispatch(setStyles(response.data));
         })
@@ -57,14 +53,9 @@ export const saveStyleFailed = () => {
 };
 
 export const saveStyle = (token, style) => {
-    const config = {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    };
     return dispatch => {
         dispatch(saveStyleStart());
-        axios.post('/style/new', style, config)
+        axios.post('/style/new', style, getConfigBearer(token))
         .then((response) => {
             if (response === undefined) {
                 dispatch(saveStyleFailed());

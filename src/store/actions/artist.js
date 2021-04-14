@@ -1,4 +1,5 @@
 import axios from '../../axios-orders';
+import { getConfigBearer } from '../../shared/utility';
 import * as actionTypes from './actionTypes';
 
 export const setArtists = (artists) => {
@@ -21,14 +22,9 @@ export const fetchArtistsStart = () => {
 };
 
 export const getArtists = (token) => {
-    const config = {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    };
     return dispatch => {
         dispatch(fetchArtistsStart());
-        axios.get('/artist/all', config)
+        axios.get('/artist/all', getConfigBearer(token))
         .then(response => {
             dispatch(setArtists(response.data));
         })
@@ -57,14 +53,9 @@ export const saveArtistFailed = () => {
 };
 
 export const saveArtist = (artist, token, history) => {
-    const config = {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    };
     return dispatch => {
         dispatch(saveArtistStart());
-        axios.post('/artist/new', artist, config)
+        axios.post('/artist/new', artist, getConfigBearer(token))
         .then(response => {
             dispatch(saveArtistSuccess());
             history.replace('/artists');
@@ -76,14 +67,9 @@ export const saveArtist = (artist, token, history) => {
 };
 
 export const getArtistById = (token, id) => {
-    const config = {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    };
     return dispatch => {
         dispatch(getArtistByIdStart());
-        axios.get(`/artist/${id}`, config)
+        axios.get(`/artist/${id}`, getConfigBearer(token))
         .then(response => {
             dispatch(setArtistById(response.data));
         })
@@ -113,14 +99,9 @@ export const setArtistById = (artist) => {
 };
 
 export const deleteArtistById = (token, id) => {
-    const config = {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    };
     return dispatch => {
         dispatch(deleteArtistByIdStart());
-        axios.delete(`/artist/${id}`, config)
+        axios.delete(`/artist/${id}`, getConfigBearer(token))
         .then(response => {
             dispatch(deleteArtistByIdSuccess());
             dispatch(getArtists(token));
@@ -151,14 +132,9 @@ export const deleteArtistByIdFailed = () => {
 };
 
 export const updateArtistById = (artist, token, id, history) => {
-    const config = {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    };
     return dispatch => {
         dispatch(updateArtistByIdStart());
-        axios.put(`/artist/${id}`, artist, config)
+        axios.put(`/artist/${id}`, artist, getConfigBearer(token))
         .then(response => {
             dispatch(updateArtistByIdSuccess());
             history.replace('/artists');
