@@ -1,65 +1,22 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import { FaPlusCircle } from 'react-icons/fa';
 
 import axios from '../../../axios-orders';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
-import Input from '../../../UI/Input/Input';
-import Button from '../../../UI/Button/Button';
 import Label from '../../../UI/Label/Label';
 import Spinner from '../../../UI/Spinner/Spinner';
 import classes from './Artist.css';
 import * as actions from '../../../store/actions/index';
-import { checkValidity, updateObject } from "../../../shared/utility";
+import { updateObject } from "../../../shared/utility";
 import Modal from '../../../UI/Modal/Modal';
 import Style from '../../Style/Style';
 import Nationality from '../../Nationality/Nationality';
+import { artistForm, getForm } from '../../../shared/formsUtils';
 
 class Artist extends Component {
 
     state = {
-        artistForm: {
-            name: {
-                elementType: 'input',
-                elementConfig: {
-                    type: 'text',
-                    placeholder: 'Artist name...',
-                    label: 'Name'
-                },
-                value: '',
-                validation: {
-                    required: true
-                },
-                valid: false,
-                touched: false
-            },
-            nationality: {
-                elementType: 'select',
-                elementConfig: {
-                    options: [],
-                    label: 'Nationality'
-                },
-                value: '',
-                validation: {
-                    required: true
-                },
-                valid: true,
-                touched: false
-            },
-            style: {
-                elementType: 'select',
-                elementConfig: {
-                    options: [],
-                    label: 'Style'
-                },
-                value: '',
-                validation: {
-                    required: true
-                },
-                valid: true,
-                touched: false
-            }
-        },
+        artistForm: artistForm,
         formIsValid: false,
         loading: false,
         isEdit: false,
@@ -99,7 +56,17 @@ class Artist extends Component {
         this.props.onGetNationalities(this.props.access_token);
         if (Artist.isidArtistInformed(this.props)) {
             this.props.onGetArtistById(this.props.access_token, this.props.match.params.id);   
-        }        
+        }    
+        let updatedControls = null; 
+        updatedControls = updateObject(this.state.artistForm, {
+            'style': updateObject(this.state.artistForm.style, {
+                onClickModal: this.onClickModalStyle
+            }),
+            'nationality': updateObject(this.state.artistForm.nationality, {
+                onClickModal: this.onClickModalNationality
+            })
+        });
+        this.setState({artistForm: updatedControls});
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -183,24 +150,6 @@ class Artist extends Component {
         }        
     };
 
-    inputChangedHandler = (event, inputIdentifier) => {
-        const updatedArtistForm = {
-            ...this.state.artistForm
-        };
-        const updatedFormElement = {
-            ...updatedArtistForm[inputIdentifier]
-        };
-        updatedFormElement.value = event.target.value;
-        updatedFormElement.valid = checkValidity(updatedFormElement.value, updatedFormElement.validation);
-        updatedFormElement.touched = true;
-        updatedArtistForm[inputIdentifier] = updatedFormElement;
-        let formIsValid = true;
-        for(let ip in updatedArtistForm) {
-            formIsValid = updatedArtistForm[ip].valid && formIsValid;
-        }
-        this.setState({artistForm: updatedArtistForm, formIsValid: formIsValid});
-    };
-
     render() {        
         const stylesCpy = [...this.props.styles];
         const nationalitiesCpy = [...this.props.nationalities];
@@ -225,32 +174,11 @@ class Artist extends Component {
             });
         }
         let form = null;
-        let i = 0;
         if (this.props.loading) {
             form = <Spinner/>;
         }
         else {
-            form = (
-                <form onSubmit={this.artistHandler}>
-                    {formElementsArray.map(formElement => (
-                        <div key={++i}>
-                            <Input key={formElement.id}
-                                    label={formElement.config.elementConfig.label}
-                                    elementType={formElement.config.elementType}
-                                    elementConfig={formElement.config.elementConfig}
-                                    value={formElement.config.value} 
-                                    changed={(event) => this.inputChangedHandler(event, formElement.id)}
-                                    invalid={!formElement.config.valid}
-                                    shouldValidate={formElement.config.validation}
-                                    touched={formElement.config.touched}/>
-                            
-                            {this.drawAddButton(formElement.id)}
-                        </div>
-                    ))}             
-                    <Button 
-                        disabled={!this.state.formIsValid}>Save</Button>   
-                </form>            
-            );    
+            form = getForm(formElementsArray, this.artistHandler, this, 'artistForm');
         }    
         let artistLbl = 'Edit Artist';
         if (!Artist.isidArtistInformed(this.props)) {
@@ -269,17 +197,6 @@ class Artist extends Component {
     static isidArtistInformed = (props) => {
         return props.match !== undefined && props.match.params !== undefined &&
             props.match.params.id !== undefined;
-    };
-
-    drawAddButton = (id) => {
-        let addButton = null;
-        if (id === 'style') {
-            addButton = <a href='#' style={{padding: '15px'}} onClick={this.onClickModalStyle}><FaPlusCircle/></a>;
-        }
-        else if (id === 'nationality') {
-            addButton = <a href='#' style={{padding: '15px'}} onClick={this.onClickModalNationality}><FaPlusCircle/></a>;
-        }
-        return addButton;
     };
 }
 

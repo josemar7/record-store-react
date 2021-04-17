@@ -5,90 +5,18 @@ import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import axios from '../../../axios-orders';
 import * as actions from '../../../store/actions/index';
 import Spinner from "../../../UI/Spinner/Spinner";
-import { checkValidity, updateObject } from "../../../shared/utility";
-import Input from "../../../UI/Input/Input";
-import Button from '../../../UI/Button/Button';
+import { updateObject } from "../../../shared/utility";
 import Label from '../../../UI/Label/Label';
-import Image from '../../../UI/Image/Image';
 import classes from './Record.css';
-import { FaPlusCircle } from "react-icons/fa";
 import Modal from "../../../UI/Modal/Modal";
 import Artist from "../../Artists/Artist/Artist";
 import Format from "../../Format/Format";
+import { getForm, recordForm } from "../../../shared/formsUtils";
 
 class Record extends Component {
 
     state = {
-        recordForm: {
-            name: {
-                elementType: 'input',
-                elementConfig: {
-                    type: 'text',
-                    placeholder: 'Record name...',
-                    label: 'Name'
-                },
-                value: '',
-                validation: {
-                    required: true
-                },
-                valid: false,
-                touched: false
-            },
-            format: {
-                elementType: 'select',
-                elementConfig: {
-                    options: [],
-                    label: 'Format'
-                },
-                value: '',
-                validation: {
-                    required: true
-                },
-                valid: true,
-                touched: false
-            },
-            artist: {
-                elementType: 'select',
-                elementConfig: {
-                    options: [],
-                    label: 'Artist'
-                },
-                value: '',
-                validation: {
-                    required: true
-                },
-                valid: true,
-                touched: false
-            },
-            units: {
-                elementType: 'input',
-                elementConfig: {
-                    type: 'text',
-                    placeholder: 'Units number...',
-                    label: 'Units'
-                },
-                value: '',
-                validation: {
-                    required: true,
-                    isNumeric: true,
-                    min: 0,
-                    max: 20
-                },
-                valid: false,
-                touched: false
-            },
-            image: {
-                elementType: 'input',
-                elementConfig: {
-                    type: 'text',
-                    placeholder: 'Image...',
-                    label: 'Image'
-                },
-                value: '',
-                valid: true,
-                touched: false
-            }
-        },
+        recordForm: recordForm,
         formIsValid: false,
         loading: false,
         isEdit: false,
@@ -102,7 +30,17 @@ class Record extends Component {
         this.props.onGetArtists(this.props.access_token);
         if (this.props.match.params.id !== undefined) {
             this.props.onGetRecordById(this.props.access_token, this.props.match.params.id);   
-        }        
+        }
+        let updatedControls = null; 
+        updatedControls = updateObject(this.state.recordForm, {
+            'format': updateObject(this.state.recordForm.format, {
+                onClickModal: this.onClickModalFormat
+            }),
+            'artist': updateObject(this.state.recordForm.artist, {
+                onClickModal: this.onClickModalArtist
+            })
+        });
+        this.setState({recordForm: updatedControls});
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -204,35 +142,6 @@ class Record extends Component {
         }        
     };
 
-    inputChangedHandler = (event, inputIdentifier) => {
-        const updatedRecordForm = {
-            ...this.state.recordForm
-        };
-        const updatedFormElement = {
-            ...updatedRecordForm[inputIdentifier]
-        };
-        updatedFormElement.value = event.target.value;
-        updatedFormElement.valid = checkValidity(updatedFormElement.value, updatedFormElement.validation);
-        updatedFormElement.touched = true;
-        updatedRecordForm[inputIdentifier] = updatedFormElement;
-        let formIsValid = true;
-        for(let ip in updatedRecordForm) {
-            formIsValid = updatedRecordForm[ip].valid && formIsValid;
-        }
-        this.setState({recordForm: updatedRecordForm, formIsValid: formIsValid});
-    };
-
-    drawAddButton = (id) => {
-        let addButton = null;
-        if (id === 'format') {
-            addButton = <a href='#' style={{padding: '15px'}} onClick={this.onClickModalFormat}><FaPlusCircle/></a>;
-        }
-        else if (id === 'artist') {
-            addButton = <a href='#' style={{padding: '15px'}} onClick={this.onClickModalArtist}><FaPlusCircle/></a>;
-        }
-        return addButton;
-    };
-
     onClickModalFormat = () => {
         this.setState({showFormat: !this.state.showFormat});
     };
@@ -283,33 +192,12 @@ class Record extends Component {
             });
         }
         let form = null;
-        let i = 0;
-        if (this.props.loading) {
+        if (this.props.loadingRecord) {
             form = <Spinner/>;
         }
         else {
-            form = (
-                <form onSubmit={this.recordHandler}>
-                    {formElementsArray.map(formElement => (
-                        <div key={++i}>
-                            <Input key={formElement.id}
-                                    label={formElement.config.elementConfig.label}
-                                    elementType={formElement.config.elementType}
-                                    elementConfig={formElement.config.elementConfig}
-                                    value={formElement.config.value} 
-                                    changed={(event) => this.inputChangedHandler(event, formElement.id)}
-                                    invalid={!formElement.config.valid}
-                                    shouldValidate={formElement.config.validation}
-                                    touched={formElement.config.touched}/>
-                            
-                            {this.drawAddButton(formElement.id)}
-                        </div>
-                    ))}    
-                    <Image src={this.state.recordForm.image.value}/>                    
-                    <Button 
-                        disabled={!this.state.formIsValid}>Save</Button>   
-                </form>            
-            );    
+            form = getForm(formElementsArray, this.recordHandler, this, 'recordForm',
+            this.state.recordForm.image.value);
         }    
         let recordLbl = 'Edit Record';
         if (this.props.match.params.id === undefined) {
@@ -333,6 +221,7 @@ const mapStateToProps = state => {
         artists: state.artist.artists,
         loadingFormats: state.format.loading,
         loadingArtists: state.artist.loading,
+        loadingRecord: state.record.loading,
         access_token: state.auth.access_token,
         record: state.record.record,
     };
