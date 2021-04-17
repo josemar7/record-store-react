@@ -22,7 +22,7 @@ const table = (props) => {
                     {Object.keys(value).map(k => <td key={value[k]}>{value[k]}</td>)}
                     {props.actions ? 
                     <td colSpan="2" style={{textAlign: 'center'}}>
-                        <a href={'/artists/' + value.id}><FaEdit/></a>
+                        <a href={'/' + props.type + '/' + value.id}><FaEdit/></a>
                         <a href='#' onClick={() => props.delete(props.token, value.id)}><FaTrash/></a>
                     </td> : null}
                 </tr>

@@ -97,7 +97,7 @@ class Artist extends Component {
     componentDidMount() {     
         this.props.onGetStyles(this.props.access_token);
         this.props.onGetNationalities(this.props.access_token);
-        if (this.props.match.params.id !== undefined) {
+        if (Artist.isidArtistInformed(this.props)) {
             this.props.onGetArtistById(this.props.access_token, this.props.match.params.id);   
         }        
     }
@@ -114,7 +114,7 @@ class Artist extends Component {
         const nationalitiesCpy = [...props.nationalities];    
         let updatedControls = null;
         let stateUpdated = state;
-        if (props.match.params.id !== undefined && props.artist !== null) {
+        if (Artist.isidArtistInformed(props) && props.artist !== null) {            
             const styleFound = stylesCpy.find(e => e.name === props.artist.style.name);
             const nationalityFound = nationalitiesCpy.find(n => n.name === props.artist.nationality.name);
             updatedControls = updateObject(state.artistForm, {
@@ -133,7 +133,7 @@ class Artist extends Component {
             });
             stateUpdated = {artistForm: updatedControls, formIsValid: true, isEdit: true, loaded: true };
         }
-        else if (props.match.params.id === undefined) {
+        else if (!Artist.isidArtistInformed(props)) {
             updatedControls = updateObject(state.artistForm, {
                 'style': updateObject(state.artistForm['style'], {
                     value: stylesCpy[0].id,
@@ -253,7 +253,7 @@ class Artist extends Component {
             );    
         }    
         let artistLbl = 'Edit Artist';
-        if (this.props.match.params.id === undefined) {
+        if (!Artist.isidArtistInformed(this.props)) {
             artistLbl = 'New Artist';
         }
         return (
@@ -265,6 +265,11 @@ class Artist extends Component {
                 </div>
         );            
     }
+
+    static isidArtistInformed = (props) => {
+        return props.match !== undefined && props.match.params !== undefined &&
+            props.match.params.id !== undefined;
+    };
 
     drawAddButton = (id) => {
         let addButton = null;

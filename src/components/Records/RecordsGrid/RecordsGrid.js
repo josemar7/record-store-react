@@ -13,11 +13,6 @@ import Aux from '../../../hoc/Aux/Aux';
 import Spinner from '../../../UI/Spinner/Spinner';
 class RecordsGrid extends Component {
 
-    // render() {
-    //     return (
-    //         <span className={classes.RecordsGrid}>RecordsGrid</span>
-    //     );
-    // }
     state = {
         show: false
     };
@@ -26,7 +21,7 @@ class RecordsGrid extends Component {
         this.props.onGetRecords(this.props.access_token);   
     }
 
-    onAddRecordHandler = () => {        
+    onAddRecordHandler = () => {     
         this.props.history.replace('/records/new');
     }
 
@@ -89,7 +84,8 @@ class RecordsGrid extends Component {
                     data={recordsTransformed}
                     actions={true}
                     delete={this.onClickDelete}
-                    token={this.props.access_token}/>
+                    token={this.props.access_token}
+                    type='records'/>
                     <div style={{paddingTop: '10px'}}>
                         <Button
                         clicked={this.onAddRecordHandler}

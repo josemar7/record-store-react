@@ -20,6 +20,11 @@ export {
 } from './nationality';
 
 export {
+    getFormats,
+    saveFormat
+} from './format';
+
+export {
     getStyles,
     saveStyle
 } from './style';

@@ -9,7 +9,6 @@ import * as actions from './store/actions/index';
 import Records from './components/Records/Records';
 
 const Test = React.lazy(() => {
-    console.log('Test');
     return import('./components/Test/Test');
 });
 
@@ -19,6 +18,10 @@ const Artists = React.lazy(() => {
 
 const Artist = React.lazy(() => {
     return import('./components/Artists/Artist/Artist');
+});
+
+const Record = React.lazy(() => {
+    return import('./components/Records/Record/Record');
 });
 
 const Auth = React.lazy(() => {
@@ -53,7 +56,10 @@ class App extends Component {
                     <Route path="/artists/:id" render={(props) => <Artist {...props}/>}/>
                     <Route path="/artists" render={(props) => <Artists {...props}/>}/>                    
                     <Route path="/test" render={(props) => <Test {...props}/>}/>
-                    <Route path="/records" render={(props) => <Records {...props}/>}/>
+                    <Route path="/records/new" render={(props) => <Record {...props}/>}/>
+                    <Route path="/records/delete/:id" render={(props) => <Records {...props}/>}/>
+                    <Route path="/records/:id" render={(props) => <Record {...props}/>}/>
+                    <Route path="/records" render={(props) => <Records {...props}/>}/>                    
                     <Route path="/:id" render={(props) => <Test {...props}/>}/>                    
                     <Redirect to="/"/>
                     {/*<Route render={() => <h1>Not found</h1>}/>*/}

@@ -24,6 +24,12 @@ export const checkValidity = (value, rules) => {
         const pattern = /^[0-9]*$/;
         isValid = pattern.test(value) && isValid;
     }
+    if (rules !== undefined && rules.max) {
+        isValid = value <= rules.max;
+    }
+    if (rules !== undefined && rules.min) {
+        isValid = value >= rules.min;
+    }
     return isValid;
 };
 

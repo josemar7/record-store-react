@@ -9,7 +9,7 @@ class Records extends Component {
         return (
             <div className={classes.Records}>
                 <RecordsFilter/>
-                <RecordsGrid/>
+                <RecordsGrid history={this.props.history} />
             </div>
         );
     }

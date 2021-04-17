@@ -95,7 +95,7 @@ export const getRecordByIdStart = () => {
 export const setRecordById = (record) => {
     return {
         type: actionTypes.SET_RECORD_BY_ID,
-        artist: record
+        record: record
     };
 };
 

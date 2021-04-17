@@ -84,7 +84,8 @@ class Artists extends Component {
                     data={artistsTransformed}
                     actions={true}
                     delete={this.onClickDelete}
-                    token={this.props.access_token}/>
+                    token={this.props.access_token}
+                    type='artists'/>
                     <div style={{paddingTop: '10px'}}>
                         <Button
                         clicked={this.onAddArtistHandler}
