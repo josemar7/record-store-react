@@ -3,43 +3,57 @@ import * as actionTypes from '../actions/actionTypes';
 const initialState = {
     artists: [],
     loading: false,
-    artist: null
+    artist: null,
+    closeDialog: false
 };
 
 const reducer = (state = initialState, action) => {
-    if (action.type === actionTypes.SET_ARTISTS) {
+    if (action.type === actionTypes.SET_ARTISTS || action.type === actionTypes.SET_ARTISTS_FILTERED) {
         return {
             ...state,
             artists: action.artists,
-            loading: false
+            loading: false,
+            closeDialog: false
         };
     }
     else if (action.type === actionTypes.FETCH_ARTISTS_START || action.type === actionTypes.SAVE_ARTIST_START
         || action.type === actionTypes.GET_ARTIST_BY_ID_START || action.type === actionTypes.DELETE_ARTIST_BY_ID_START
-        || action.type === actionTypes.UPDATE_ARTIST_BY_ID_START) {
+        || action.type === actionTypes.UPDATE_ARTIST_BY_ID_START || action.type === actionTypes.FETCH_ARTISTS_START_FILTERED) {
         return {
             ...state,
-            loading: true
+            loading: true,
+            closeDialog: false
         };
     }
-    else if (action.type === actionTypes.FETCH_ARTISTS_FAILED || action.type === actionTypes.SAVE_ARTIST_SUCCESS
-        || action.type === actionTypes.SAVE_ARTIST_FAILED || action.type === actionTypes.GET_ARTIST_BY_ID_FAILED
-        || action.type === actionTypes.DELETE_ARTIST_BY_ID_SUCCESS || action.type === actionTypes.DELETE_ARTIST_BY_ID_FAILED
-        || action.type === actionTypes.UPDATE_ARTIST_BY_ID_SUCCESS || action.type === actionTypes.UPDATE_ARTIST_BY_ID_FAILED) {
+    else if (action.type === actionTypes.SAVE_ARTIST_SUCCESS
+        || action.type === actionTypes.DELETE_ARTIST_BY_ID_SUCCESS
+        || action.type === actionTypes.UPDATE_ARTIST_BY_ID_SUCCESS) {
         return {
             ...state,
-            loading: false
+            loading: false,
+            closeDialog: true
+        };   
+    }
+    else if (action.type === actionTypes.FETCH_ARTISTS_FAILED 
+        || action.type === actionTypes.SAVE_ARTIST_FAILED || action.type === actionTypes.GET_ARTIST_BY_ID_FAILED
+        || action.type === actionTypes.DELETE_ARTIST_BY_ID_FAILED
+        || action.type === actionTypes.UPDATE_ARTIST_BY_ID_FAILED
+        || action.type === actionTypes.FETCH_ARTISTS_FAILED_FILTERED) {
+        return {
+            ...state,
+            loading: false,
+            closeDialog: false
         };   
     }
     else if (action.type === actionTypes.SET_ARTIST_BY_ID) {
         return {
             ...state,
             loading: false,
-            artist: action.artist
+            artist: action.artist,
+            artistError: false,closeDialog: undefined
         };
     }
     return state;
-
 };
 
 export default reducer;

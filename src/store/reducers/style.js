@@ -3,7 +3,7 @@ import * as actionTypes from '../actions/actionTypes';
 const initialState = {
     styles: [],
     loading: false,
-    error: undefined
+    closeDialog: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -11,7 +11,8 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             styles: action.styles,
-            loading: false
+            loading: false,
+            closeDialog: false
         };      
     }
     else if (action.type === actionTypes.FETCH_STYLES_START ||
@@ -19,7 +20,7 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             loading: true,
-            error: undefined
+            closeDialog: false
         };
     }
     else if (action.type === actionTypes.FETCH_STYLES_FAILED ||
@@ -27,14 +28,14 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             loading: false,
-            error: false
+            closeDialog: true
         };
     }
     else if (action.type === actionTypes.SAVE_STYLE_FAILED) {
         return {
             ...state,
             loading: false,
-            error: true
+            closeDialog: false
         };
     }
     return state;

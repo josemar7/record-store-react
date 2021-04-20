@@ -2,7 +2,8 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
     nationalities: [],
-    loading: false
+    loading: false,
+    closeDialog: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -10,7 +11,8 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             nationalities: action.nationalities,
-            loading: false
+            loading: false,
+            closeDialog: false
         };      
     }
     else if (action.type === actionTypes.FETCH_NATIONALITIES_START ||
@@ -18,7 +20,7 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             loading: true,
-            error: undefined
+            closeDialog: false
         };
     }
     else if (action.type === actionTypes.FETCH_NATIONALITIES_FAILED ||
@@ -26,14 +28,14 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             loading: false,
-            error: false
+            closeDialog: true
         };
     }
     else if (action.type === actionTypes.SAVE_NATIONALITY_FAILED) {
         return {
             ...state,
             loading: false,
-            error: true
+            closeDialog: false
         };
     }
     return state;

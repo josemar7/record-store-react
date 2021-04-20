@@ -13,7 +13,7 @@ export const fetchRecordsTestStart = () => {
     };
 };
 
-export const getRecordsTest = () => {
+export const getRecordsTest = (name) => {
     const recordsTest =  [
         {id: 1, name: "record 1"},
         {id: 2, name: "record 2"},
@@ -23,6 +23,14 @@ export const getRecordsTest = () => {
     ];
     return dispatch => {
         dispatch(fetchRecordsTestStart());
-        dispatch(setRecordsTest(recordsTest));
+        dispatch(setRecordsTest(filter(name, recordsTest)));
     };
+};
+
+const filter = (name, recordsTest) => {
+    let result = recordsTest;
+    if (name !== null) {
+        result = recordsTest.filter(r => r.name.toLowerCase().includes(name.toLowerCase()));
+    }
+    return result;
 };

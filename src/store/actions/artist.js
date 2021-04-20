@@ -58,6 +58,7 @@ export const saveArtist = (artist, token, history) => {
         axios.post('/artist/new', artist, getConfigBearer(token))
         .then(response => {
             dispatch(saveArtistSuccess());
+            dispatch(getArtists(token));
             history.replace('/artists');
         })
         .catch(error => {
@@ -161,5 +162,40 @@ export const updateArtistByIdSuccess = () => {
 export const updateArtistByIdFailed = () => {
     return {
         type: actionTypes.UPDATE_ARTIST_BY_ID_FAILED
+    };
+};
+
+export const setArtistsFiltered = (artists) => {
+    return {
+        type: actionTypes.SET_ARTISTS_FILTERED,
+        artists: artists
+    };
+};
+
+export const fetchArtistsFailedFiltered = () => {
+    return {
+        type: actionTypes.FETCH_ARTISTS_FAILED_FILTERED
+    };
+};
+
+export const fetchArtistsStartFiltered = () => {
+    return {
+        type: actionTypes.FETCH_ARTISTS_START_FILTERED
+    };
+};
+
+export const getArtistsFiltered = (token, text) => {
+    return dispatch => {
+        dispatch(fetchArtistsStartFiltered());
+        if (text === null) {
+            text = '';
+        }
+        axios.get('/artist/filter?name=' + text, getConfigBearer(token))
+        .then(response => {
+            dispatch(setArtistsFiltered(response.data));
+        })
+        .catch(error => {            
+            dispatch(fetchArtistsFailedFiltered());
+        });
     };
 };

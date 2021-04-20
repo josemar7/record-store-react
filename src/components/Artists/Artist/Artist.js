@@ -73,6 +73,9 @@ class Artist extends Component {
         if (!state.loaded && props.styles.length > 0 && props.nationalities.length > 0) {
             return Artist.loadArtistForm(props, state);
         }
+        if (props.closeDialog) {
+            props.origin.setState({showArtist: false});
+        }  
         return state;
     }
 
@@ -110,7 +113,7 @@ class Artist extends Component {
                     value: nationalitiesCpy[0].id,
                     valid: true
                 })
-            });  
+            });              
             stateUpdated = {artistForm: updatedControls, loaded: true };
         }
         return stateUpdated;
@@ -207,6 +210,7 @@ const mapStateToProps = state => {
         loading: state.commons.loading,
         access_token: state.auth.access_token,
         artist: state.artist.artist,
+        closeDialog: state.artist.closeDialog
     };
 };
 

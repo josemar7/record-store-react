@@ -3,7 +3,8 @@ export {
     saveArtist,
     getArtistById,
     deleteArtistById,
-    updateArtistById
+    updateArtistById,
+    getArtistsFiltered
 } from './artist';
 
 export {

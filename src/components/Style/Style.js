@@ -29,7 +29,7 @@ class Style extends Component {
     };
 
     static getDerivedStateFromProps(props, state) {
-        if (props.error !== undefined && !props.error) {
+        if (props.closeDialog) {
             const updatedControls = updateObject(state.styleForm, {
                 name: updateObject(state.styleForm['name'], {
                     value: ''
@@ -98,7 +98,7 @@ class Style extends Component {
 const mapStateToProps = state => {
     return {
         access_token: state.auth.access_token,
-        error: state.style.error,
+        closeDialog: state.style.closeDialog,
         loading: state.style.loading
     };
 };

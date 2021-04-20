@@ -29,7 +29,7 @@ class Nationality extends Component {
     };
 
     static getDerivedStateFromProps(props, state) {  
-        if (props.error !== undefined && !props.error) {
+        if (props.closeDialog) {
             const updatedControls = updateObject(state.nationalityForm, {
                 name: updateObject(state.nationalityForm['name'], {
                     value: ''
@@ -98,7 +98,7 @@ class Nationality extends Component {
 const mapStateToProps = state => {
     return {
         access_token: state.auth.access_token,
-        error: state.nationality.error,
+        closeDialog: state.nationality.closeDialog,
         loading: state.nationality.loading
     };
 };
