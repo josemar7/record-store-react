@@ -12,19 +12,8 @@ import * as actions from '../../store/actions/index';
 import Modal from '../../UI/Modal/Modal';
 import Style from '../Style/Style';
 import DialogConfirm from '../../UI/DialogConfirm/DialogConfirm';  
-
-export const colourOptions = [
-    { value: 'ocean', label: 'Ocean', color: '#00B8D9', isFixed: true },
-    { value: 'blue', label: 'Blue', color: '#0052CC', isDisabled: true },
-    { value: 'purple', label: 'Purple', color: '#5243AA' },
-    { value: 'red', label: 'Red', color: '#FF5630', isFixed: true },
-    { value: 'orange', label: 'Orange', color: '#FF8B00' },
-    { value: 'yellow', label: 'Yellow', color: '#FFC400' },
-    { value: 'green', label: 'Green', color: '#36B37E' },
-    { value: 'forest', label: 'Forest', color: '#00875A' },
-    { value: 'slate', label: 'Slate', color: '#253858' },
-    { value: 'silver', label: 'Silver', color: '#666666' },
-  ]; 
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import axios from '../../axios-orders';
 class Test extends Component {
 
     state = {
@@ -86,9 +75,6 @@ class Test extends Component {
             });
             records = <table><tbody>{records}</tbody></table>;
         }
-        if(this.props.artistError) {
-            this.props.history.replace('/auth');
-        }
         return (
             <Aux>
                 <div className={classes.mydiv}>{result}</div>
@@ -106,6 +92,7 @@ class Test extends Component {
                     <Select
                     options={this.state.parsedArtists}
                     onChange={this.textChange}
+                    onInputChange={this.myOnInputChange}
                     />
                 </div>
                 <Modal modalClosed={() => {this.setState({showStyle: false});}}
@@ -124,49 +111,6 @@ class Test extends Component {
     textChange = inputValue => {
         console.log(inputValue);
         this.setState({ inputValue:inputValue.value });
-    };
-
-    filterColors = (inputValue) => {
-        return colourOptions.filter(i =>
-            i.label.toLowerCase().includes(inputValue.toLowerCase())
-        );
-    };
-    
-    async loadOptions(inputValue) {
-        if (inputValue.length === 0) {
-            await this.props.onGetRecordsTest(null);
-        }
-        else if (inputValue.length > 3) {
-            await this.props.onGetRecordsTest(inputValue);
-        }
-        return this.props.recordsTest.map(r => {
-            return {value: r.id, label: r.name};
-        });    
-    } 
-
-    async loadArtists(inputValue) {
-        if (inputValue.length === 0) {
-            await this.props.onGetArtistsFiltered(this.props.access_token, null);
-        }
-        else if (inputValue.length > 3) {
-            await this.props.onGetArtistsFiltered(this.props.access_token, inputValue);
-        }
-        const artistsCpy = [...this.props.artists];
-        return artistsCpy.map(a => {
-            return {value: a.id, label: a.name};
-        });    
-    } 
-
-    handleInputChange = (newValue) => {
-        // const inputValue = newValue.replace(/\W/g, '');
-        this.setState({ inputValue: newValue });
-        return newValue;
-    };
-
-    handleArtistInputChange = newValue => {
-        console.log(newValue);
-        this.setState({ inputValue: newValue });
-        return newValue;
     };
 
     onClickYes = () => {
@@ -198,9 +142,7 @@ const mapStateToProps = state => {
         recordsTest: state.test.recordsTest,
         loading: state.test.loading,
         artists: state.artist.artists,
-        artistError: state.artist.artistError,
-        access_token: state.auth.access_token,
-        loadingArtists: state.artist.loading
+        access_token: state.auth.access_token
     };
 };
 
@@ -211,4 +153,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Test);
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Test, axios));

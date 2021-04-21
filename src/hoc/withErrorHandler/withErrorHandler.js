@@ -16,7 +16,11 @@ const withErrorHandler = (WrappedComponent, axios) => {
                 return req;
             });
             this.resInterceptor = axios.interceptors.response.use(res => res, error => {
+                if (error.response.status === 401) {
+                    this.props.history.replace('/auth');
+                }                
                 this.setState({error: error});
+                return Promise.reject(error);
             });
         }
 
