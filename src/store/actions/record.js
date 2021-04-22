@@ -29,7 +29,6 @@ export const getRecords = (token) => {
             dispatch(setRecords(response.data));
         })
         .catch(error => {
-            console.log(error);
             dispatch(fetchRecordsFailed());
         });
     };

@@ -23,7 +23,7 @@ export const artistForm = {
         onClickModal: null
     },
     nationality: {
-        elementType: 'select',
+        elementType: 'selectReact',
         elementConfig: {
             options: [],
             label: 'Nationality'
@@ -37,7 +37,7 @@ export const artistForm = {
         onClickModal: null
     },
     style: {
-        elementType: 'select',
+        elementType: 'selectReact',
         elementConfig: {
             options: [],
             label: 'Style'
@@ -69,7 +69,7 @@ export const recordForm = {
         onClickModal: null
     },
     format: {
-        elementType: 'select',
+        elementType: 'selectReact',
         elementConfig: {
             options: [],
             label: 'Format'
@@ -83,7 +83,7 @@ export const recordForm = {
         onClickModal: null
     },
     artist: {
-        elementType: 'select',
+        elementType: 'selectReact',
         elementConfig: {
             options: [],
             label: 'Artist'
@@ -135,8 +135,13 @@ export const inputChangedHandler = (event, inputIdentifier, component, form) => 
     const updatedFormElement = {
         ...updatedForm[inputIdentifier]
     };
-    updatedFormElement.value = event.target.value;
-    updatedFormElement.valid = checkValidity(updatedFormElement.value, updatedFormElement.validation);
+    if (updatedFormElement.elementType === 'selectReact') {
+        updatedFormElement.value = event;
+    }
+    else {
+        updatedFormElement.value = event.target.value;
+        updatedFormElement.valid = checkValidity(updatedFormElement.value, updatedFormElement.validation);
+    }        
     updatedFormElement.touched = true;
     updatedForm[inputIdentifier] = updatedFormElement;
     let formIsValid = true;

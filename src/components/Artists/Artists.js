@@ -17,8 +17,8 @@ class Artists extends Component {
         show: false
     };
 
-    componentDidMount() {        
-        this.props.onGetArtists(this.props.access_token);   
+    componentDidMount() {   
+        this.props.onGetArtists(this.props.access_token, false);   
     }
 
     onAddArtistHandler = () => {        

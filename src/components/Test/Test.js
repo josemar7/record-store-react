@@ -109,7 +109,6 @@ class Test extends Component {
     }
 
     textChange = inputValue => {
-        console.log(inputValue);
         this.setState({ inputValue:inputValue.value });
     };
 

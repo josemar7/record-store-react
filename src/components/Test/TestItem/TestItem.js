@@ -18,7 +18,6 @@ class TestItem extends Component {
     }
 
     render() {
-      console.log(this.props);
       let redirect = null;
       if (this.state.redirect) {
           redirect = <Redirect to="/test"/>;

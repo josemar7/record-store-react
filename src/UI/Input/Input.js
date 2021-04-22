@@ -1,4 +1,5 @@
 import React from 'react';
+import Select from 'react-select';
 
 import classes from './Input.css';
 
@@ -27,7 +28,18 @@ const Input = props => {
                     </option>
                 ))}
             </select>
-        );
+            );
+        break;
+        case('selectReact'):
+            inputElement = (
+                <Select value={props.value}
+                options={props.elementConfig.options}
+                onChange={props.changed}
+                getOptionLabel={(option) => option.name}
+                getOptionValue={(option) => option.id}
+                // onInputChange={props.selectReactInputChangeHandler} 
+                className={inputClasses.join(' ')}/>
+            );
         break;
         default:
             inputElement = <input {...props.elementConfig} 

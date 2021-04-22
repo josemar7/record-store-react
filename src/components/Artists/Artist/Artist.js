@@ -18,7 +18,6 @@ class Artist extends Component {
     state = {
         artistForm: artistForm,
         formIsValid: false,
-        loading: false,
         isEdit: false,
         loaded: false,
         showStyle: false,
@@ -73,9 +72,9 @@ class Artist extends Component {
         if (!state.loaded && props.styles.length > 0 && props.nationalities.length > 0) {
             return Artist.loadArtistForm(props, state);
         }
-        if (props.closeDialog) {
+        if (props.closeDialog && props.origin !== undefined) {
             props.origin.setState({showArtist: false});
-        }  
+        }
         return state;
     }
 
@@ -84,16 +83,16 @@ class Artist extends Component {
         const nationalitiesCpy = [...props.nationalities];    
         let updatedControls = null;
         let stateUpdated = state;
-        if (Artist.isidArtistInformed(props) && props.artist !== null) {            
-            const styleFound = stylesCpy.find(e => e.name === props.artist.style.name);
+        if (Artist.isidArtistInformed(props) && props.artist !== null) {                  
+            const styleFound = stylesCpy.find(e => e.id === props.artist.style.id);
             const nationalityFound = nationalitiesCpy.find(n => n.name === props.artist.nationality.name);
             updatedControls = updateObject(state.artistForm, {
                 'style': updateObject(state.artistForm['style'], {
-                    value: styleFound.id,
+                    value: styleFound,
                     valid: true
                 }),
                 'nationality': updateObject(state.artistForm['nationality'], {
-                    value: nationalityFound.id,
+                    value: nationalityFound,
                     valid: true
                 }),
                 'name': updateObject(state.artistForm['name'], {
@@ -121,7 +120,6 @@ class Artist extends Component {
 
     artistHandler = (event) => {
         event.preventDefault();
-        this.setState({loading: true});
         let name;
         let idNationality;
         let idStyle;
@@ -130,10 +128,10 @@ class Artist extends Component {
                 name = this.state.artistForm[formElementIdentifier].value;
             }
             else if (formElementIdentifier === 'nationality') {
-                idNationality = this.state.artistForm[formElementIdentifier].value;
+                idNationality = this.state.artistForm[formElementIdentifier].value.id;
             }
             else if (formElementIdentifier === 'style') {
-                idStyle = this.state.artistForm[formElementIdentifier].value;
+                idStyle = this.state.artistForm[formElementIdentifier].value.id;
             }
         }
         const artist = {
@@ -154,22 +152,14 @@ class Artist extends Component {
     };
 
     render() {        
-        const stylesCpy = [...this.props.styles];
-        const nationalitiesCpy = [...this.props.nationalities];
         const formElementsArray = [];
         for (let key in this.state.artistForm) {
             const formElement = this.state.artistForm[key];
             if (key === 'style') {
-                const optionsStyle = stylesCpy.map(style => {
-                    return {value: style.id, displayValue: style.name};
-                });
-                formElement.elementConfig.options = optionsStyle;
+                formElement.elementConfig.options = this.props.styles;
             }
             else if (key === 'nationality') {
-                const optionsNationality = nationalitiesCpy.map(nationality => {
-                    return {value: nationality.id, displayValue: nationality.name};
-                });
-                formElement.elementConfig.options = optionsNationality;
+                formElement.elementConfig.options = this.props.nationalities;
             }
             formElementsArray.push({
                 id: key,

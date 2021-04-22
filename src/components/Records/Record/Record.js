@@ -18,7 +18,6 @@ class Record extends Component {
     state = {
         recordForm: recordForm,
         formIsValid: false,
-        loading: false,
         isEdit: false,
         loaded: false,
         showArtist: false,
@@ -44,27 +43,53 @@ class Record extends Component {
     }
 
     static getDerivedStateFromProps(props, state) {
-        if (!state.loaded && props.formats.length > 0 && props.artists.length > 0) {
+        if (!state.loaded && props.formats.length > 0 && props.artists.length > 0) {            
             return Record.loadRecordForm(props, state);
         }
         return state;
     }
 
+    formatModal = () => {
+        return (
+            <Modal modalClosed={() => {this.setState({showFormat: false});}}
+            show={this.state.showFormat}>
+                <Format origin={this}/>
+            </Modal>    
+        );
+    };
+
+    artistModal = () => {
+        return (
+            <Modal modalClosed={() => {this.setState({showArtist: false});}}
+            show={this.state.showArtist}>
+                <Artist origin={this}/>
+            </Modal>    
+        );
+    };
+
+    onClickModalFormat = () => {
+        this.setState({showFormat: !this.state.showFormat});
+    };
+
+    onClickModalArtist = () => {
+        this.setState({showArtist: !this.state.showArtist});
+    };
+
     static loadRecordForm = (props, state) => {
         const formatsCpy = [...props.formats];
-        const artistsCpy = [...props.artists];    
+        const artistsCpy = [...props.artists];
         let updatedControls = null;
         let stateUpdated = state;
-        if (props.match.params.id !== undefined && props.record !== null) {
-            const formatFound = formatsCpy.find(e => e.name === props.record.format.name);
-            const artistFound = artistsCpy.find(n => n.name === props.record.artist.name);
+        if (props.match.params.id !== undefined && props.record !== null) {  
+            const formatFound = formatsCpy.find(e => e.id === props.record.format.id);
+            const artistFound = artistsCpy.find(n => n.id === props.record.artist.id);
             updatedControls = updateObject(state.recordForm, {
                 'format': updateObject(state.recordForm['format'], {
-                    value: formatFound.id,
+                    value: formatFound,
                     valid: true
                 }),
                 'artist': updateObject(state.recordForm['artist'], {
-                    value: artistFound.id,
+                    value: artistFound,
                     valid: true
                 }),
                 'name': updateObject(state.recordForm['name'], {
@@ -80,7 +105,7 @@ class Record extends Component {
                     valid: true
                 })
             });
-            stateUpdated = {recordForm: updatedControls, formIsValid: true, isEdit: true, loaded: true };
+            stateUpdated = {...state, recordForm: updatedControls, formIsValid: true, isEdit: true, loaded: true };
         }
         else if (props.match.params.id === undefined) {
             updatedControls = updateObject(state.recordForm, {
@@ -93,14 +118,13 @@ class Record extends Component {
                     valid: true
                 })
             });  
-            stateUpdated = {recordForm: updatedControls, loaded: true };
+            stateUpdated = {...state, recordForm: updatedControls, loaded: true };
         }
         return stateUpdated;
     };
 
     recordHandler = (event) => {
         event.preventDefault();
-        this.setState({loading: true});
         let name;
         let units;
         let idArtist;
@@ -111,10 +135,10 @@ class Record extends Component {
                 name = this.state.recordForm[formElementIdentifier].value;
             }
             else if (formElementIdentifier === 'artist') {
-                idArtist = this.state.recordForm[formElementIdentifier].value;
+                idArtist = this.state.recordForm[formElementIdentifier].value.id;
             }
             else if (formElementIdentifier === 'format') {
-                idFormat = this.state.recordForm[formElementIdentifier].value;
+                idFormat = this.state.recordForm[formElementIdentifier].value.id;
             }
             else if (formElementIdentifier === 'units') {
                 units = this.state.recordForm[formElementIdentifier].value;
@@ -142,49 +166,15 @@ class Record extends Component {
         }        
     };
 
-    onClickModalFormat = () => {
-        this.setState({showFormat: !this.state.showFormat});
-    };
-
-    onClickModalArtist = () => {
-        this.setState({showArtist: !this.state.showArtist});
-    };
-
-    formatModal = () => {
-        return (
-            <Modal modalClosed={() => {this.setState({showFormat: false});}}
-            show={this.state.showFormat}>
-                <Format origin={this}/>
-            </Modal>    
-        );
-    };
-
-    artistModal = () => {
-        return (
-            <Modal modalClosed={() => {this.setState({showArtist: false});}}
-            show={this.state.showArtist}>
-                <Artist origin={this}/>
-            </Modal>    
-        );
-    };
-
     render() {
-        const formatsCpy = [...this.props.formats];
-        const artistsCpy = [...this.props.artists];
         const formElementsArray = [];
         for (let key in this.state.recordForm) {
             const formElement = this.state.recordForm[key];
             if (key === 'format') {
-                const optionsFormat = formatsCpy.map(format => {
-                    return {value: format.id, displayValue: format.name};
-                });
-                formElement.elementConfig.options = optionsFormat;
+                formElement.elementConfig.options = this.props.formats;
             }
             else if (key === 'artist') {
-                const optionsArtist = artistsCpy.map(artist => {
-                    return {value: artist.id, displayValue: artist.name};
-                });
-                formElement.elementConfig.options = optionsArtist;
+                formElement.elementConfig.options = this.props.artists;
             }
             formElementsArray.push({
                 id: key,
@@ -212,15 +202,12 @@ class Record extends Component {
             </div>
         );
     }
-
 }
 
 const mapStateToProps = state => {
     return {
         formats: state.format.formats,
         artists: state.artist.artists,
-        loadingFormats: state.format.loading,
-        loadingArtists: state.artist.loading,
         loadingRecord: state.record.loading,
         access_token: state.auth.access_token,
         record: state.record.record,
