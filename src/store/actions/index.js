@@ -12,7 +12,8 @@ export {
     saveRecord,
     getRecordById,
     deleteRecordById,
-    updateRecordById
+    updateRecordById,
+    getRecordsFiltered
 } from './record';
 
 export {

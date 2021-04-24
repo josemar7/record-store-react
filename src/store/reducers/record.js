@@ -7,7 +7,7 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
-    if (action.type === actionTypes.SET_RECORDS) {
+    if (action.type === actionTypes.SET_RECORDS || action.type === actionTypes.SET_RECORDS_FILTERED) {
         return {
             ...state,
             records: action.records,
@@ -16,7 +16,7 @@ const reducer = (state = initialState, action) => {
     }
     else if (action.type === actionTypes.FETCH_RECORDS_START || action.type === actionTypes.SAVE_RECORD_START
         || action.type === actionTypes.GET_RECORD_BY_ID_START || action.type === actionTypes.DELETE_RECORD_BY_ID_START
-        || action.type === actionTypes.UPDATE_RECORD_BY_ID_START) {
+        || action.type === actionTypes.UPDATE_RECORD_BY_ID_START || action.type === actionTypes.FETCH_RECORDS_START_FILTERED) {
         return {
             ...state,
             loading: true
@@ -25,7 +25,8 @@ const reducer = (state = initialState, action) => {
     else if (action.type === actionTypes.FETCH_RECORDS_FAILED || action.type === actionTypes.SAVE_RECORD_SUCCESS
         || action.type === actionTypes.SAVE_RECORD_FAILED || action.type === actionTypes.GET_RECORD_BY_ID_FAILED
         || action.type === actionTypes.DELETE_RECORD_BY_ID_SUCCESS || action.type === actionTypes.DELETE_RECORD_BY_ID_FAILED
-        || action.type === actionTypes.UPDATE_RECORD_BY_ID_SUCCESS || action.type === actionTypes.UPDATE_RECORD_BY_ID_FAILED) {
+        || action.type === actionTypes.UPDATE_RECORD_BY_ID_SUCCESS || action.type === actionTypes.UPDATE_RECORD_BY_ID_FAILED
+        || action.type === actionTypes.FETCH_RECORDS_FAILED_FILTERED) {
         return {
             ...state,
             loading: false
@@ -39,7 +40,6 @@ const reducer = (state = initialState, action) => {
         };
     }
     return state;
-
 };
 
 export default reducer;

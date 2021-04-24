@@ -163,3 +163,37 @@ export const updateRecordByIdFailed = () => {
         type: actionTypes.UPDATE_RECORD_BY_ID_FAILED
     };
 };
+
+export const getRecordsFiltered = (token, filter) => {
+    return dispatch => {
+        dispatch(fetchRecordsStartFiltered());
+        let filterStr = '?';
+        Object.keys(filter).forEach(key => filterStr = filterStr.concat(key, '=', filter[key], '&'));
+        axios.get('/record/filter' + filterStr.slice(0, -1), getConfigBearer(token))
+        .then(response => {
+            dispatch(setRecordsFiltered(response.data));
+        })
+        .catch(error => {            
+            dispatch(fetchRecordsFailedFiltered());
+        });
+    };
+};
+
+export const fetchRecordsStartFiltered = () => {
+    return {
+        type: actionTypes.FETCH_RECORDS_START_FILTERED
+    };
+};
+
+export const setRecordsFiltered = (records) => {
+    return {
+        type: actionTypes.SET_RECORDS_FILTERED,
+        records: records
+    };
+};
+
+export const fetchRecordsFailedFiltered = () => {
+    return {
+        type: actionTypes.FETCH_RECORDS_FAILED_FILTERED
+    };
+};

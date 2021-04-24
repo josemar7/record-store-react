@@ -128,6 +128,38 @@ export const recordForm = {
     }
 };
 
+export const fetchForm = {
+    artist: {
+        elementType: 'input',
+        elementConfig: {
+            type: 'text',
+            placeholder: 'Artist name...',
+            label: 'Artist'
+        },
+        value: '',
+        valid: true
+    },
+    name: {
+        elementType: 'input',
+        elementConfig: {
+            type: 'text',
+            placeholder: 'Record name...',
+            label: 'Record'
+        },
+        value: '',
+        valid: true
+    },
+    format: {
+        elementType: 'selectReact',
+        elementConfig: {
+            options: [],
+            label: 'Format'
+        },
+        value: '',
+        valid: true
+    }
+};
+
 export const inputChangedHandler = (event, inputIdentifier, component, form) => {
     const updatedForm = {
         ...component.state[form]
@@ -144,14 +176,18 @@ export const inputChangedHandler = (event, inputIdentifier, component, form) => 
     }        
     updatedFormElement.touched = true;
     updatedForm[inputIdentifier] = updatedFormElement;
-    let formIsValid = true;
+    let formIsValid = true;    
     for(let ip in updatedForm) {
         formIsValid = updatedForm[ip].valid && formIsValid;
     }
     component.setState({[form]: updatedForm, formIsValid: formIsValid});
 };
 
-export const getForm = (formElementsArray, handler, component, form, imageUrl) => {    
+export const getForm = (formElementsArray, handler, component, form, imageUrl, button) => {    
+    let strButton = 'Save';
+    if (button !== undefined) {
+        strButton = button;
+    }
     let i = 0;
     return (
         <form onSubmit={handler}>
@@ -171,14 +207,14 @@ export const getForm = (formElementsArray, handler, component, form, imageUrl) =
         ))}    
         {imageUrl != null ? <Image src={imageUrl}/> : null}
         <Button 
-            disabled={!component.state.formIsValid}>Save</Button>
+            disabled={!component.state.formIsValid}>{strButton}</Button>
         </form>            
     );
 };
 
 export const drawAddButton = (onClickModal) => {
     let addButton = null;
-    if (onClickModal !== null) {
+    if (onClickModal !== undefined && onClickModal !== null) {
         addButton = <a href='#' style={{padding: '15px'}} onClick={onClickModal}><FaPlusCircle/></a>;
     }
     return addButton;

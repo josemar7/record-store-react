@@ -105,11 +105,11 @@ class Artist extends Component {
         else if (!Artist.isidArtistInformed(props)) {
             updatedControls = updateObject(state.artistForm, {
                 'style': updateObject(state.artistForm['style'], {
-                    value: stylesCpy[0].id,
+                    value: stylesCpy[0],
                     valid: true
                 }),
                 'nationality': updateObject(state.artistForm['nationality'], {
-                    value: nationalitiesCpy[0].id,
+                    value: nationalitiesCpy[0],
                     valid: true
                 })
             });              

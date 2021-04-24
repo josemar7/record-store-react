@@ -70,7 +70,7 @@ class RecordsGrid extends Component {
                 format: recordCpy.format.name,
                 artist: recordCpy.artist.name
             });
-        });
+        });    
     };
 
     render() {
