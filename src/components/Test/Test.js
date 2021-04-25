@@ -14,6 +14,7 @@ import Style from '../Style/Style';
 import DialogConfirm from '../../UI/DialogConfirm/DialogConfirm';  
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import axios from '../../axios-orders';
+import { decode } from 'jsonwebtoken';
 class Test extends Component {
 
     state = {
@@ -25,6 +26,7 @@ class Test extends Component {
     };
 
     componentDidMount() {
+        console.log(decode(this.props.access_token), decode(this.props.access_token, {complete: true}));
         this.props.onGetRecordsTest(null);   
         this.props.onGetArtistsFiltered(this.props.access_token, null);  
     }

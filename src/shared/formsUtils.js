@@ -157,6 +157,15 @@ export const fetchForm = {
         },
         value: '',
         valid: true
+    },
+    style: {
+        elementType: 'selectReact',
+        elementConfig: {
+            options: [],
+            label: 'Style'
+        },
+        value: '',
+        valid: true
     }
 };
 

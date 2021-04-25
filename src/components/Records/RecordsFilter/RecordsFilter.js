@@ -19,8 +19,10 @@ class RecordsFilter extends Component {
         for (let key in this.state.fetchForm) {
             const formElement = this.state.fetchForm[key];
             if (formElement.value !== '' && formElement.value !== undefined) {
-                if (key === 'format') {
-                    filter[key] = formElement.value.name;
+                if (key === 'format' || key === 'style') {
+                    if (formElement.value.id !== null) {
+                        filter[key] = formElement.value.name;
+                    }                    
                 }
                 else {
                     filter[key] = formElement.value;
@@ -32,6 +34,7 @@ class RecordsFilter extends Component {
 
     componentDidMount() {     
         this.props.onGetFormats(this.props.access_token);
+        this.props.onGetStyles(this.props.access_token);
     }
 
     render() {
@@ -39,7 +42,14 @@ class RecordsFilter extends Component {
         for (let key in this.state.fetchForm) {
             const formElement = this.state.fetchForm[key];
             if (key === 'format') {
-                formElement.elementConfig.options = this.props.formats;
+                const formatsCpy = [...this.props.formats];
+                formatsCpy.unshift({id: null, name: ''});
+                formElement.elementConfig.options = formatsCpy;
+            }
+            if (key === 'style') {
+                const stylesCpy = [...this.props.styles];
+                stylesCpy.unshift({id: null, name: ''});
+                formElement.elementConfig.options = stylesCpy;
             }
             formElementsArray.push({
                 id: key,
@@ -64,8 +74,10 @@ class RecordsFilter extends Component {
 const mapStateToProps = state => {
     return {
         formats: state.format.formats,
+        styles: state.style.styles,
         loadingFormats: state.format.loading,
         loadingRecords: state.record.loading,
+        loadingStyles: state.style.loading,
         access_token: state.auth.access_token,
         records: state.record.records
 
@@ -75,6 +87,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onGetFormats: (token) => dispatch(actions.getFormats(token)),
+        onGetStyles: token => dispatch(actions.getStyles(token)),
         onGetRecordsFiltered: (token, filter) => dispatch(actions.getRecordsFiltered(token, filter))
     };
 };
