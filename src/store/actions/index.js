@@ -4,7 +4,8 @@ export {
     getArtistById,
     deleteArtistById,
     updateArtistById,
-    getArtistsFiltered
+    getArtistsFiltered,
+    getArtistsPaged
 } from './artist';
 
 export {

@@ -199,3 +199,35 @@ export const getArtistsFiltered = (token, text) => {
         });
     };
 };
+
+export const setArtistsPaged = (artists) => {
+    return {
+        type: actionTypes.SET_ARTISTS_PAGED,
+        artists: artists
+    };
+};
+
+export const fetchArtistsPagedFailed = () => {
+    return {
+        type: actionTypes.FETCH_ARTISTS_PAGED_FAILED
+    };
+};
+
+export const fetchArtistsPagedStart = () => {
+    return {
+        type: actionTypes.FETCH_ARTISTS_PAGED_START
+    };
+};
+
+export const getArtistsPaged = (token, page, size) => {
+    return dispatch => {
+        dispatch(fetchArtistsStart());        
+        axios.get(`/artist/all?page=${page}&size=${size}`, getConfigBearer(token))
+        .then(response => {
+            dispatch(setArtists(response.data));
+        })
+        .catch(error => {
+            dispatch(fetchArtistsFailed());
+        });
+    };
+};

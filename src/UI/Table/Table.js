@@ -1,9 +1,13 @@
 import React from 'react';
-import {FaTrash, FaEdit} from 'react-icons/fa';
+import {FaTrash, FaEdit, FaShoppingCart} from 'react-icons/fa';
 
 import classes from './Table.css';
 
 const table = (props) => {
+    let shoppingCart = null;
+    if (props.shopping) {
+        shoppingCart = <a href='#'><FaShoppingCart/></a>;
+    }
     const header = (
         <thead>
             <tr>
@@ -24,6 +28,7 @@ const table = (props) => {
                     <td colSpan="2" style={{textAlign: 'center'}}>
                         <a href={'/' + props.type + '/' + value.id}><FaEdit/></a>
                         <a href='#' onClick={() => props.delete(props.token, value.id)}><FaTrash/></a>
+                        {shoppingCart}
                     </td> : null}
                 </tr>
             );})

@@ -10,15 +10,18 @@ import Aux from '../../hoc/Aux/Aux';
 import Spinner from '../../UI/Spinner/Spinner';
 import Modal from '../../UI/Modal/Modal';
 import DialogConfirm from '../../UI/DialogConfirm/DialogConfirm';
+import classes from './Artists.css';
 
 class Artists extends Component {
 
     state = {
-        show: false
+        show: false,
+        page: 0,
+        size: 5
     };
 
     componentDidMount() {   
-        this.props.onGetArtists(this.props.access_token, false);   
+        this.props.onGetArtistsPaged(this.props.access_token, this.state.page, this.state.size);   
     }
 
     onAddArtistHandler = () => {        
@@ -48,15 +51,15 @@ class Artists extends Component {
             },
             name: {
                 label: 'Name',
-                width: '400px'
+                width: '600px'
             },
             style: {
                 label: 'Style',
-                width: '50px'
+                width: '200px'
             },
             nationality: {
                 label: 'Nationality',
-                width: '50px'
+                width: '200px'
             }
         };
     };
@@ -73,6 +76,28 @@ class Artists extends Component {
         });
     };
 
+    onClickPage = page => {
+        console.log(page);
+        this.setState({page: page});
+        this.props.onGetArtistsPaged(this.props.access_token, page, this.state.size);        
+    };
+
+    getHtmlPagination = () => {
+        return (
+            <div className={classes.Pagination}>
+                <a href="#" onClick={() => this.onClickPage(this.state.page - 1)}
+                className={this.state.page === 0 ? classes.PageDisabled : null}>&laquo;</a>
+                <a href="#" onClick={() => this.onClickPage(0)}>1</a>
+                <a href="#" onClick={() => this.onClickPage(1)}>2</a>
+                <a href="#" onClick={() => this.onClickPage(2)}>3</a>
+                <a href="#" onClick={() => this.onClickPage(3)}>4</a>
+                <a href="#" onClick={() => this.onClickPage(4)}>5</a>
+                <a href="#" onClick={() => this.onClickPage(5)}>6</a>
+                <a href="#" onClick={() => this.onClickPage(this.state.page + 1)}>&raquo;</a>
+            </div>
+        );
+    };
+
     render() {
         const header = this.getHeader();
         const artistsTransformed = this.getData();
@@ -86,6 +111,7 @@ class Artists extends Component {
                     delete={this.onClickDelete}
                     token={this.props.access_token}
                     type='artists'/>
+                    {this.getHtmlPagination()}
                     <div style={{paddingTop: '10px'}}>
                         <Button
                         clicked={this.onAddArtistHandler}
@@ -102,7 +128,7 @@ class Artists extends Component {
                     message="Are you sure want to delete the artist?"/>
                 </Modal>    
                 <div>
-                    {artists}
+                    {artists}                    
                 </div>
             </Aux>            
         );
@@ -119,7 +145,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onGetArtists: (token) => dispatch(actions.getArtists(token)),
+        onGetArtistsPaged: (token, page, size) => dispatch(actions.getArtistsPaged(token, page, size)),
         onDeleteArtistById: (token, id) => dispatch(actions.deleteArtistById(token, id))
     };
 };

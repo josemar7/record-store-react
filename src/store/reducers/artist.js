@@ -8,7 +8,8 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
-    if (action.type === actionTypes.SET_ARTISTS || action.type === actionTypes.SET_ARTISTS_FILTERED) {
+    if (action.type === actionTypes.SET_ARTISTS || action.type === actionTypes.SET_ARTISTS_FILTERED
+        || action.type === actionTypes.SET_ARTISTS_PAGED) {
         return {
             ...state,
             artists: action.artists,
@@ -18,7 +19,8 @@ const reducer = (state = initialState, action) => {
     }
     else if (action.type === actionTypes.FETCH_ARTISTS_START || action.type === actionTypes.SAVE_ARTIST_START
         || action.type === actionTypes.GET_ARTIST_BY_ID_START || action.type === actionTypes.DELETE_ARTIST_BY_ID_START
-        || action.type === actionTypes.UPDATE_ARTIST_BY_ID_START || action.type === actionTypes.FETCH_ARTISTS_START_FILTERED) {
+        || action.type === actionTypes.UPDATE_ARTIST_BY_ID_START || action.type === actionTypes.FETCH_ARTISTS_START_FILTERED
+        || action.type === actionTypes.FETCH_ARTISTS_PAGED_START) {
         return {
             ...state,
             loading: true,
@@ -38,7 +40,8 @@ const reducer = (state = initialState, action) => {
         || action.type === actionTypes.SAVE_ARTIST_FAILED || action.type === actionTypes.GET_ARTIST_BY_ID_FAILED
         || action.type === actionTypes.DELETE_ARTIST_BY_ID_FAILED
         || action.type === actionTypes.UPDATE_ARTIST_BY_ID_FAILED
-        || action.type === actionTypes.FETCH_ARTISTS_FAILED_FILTERED) {
+        || action.type === actionTypes.FETCH_ARTISTS_FAILED_FILTERED
+        || action.type === actionTypes.FETCH_ARTISTS_PAGED_FAILED ) {
         return {
             ...state,
             loading: false,

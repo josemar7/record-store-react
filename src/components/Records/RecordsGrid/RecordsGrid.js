@@ -48,15 +48,15 @@ class RecordsGrid extends Component {
             },
             name: {
                 label: 'Name',
-                width: '400px'
+                width: '500px'
             },
             format: {
                 label: 'Format',
-                width: '50px'
+                width: '100px'
             },
             artist: {
                 label: 'Artist',
-                width: '50px'
+                width: '350px'
             }
         };
     };
@@ -85,7 +85,8 @@ class RecordsGrid extends Component {
                     actions={true}
                     delete={this.onClickDelete}
                     token={this.props.access_token}
-                    type='records'/>
+                    type='records'
+                    shopping={true}/>
                     <div style={{paddingTop: '10px'}}>
                         <Button
                         clicked={this.onAddRecordHandler}
