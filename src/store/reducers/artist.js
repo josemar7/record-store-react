@@ -8,11 +8,18 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
-    if (action.type === actionTypes.SET_ARTISTS || action.type === actionTypes.SET_ARTISTS_FILTERED
-        || action.type === actionTypes.SET_ARTISTS_PAGED) {
+    if (action.type === actionTypes.SET_ARTISTS || action.type === actionTypes.SET_ARTISTS_FILTERED) {
         return {
             ...state,
             artists: action.artists,
+            loading: false,
+            closeDialog: false
+        };
+    }
+    if (action.type === actionTypes.SET_ARTISTS_PAGED) {
+        return {
+            ...state,
+            page: action.page,
             loading: false,
             closeDialog: false
         };

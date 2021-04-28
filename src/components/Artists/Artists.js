@@ -65,35 +65,57 @@ class Artists extends Component {
     };
 
     getData = () => {
-        const artistsCpy = [...this.props.artists];
-        return artistsCpy.map(artistCpy => {
-            return ({
-                id: artistCpy.id,
-                name: artistCpy.name,
-                style: artistCpy.style.name,
-                nationality: artistCpy.nationality.name
-            });
-        });
+        let result = [];
+        if (this.props.page !== undefined) {
+            const artistsCpy = [...this.props.page.result];
+            result = artistsCpy.map(artistCpy => {
+                return ({
+                    id: artistCpy.id,
+                    name: artistCpy.name,
+                    style: artistCpy.style.name,
+                    nationality: artistCpy.nationality.name
+                });
+            });    
+        }
+        return result;
     };
 
     onClickPage = page => {
-        console.log(page);
         this.setState({page: page});
         this.props.onGetArtistsPaged(this.props.access_token, page, this.state.size);        
     };
 
     getHtmlPagination = () => {
+        let totalPages = 0;
+        let styleBackwards = null;
+        let styleOne = null;
+        let styleTwo = null;
+        let styleThree = null;
+        let styleFour = null;
+        let styleFive = null;
+        let styleSix = null;
+        let styleForwards = null;
+        if (this.props.page !== undefined) {
+            totalPages = this.props.page.totalPages;
+            styleBackwards = this.state.page === 0 ? classes.PageDisabled : null;
+            styleOne = totalPages - 1 < 0 ? classes.PageDisabled : this.state.page === 0 ? classes.active : null;
+            styleTwo = totalPages - 2 < 0 ? classes.PageDisabled : this.state.page === 1 ? classes.active : null;
+            styleThree = totalPages - 3 < 0 ? classes.PageDisabled : this.state.page === 2 ? classes.active : null;
+            styleFour = totalPages - 4 < 0 ? classes.PageDisabled : this.state.page === 3 ? classes.active : null;
+            styleFive = totalPages - 5 < 0 ? classes.PageDisabled : this.state.page === 4 ? classes.active : null;
+            styleSix = totalPages - 6 < 0 ? classes.PageDisabled : this.state.page === 5 ? classes.active : null;
+            styleForwards = this.state.page >= totalPages - 1 ? classes.PageDisabled : null;
+        }
         return (
             <div className={classes.Pagination}>
-                <a href="#" onClick={() => this.onClickPage(this.state.page - 1)}
-                className={this.state.page === 0 ? classes.PageDisabled : null}>&laquo;</a>
-                <a href="#" onClick={() => this.onClickPage(0)}>1</a>
-                <a href="#" onClick={() => this.onClickPage(1)}>2</a>
-                <a href="#" onClick={() => this.onClickPage(2)}>3</a>
-                <a href="#" onClick={() => this.onClickPage(3)}>4</a>
-                <a href="#" onClick={() => this.onClickPage(4)}>5</a>
-                <a href="#" onClick={() => this.onClickPage(5)}>6</a>
-                <a href="#" onClick={() => this.onClickPage(this.state.page + 1)}>&raquo;</a>
+                <a href="#" onClick={() => this.onClickPage(this.state.page - 1)} className={styleBackwards}>&laquo;</a>
+                <a href="#" onClick={() => this.onClickPage(0)} className={styleOne} >1</a>
+                <a href="#" onClick={() => this.onClickPage(1)} className={styleTwo}>2</a>
+                <a href="#" onClick={() => this.onClickPage(2)} className={styleThree}>3</a>
+                <a href="#" onClick={() => this.onClickPage(3)} className={styleFour}>4</a>
+                <a href="#" onClick={() => this.onClickPage(4)} className={styleFive}>5</a>
+                <a href="#" onClick={() => this.onClickPage(5)} className={styleSix}>6</a>
+                <a href="#" onClick={() => this.onClickPage(this.state.page + 1)} className={styleForwards}>&raquo;</a>
             </div>
         );
     };
@@ -137,7 +159,7 @@ class Artists extends Component {
 
 const mapStateToProps = state => {
     return {
-        artists: state.artist.artists,
+        page: state.artist.page,
         loading: state.artist.loading,
         access_token: state.auth.access_token
     };

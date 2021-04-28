@@ -200,10 +200,10 @@ export const getArtistsFiltered = (token, text) => {
     };
 };
 
-export const setArtistsPaged = (artists) => {
+export const setArtistsPaged = (page) => {
     return {
         type: actionTypes.SET_ARTISTS_PAGED,
-        artists: artists
+        page: page
     };
 };
 
@@ -221,13 +221,13 @@ export const fetchArtistsPagedStart = () => {
 
 export const getArtistsPaged = (token, page, size) => {
     return dispatch => {
-        dispatch(fetchArtistsStart());        
-        axios.get(`/artist/all?page=${page}&size=${size}`, getConfigBearer(token))
+        dispatch(fetchArtistsPagedStart());        
+        axios.get(`/artist/all/paged?page=${page}&size=${size}`, getConfigBearer(token))
         .then(response => {
-            dispatch(setArtists(response.data));
+            dispatch(setArtistsPaged(response.data));
         })
         .catch(error => {
-            dispatch(fetchArtistsFailed());
+            dispatch(fetchArtistsPagedFailed());
         });
     };
 };
