@@ -4,3 +4,15 @@
     align-items: center;
     justify-content: center;  
 }
+
+.Artists {
+    margin: 5px;    
+    border: 1px solid grey;
+}
+
+.Artists table {
+    width: 80%;
+    text-align: center;
+    border: 1px solid grey;
+    margin: 5px;  
+}

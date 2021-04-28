@@ -10,8 +10,7 @@ import Aux from '../../hoc/Aux/Aux';
 import Spinner from '../../UI/Spinner/Spinner';
 import Modal from '../../UI/Modal/Modal';
 import DialogConfirm from '../../UI/DialogConfirm/DialogConfirm';
-import classes from './Artists.css';
-
+import Pagination from '../../UI/Pagination/Pagination';
 class Artists extends Component {
 
     state = {
@@ -85,41 +84,6 @@ class Artists extends Component {
         this.props.onGetArtistsPaged(this.props.access_token, page, this.state.size);        
     };
 
-    getHtmlPagination = () => {
-        let totalPages = 0;
-        let styleBackwards = null;
-        let styleOne = null;
-        let styleTwo = null;
-        let styleThree = null;
-        let styleFour = null;
-        let styleFive = null;
-        let styleSix = null;
-        let styleForwards = null;
-        if (this.props.page !== undefined) {
-            totalPages = this.props.page.totalPages;
-            styleBackwards = this.state.page === 0 ? classes.PageDisabled : null;
-            styleOne = totalPages - 1 < 0 ? classes.PageDisabled : this.state.page === 0 ? classes.active : null;
-            styleTwo = totalPages - 2 < 0 ? classes.PageDisabled : this.state.page === 1 ? classes.active : null;
-            styleThree = totalPages - 3 < 0 ? classes.PageDisabled : this.state.page === 2 ? classes.active : null;
-            styleFour = totalPages - 4 < 0 ? classes.PageDisabled : this.state.page === 3 ? classes.active : null;
-            styleFive = totalPages - 5 < 0 ? classes.PageDisabled : this.state.page === 4 ? classes.active : null;
-            styleSix = totalPages - 6 < 0 ? classes.PageDisabled : this.state.page === 5 ? classes.active : null;
-            styleForwards = this.state.page >= totalPages - 1 ? classes.PageDisabled : null;
-        }
-        return (
-            <div className={classes.Pagination}>
-                <a href="#" onClick={() => this.onClickPage(this.state.page - 1)} className={styleBackwards}>&laquo;</a>
-                <a href="#" onClick={() => this.onClickPage(0)} className={styleOne} >1</a>
-                <a href="#" onClick={() => this.onClickPage(1)} className={styleTwo}>2</a>
-                <a href="#" onClick={() => this.onClickPage(2)} className={styleThree}>3</a>
-                <a href="#" onClick={() => this.onClickPage(3)} className={styleFour}>4</a>
-                <a href="#" onClick={() => this.onClickPage(4)} className={styleFive}>5</a>
-                <a href="#" onClick={() => this.onClickPage(5)} className={styleSix}>6</a>
-                <a href="#" onClick={() => this.onClickPage(this.state.page + 1)} className={styleForwards}>&raquo;</a>
-            </div>
-        );
-    };
-
     render() {
         const header = this.getHeader();
         const artistsTransformed = this.getData();
@@ -133,7 +97,8 @@ class Artists extends Component {
                     delete={this.onClickDelete}
                     token={this.props.access_token}
                     type='artists'/>
-                    {this.getHtmlPagination()}
+                    <Pagination page={this.props.page} currentPage={this.state.page}
+                    onClickPage={this.onClickPage}/>
                     <div style={{paddingTop: '10px'}}>
                         <Button
                         clicked={this.onAddArtistHandler}
@@ -171,6 +136,5 @@ const mapDispatchToProps = dispatch => {
         onDeleteArtistById: (token, id) => dispatch(actions.deleteArtistById(token, id))
     };
 };
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Artists, axios));

@@ -11,14 +11,17 @@ import Button from '../../../UI/Button/Button';
 import Table from '../../../UI/Table/Table';
 import Aux from '../../../hoc/Aux/Aux';
 import Spinner from '../../../UI/Spinner/Spinner';
+import Pagination from '../../../UI/Pagination/Pagination';
 class RecordsGrid extends Component {
 
     state = {
-        show: false
+        show: false,
+        page: 0,
+        size: 5
     };
 
     componentDidMount() {        
-        this.props.onGetRecords(this.props.access_token);   
+        this.props.onGetRecordsPaged(this.props.access_token, this.state.page, this.state.size);   
     }
 
     onAddRecordHandler = () => {     
@@ -62,15 +65,24 @@ class RecordsGrid extends Component {
     };
 
     getData = () => {
-        const recordsCpy = [...this.props.records];
-        return recordsCpy.map(recordCpy => {
-            return ({
-                id: recordCpy.id,
-                name: recordCpy.name,
-                format: recordCpy.format.name,
-                artist: recordCpy.artist.name
-            });
-        });    
+        let result = [];
+        if (this.props.page !== undefined) {
+            const recordsCpy = [...this.props.page.result];
+            result = recordsCpy.map(recordCpy => {
+                return ({
+                    id: recordCpy.id,
+                    name: recordCpy.name,
+                    format: recordCpy.format.name,
+                    artist: recordCpy.artist.name
+                });
+            });    
+        }
+        return result;
+    };
+
+    onClickPage = page => {
+        this.setState({page: page});
+        this.props.onGetRecordsPaged(this.props.access_token, page, this.state.size);        
     };
 
     render() {
@@ -87,6 +99,8 @@ class RecordsGrid extends Component {
                     token={this.props.access_token}
                     type='records'
                     shopping={true}/>
+                    <Pagination page={this.props.page} currentPage={this.state.page}
+                    onClickPage={this.onClickPage}/>
                     <div style={{paddingTop: '10px'}}>
                         <Button
                         clicked={this.onAddRecordHandler}
@@ -112,7 +126,7 @@ class RecordsGrid extends Component {
 
 const mapStateToProps = state => {
     return {
-        records: state.record.records,
+        page: state.record.page,
         loading: state.record.loading,
         access_token: state.auth.access_token
     };
@@ -120,7 +134,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onGetRecords: (token) => dispatch(actions.getRecords(token)),
+        onGetRecordsPaged: (token, page, size) => dispatch(actions.getRecordsPaged(token, page, size)),
         onDeleteRecordById: (token, id) => dispatch(actions.deleteRecordById(token, id))
     };
 };

@@ -197,3 +197,35 @@ export const fetchRecordsFailedFiltered = () => {
         type: actionTypes.FETCH_RECORDS_FAILED_FILTERED
     };
 };
+
+export const setRecordsPaged = (page) => {
+    return {
+        type: actionTypes.SET_RECORDS_PAGED,
+        page: page
+    };
+};
+
+export const fetchRecordsPagedFailed = () => {
+    return {
+        type: actionTypes.FETCH_RECORDS_PAGED_FAILED
+    };
+};
+
+export const fetchRecordsPagedStart = () => {
+    return {
+        type: actionTypes.FETCH_RECORDS_PAGED_START
+    };
+};
+
+export const getRecordsPaged = (token, page, size) => {
+    return dispatch => {
+        dispatch(fetchRecordsPagedStart());        
+        axios.get(`/record/all/paged?page=${page}&size=${size}`, getConfigBearer(token))
+        .then(response => {
+            dispatch(setRecordsPaged(response.data));
+        })
+        .catch(error => {
+            dispatch(fetchRecordsPagedFailed());
+        });
+    };
+};

@@ -14,9 +14,18 @@ const reducer = (state = initialState, action) => {
             loading: false
         };
     }
+    if (action.type === actionTypes.SET_RECORDS_PAGED) {
+        return {
+            ...state,
+            page: action.page,
+            loading: false,
+            closeDialog: false
+        };
+    }
     else if (action.type === actionTypes.FETCH_RECORDS_START || action.type === actionTypes.SAVE_RECORD_START
         || action.type === actionTypes.GET_RECORD_BY_ID_START || action.type === actionTypes.DELETE_RECORD_BY_ID_START
-        || action.type === actionTypes.UPDATE_RECORD_BY_ID_START || action.type === actionTypes.FETCH_RECORDS_START_FILTERED) {
+        || action.type === actionTypes.UPDATE_RECORD_BY_ID_START || action.type === actionTypes.FETCH_RECORDS_START_FILTERED
+        || action.type === actionTypes.FETCH_RECORDS_PAGED_START) {
         return {
             ...state,
             loading: true
@@ -26,7 +35,7 @@ const reducer = (state = initialState, action) => {
         || action.type === actionTypes.SAVE_RECORD_FAILED || action.type === actionTypes.GET_RECORD_BY_ID_FAILED
         || action.type === actionTypes.DELETE_RECORD_BY_ID_SUCCESS || action.type === actionTypes.DELETE_RECORD_BY_ID_FAILED
         || action.type === actionTypes.UPDATE_RECORD_BY_ID_SUCCESS || action.type === actionTypes.UPDATE_RECORD_BY_ID_FAILED
-        || action.type === actionTypes.FETCH_RECORDS_FAILED_FILTERED) {
+        || action.type === actionTypes.FETCH_RECORDS_FAILED_FILTERED || action.type === actionTypes.FETCH_RECORDS_PAGED_FAILED) {
         return {
             ...state,
             loading: false
