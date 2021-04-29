@@ -1,17 +1,15 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 
-import axios from '../../../axios-orders';
-import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
-import * as actions from '../../../store/actions/index';
-import DialogConfirm from '../../../UI/DialogConfirm/DialogConfirm';
-import Modal from '../../../UI/Modal/Modal';
-import Button from '../../../UI/Button/Button';
-import Table from '../../../UI/Table/Table';
-import Aux from '../../../hoc/Aux/Aux';
-import Spinner from '../../../UI/Spinner/Spinner';
-import Pagination from '../../../UI/Pagination/Pagination';
-class RecordsGrid extends Component {
+import * as actions from '../../store/actions/index';
+import axios from '../../axios-orders';
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import Spinner from '../../UI/Spinner/Spinner';
+import Aux from '../../hoc/Aux/Aux';
+import Pagination from '../../UI/Pagination/Pagination';
+import Table from '../../UI/Table/Table';
+
+class Home extends Component {
 
     state = {
         show: false,
@@ -22,25 +20,6 @@ class RecordsGrid extends Component {
     componentDidMount() {        
         this.props.onGetRecordsPaged(this.props.access_token, this.state.page, this.state.size);   
     }
-
-    onAddRecordHandler = () => {     
-        this.props.history.replace('/records/new');
-    }
-
-    onClickDelete = (token, id) => {        
-        this.setState({show: !this.state.show,
-            token: token,
-            id: id});
-    }
-
-    onClickYes = () => {
-        this.props.onDeleteRecordById(this.state.token, this.state.id);
-        this.setState({show: false});
-    };
-
-    onClickNo = () => {
-        this.setState({show: false});
-    };
 
     getHeader = () => {
         return {
@@ -93,30 +72,18 @@ class RecordsGrid extends Component {
                 <Aux>
                     <Table header={header}
                     data={recordsTransformed}
-                    actions={true}
-                    delete={this.onClickDelete}
                     token={this.props.access_token}
                     type='records'
                     shopping={true}/>
                     <Pagination page={this.props.page} currentPage={this.state.page}
                     onClickPage={this.onClickPage}/>
-                    <div style={{paddingTop: '10px'}}>
-                        <Button
-                        clicked={this.onAddRecordHandler}
-                        disabled={false}>Add Record</Button>
-                    </div>
                 </Aux>
             );
         }
         return (
             <div>
-                <Modal modalClosed={() => {this.setState({show: false});}}
-                show={this.state.show}>
-                    <DialogConfirm onClickYes={this.onClickYes} onClickNo={this.onClickNo}
-                    message="Are you sure want to delete the record?"/>
-                </Modal>    
                 {records}
-            </div>            
+            </div>
         );
     }
 }
@@ -136,4 +103,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(RecordsGrid, axios));
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Home, axios));

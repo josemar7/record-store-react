@@ -27,6 +27,10 @@ const Record = React.lazy(() => {
 const Auth = React.lazy(() => {
     return import('./components/Auth/Auth');
 });
+
+const Home = React.lazy(() => {
+    return import('./components/Home/Home');
+});
 class App extends Component {
 
     componentDidMount() {
@@ -36,7 +40,7 @@ class App extends Component {
     render() {
         let routes = (
             <Switch>
-                <Route path="/home" render={(props) => <Test {...props}/>}/>
+                <Route path="/home" render={(props) => <Home {...props}/>}/>
                 <Route path="/auth" render={(props) => <Auth {...props}/>}/>
                 <Route path="/params" render={(props) => <Test {...props}/>}/>
                 <Route path="/test" render={(props) => <Test {...props}/>}/>
@@ -48,7 +52,7 @@ class App extends Component {
         if (this.props.isAuthenticated) {
             routes = (
                 <Switch>
-                    <Route path="/home" render={(props) => <Test {...props}/>}/>
+                    <Route path="/home" render={(props) => <Home {...props}/>}/>
                     <Route path="/logout" component={Logout}/>
                     <Route path="/params" render={(props) => <Test {...props}/>}/>
                     <Route path="/artists/new" render={(props) => <Artist {...props}/>}/>
