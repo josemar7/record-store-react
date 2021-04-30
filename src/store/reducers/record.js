@@ -3,18 +3,25 @@ import * as actionTypes from '../actions/actionTypes';
 const initialState = {
     records: [],
     loading: false,
-    record: null
+    record: null,
+    filter: ''
 };
 
 const reducer = (state = initialState, action) => {
-    if (action.type === actionTypes.SET_RECORDS || action.type === actionTypes.SET_RECORDS_FILTERED) {
+    if (action.type === actionTypes.SET_FILTER) {
+        return {
+            ...state,
+            filter: action.filter
+        };
+    }
+    if (action.type === actionTypes.SET_RECORDS) {
         return {
             ...state,
             records: action.records,
             loading: false
         };
     }
-    if (action.type === actionTypes.SET_RECORDS_PAGED) {
+    if (action.type === actionTypes.SET_RECORDS_PAGED || action.type === actionTypes.SET_RECORDS_FILTERED) {
         return {
             ...state,
             page: action.page,

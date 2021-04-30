@@ -20,7 +20,7 @@ class RecordsGrid extends Component {
     };
 
     componentDidMount() {        
-        this.props.onGetRecordsPaged(this.props.access_token, this.state.page, this.state.size);   
+        this.props.onGetRecordsFiltered(this.props.access_token, this.props.filter, this.state.page, this.state.size);   
     }
 
     onAddRecordHandler = () => {     
@@ -81,7 +81,7 @@ class RecordsGrid extends Component {
 
     onClickPage = page => {
         this.setState({page: page});
-        this.props.onGetRecordsPaged(this.props.access_token, page, this.state.size);        
+        this.props.onGetRecordsFiltered(this.props.access_token, this.props.filter, page, this.state.size);        
     };
 
     render() {
@@ -125,13 +125,14 @@ const mapStateToProps = state => {
     return {
         page: state.record.page,
         loading: state.record.loading,
-        access_token: state.auth.access_token
+        access_token: state.auth.access_token,
+        filter: state.record.filter
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onGetRecordsPaged: (token, page, size) => dispatch(actions.getRecordsPaged(token, page, size)),
+        onGetRecordsFiltered: (token, filter, page, size) => dispatch(actions.getRecordsFiltered(token, filter, page, size)),
         onDeleteRecordById: (token, id) => dispatch(actions.deleteRecordById(token, id))
     };
 };

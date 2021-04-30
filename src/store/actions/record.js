@@ -164,12 +164,12 @@ export const updateRecordByIdFailed = () => {
     };
 };
 
-export const getRecordsFiltered = (token, filter) => {
+export const getRecordsFiltered = (token, filter, page, size) => {
     return dispatch => {
         dispatch(fetchRecordsStartFiltered());
-        let filterStr = '?';
+        let filterStr = '';
         Object.keys(filter).forEach(key => filterStr = filterStr.concat(key, '=', filter[key], '&'));
-        axios.get('/record/filter' + filterStr.slice(0, -1), getConfigBearer(token))
+        axios.get(`/record/filter?page=${page}&size=${size}&` + filterStr.slice(0, -1), getConfigBearer(token))
         .then(response => {
             dispatch(setRecordsFiltered(response.data));
         })
@@ -185,10 +185,10 @@ export const fetchRecordsStartFiltered = () => {
     };
 };
 
-export const setRecordsFiltered = (records) => {
+export const setRecordsFiltered = (page) => {
     return {
         type: actionTypes.SET_RECORDS_FILTERED,
-        records: records
+        page: page
     };
 };
 
@@ -227,5 +227,12 @@ export const getRecordsPaged = (token, page, size) => {
         .catch(error => {
             dispatch(fetchRecordsPagedFailed());
         });
+    };
+};
+
+export const setFilter = filter => {
+    return {
+        type: actionTypes.SET_FILTER,
+        filter: filter
     };
 };

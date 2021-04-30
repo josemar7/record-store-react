@@ -15,7 +15,8 @@ export {
     deleteRecordById,
     updateRecordById,
     getRecordsFiltered,
-    getRecordsPaged
+    getRecordsPaged,
+    setFilter
 } from './record';
 
 export {
