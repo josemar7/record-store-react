@@ -46,7 +46,7 @@ class App extends Component {
                 <Route path="/test" render={(props) => <Test {...props}/>}/>
                 <Route path="/:id" render={(props) => <Test {...props}/>}/>
                 <Route render={() => <h1>Not found</h1>}/> */}
-                <Redirect to="/home"/>
+                {/* <Redirect to="/home"/> */}
             </Switch>
         );
         if (this.props.isAuthenticated) {
@@ -65,9 +65,8 @@ class App extends Component {
                     <Route path="/records/:id" render={(props) => <Record {...props}/>}/>
                     <Route path="/records" render={(props) => <Records {...props}/>}/>                    
                     {/* <Route path="/:id" render={(props) => <Test {...props}/>}/>                     */}
-                    <Redirect to="/home"/>
+                    {/* <Redirect to="/home"/> */}
                     {/*<Route render={() => <h1>Not found</h1>}/>*/}
-
                 </Switch>
             );
         }

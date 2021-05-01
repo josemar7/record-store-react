@@ -169,6 +169,34 @@ export const fetchForm = {
     }
 };
 
+export const authFormu = {
+    user: {
+        elementType: 'input',
+        elementConfig: {
+            type: 'text',
+            placeholder: 'User'
+        },
+        validation: {
+            required: true
+        },
+        valid: false,
+        touched: false
+    },
+    password: {
+        elementType: 'input',
+        elementConfig: {
+            type: 'password',
+            placeholder: 'Password'
+        },
+        validation: {
+            required: true,
+            minLength: 4
+        },
+        valid: false,
+        touched: false
+    }
+};
+
 export const inputChangedHandler = (event, inputIdentifier, component, form) => {
     const updatedForm = {
         ...component.state[form]

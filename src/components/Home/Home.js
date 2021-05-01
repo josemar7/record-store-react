@@ -66,15 +66,13 @@ class Home extends Component {
 const mapStateToProps = state => {
     return {
         page: state.record.page,
-        loading: state.record.loading,
-        access_token: state.auth.access_token
+        loading: state.record.loading
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onGetRecordsPaged: (page, size) => dispatch(actions.getRecordsPaged(page, size)),
-        onDeleteRecordById: (token, id) => dispatch(actions.deleteRecordById(token, id))
+        onGetRecordsPaged: (page, size) => dispatch(actions.getRecordsPaged(page, size))
     };
 };
 
