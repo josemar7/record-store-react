@@ -38,9 +38,10 @@ class Home extends Component {
                     <div key={value.id} className={classes.Inline}>
                         <Image src={value.image} width={150}/>
                         <div className={classes.Card}>
-                            <div>{value.name}</div>
-                            <div>{value.artist.name}</div>
-                            <div>{value.format.name}<a href='#'><FaShoppingCart/></a></div>
+                            <div style={{fontWeight: 'bold'}}>{value.artist.name}</div>
+                            <div>{value.name}</div>                            
+                            <div>{value.format.name}</div>
+                            <div><a href='#'><FaShoppingCart style={{fontSize: '1.5em', paddingTop: '5px', color: 'black'}}/></a></div>
                         </div>
                     </div>
                 );
