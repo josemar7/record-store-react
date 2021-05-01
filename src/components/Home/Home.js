@@ -1,83 +1,58 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
+import {FaShoppingCart} from 'react-icons/fa';
 
 import * as actions from '../../store/actions/index';
 import axios from '../../axios-orders';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import Spinner from '../../UI/Spinner/Spinner';
-import Aux from '../../hoc/Aux/Aux';
 import Pagination from '../../UI/Pagination/Pagination';
-import Table from '../../UI/Table/Table';
-
+import classes from './Home.css';
+import Image from '../../UI/Image/Image';
 class Home extends Component {
 
     state = {
         show: false,
         page: 0,
-        size: 5
+        size: 10
     };
 
     componentDidMount() {        
-        this.props.onGetRecordsPaged(this.props.access_token, this.state.page, this.state.size);   
+        this.props.onGetRecordsPaged(this.state.page, this.state.size);   
     }
-
-    getHeader = () => {
-        return {
-            id: {
-                label: 'Id',
-                width: '30px'
-            },
-            name: {
-                label: 'Name',
-                width: '500px'
-            },
-            format: {
-                label: 'Format',
-                width: '100px'
-            },
-            artist: {
-                label: 'Artist',
-                width: '350px'
-            }
-        };
-    };
-
-    getData = () => {
-        let result = [];
-        if (this.props.page !== undefined) {
-            const recordsCpy = [...this.props.page.result];
-            result = recordsCpy.map(recordCpy => {
-                return ({
-                    id: recordCpy.id,
-                    name: recordCpy.name,
-                    format: recordCpy.format.name,
-                    artist: recordCpy.artist.name
-                });
-            });    
-        }
-        return result;
-    };
 
     onClickPage = page => {
         this.setState({page: page});
-        this.props.onGetRecordsPaged(this.props.access_token, page, this.state.size);        
+        this.props.onGetRecordsPaged(page, this.state.size);        
     };
 
     render() {
-        const header = this.getHeader();
-        const recordsTransformed = this.getData();
+        let recordsCpy = [];
+        if (this.props.page !== undefined) {
+            recordsCpy = [...this.props.page.result];
+        }
         let records = <Spinner/>;
         if (!this.props.loading) {
+            const recordsDiv = recordsCpy.map((value, i) => {
+                return (
+                    <div key={value.id} className={classes.Inline}>
+                        <Image src={value.image} width={150}/>
+                        <div className={classes.Card}>
+                            <div>{value.name}</div>
+                            <div>{value.artist.name}</div>
+                            <div>{value.format.name}<a href='#'><FaShoppingCart/></a></div>
+                        </div>
+                    </div>
+                );
+            });
             records = (
-                <Aux>
-                    <Table header={header}
-                    data={recordsTransformed}
-                    token={this.props.access_token}
-                    type='records'
-                    shopping={true}/>
+                <div>
+                    <div className={classes.Centered}>
+                    {recordsDiv}
+                    </div>                    
                     <Pagination page={this.props.page} currentPage={this.state.page}
                     onClickPage={this.onClickPage}/>
-                </Aux>
+                </div>
             );
         }
         return (
@@ -98,7 +73,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onGetRecordsPaged: (token, page, size) => dispatch(actions.getRecordsPaged(token, page, size)),
+        onGetRecordsPaged: (page, size) => dispatch(actions.getRecordsPaged(page, size)),
         onDeleteRecordById: (token, id) => dispatch(actions.deleteRecordById(token, id))
     };
 };

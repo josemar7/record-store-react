@@ -217,10 +217,10 @@ export const fetchRecordsPagedStart = () => {
     };
 };
 
-export const getRecordsPaged = (token, page, size) => {
+export const getRecordsPaged = (page, size) => {
     return dispatch => {
         dispatch(fetchRecordsPagedStart());        
-        axios.get(`/record/all/paged?page=${page}&size=${size}`, getConfigBearer(token))
+        axios.get(`/record/all/paged?page=${page}&size=${size}`)
         .then(response => {
             dispatch(setRecordsPaged(response.data));
         })

@@ -42,11 +42,11 @@ class App extends Component {
             <Switch>
                 <Route path="/home" render={(props) => <Home {...props}/>}/>
                 <Route path="/auth" render={(props) => <Auth {...props}/>}/>
-                <Route path="/params" render={(props) => <Test {...props}/>}/>
+                {/* <Route path="/params" render={(props) => <Test {...props}/>}/>
                 <Route path="/test" render={(props) => <Test {...props}/>}/>
                 <Route path="/:id" render={(props) => <Test {...props}/>}/>
-                <Route render={() => <h1>Not found</h1>}/>
-                <Redirect to="/"/>
+                <Route render={() => <h1>Not found</h1>}/> */}
+                <Redirect to="/home"/>
             </Switch>
         );
         if (this.props.isAuthenticated) {
@@ -54,18 +54,18 @@ class App extends Component {
                 <Switch>
                     <Route path="/home" render={(props) => <Home {...props}/>}/>
                     <Route path="/logout" component={Logout}/>
-                    <Route path="/params" render={(props) => <Test {...props}/>}/>
+                    {/* <Route path="/params" render={(props) => <Test {...props}/>}/> */}
                     <Route path="/artists/new" render={(props) => <Artist {...props}/>}/>
                     <Route path="/artists/delete/:id" render={(props) => <Artists {...props}/>}/>
                     <Route path="/artists/:id" render={(props) => <Artist {...props}/>}/>
                     <Route path="/artists" render={(props) => <Artists {...props}/>}/>                    
-                    <Route path="/test" render={(props) => <Test {...props}/>}/>
+                    {/* <Route path="/test" render={(props) => <Test {...props}/>}/> */}
                     <Route path="/records/new" render={(props) => <Record {...props}/>}/>
                     <Route path="/records/delete/:id" render={(props) => <Records {...props}/>}/>
                     <Route path="/records/:id" render={(props) => <Record {...props}/>}/>
                     <Route path="/records" render={(props) => <Records {...props}/>}/>                    
-                    <Route path="/:id" render={(props) => <Test {...props}/>}/>                    
-                    <Redirect to="/"/>
+                    {/* <Route path="/:id" render={(props) => <Test {...props}/>}/>                     */}
+                    <Redirect to="/home"/>
                     {/*<Route render={() => <h1>Not found</h1>}/>*/}
 
                 </Switch>
