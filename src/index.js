@@ -16,6 +16,7 @@ import styleReducer from './store/reducers/style';
 import nationalityReducer from './store/reducers/nationality';
 import recordReducer from './store/reducers/record';
 import formatReducer from './store/reducers/format';
+import formReducer from './store/reducers/form';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -27,7 +28,8 @@ const rootReducer = combineReducers({
     auth: authReducer,
     nationality: nationalityReducer,
     record: recordReducer,
-    format: formatReducer
+    format: formatReducer,
+    form: formReducer
 });
 const store = createStore(rootReducer, composeEnhancers(
     applyMiddleware(thunk)

@@ -1,16 +1,25 @@
 import React, {Component} from 'react';
 import { FaPlusCircle } from "react-icons/fa";
+import { connect } from 'react-redux';
 
 import { checkValidity } from '../../shared/utility';
 import Input from '../Input/Input';
 import Image from '../Image/Image';
 import Button from '../Button/Button';
-
+import * as actions from '../../store/actions/index';
 class Form extends Component {
+
+    state = {
+        formIsValid: false
+    };
+
+    componentDidMount() {
+        this.props.onSetForm(this.props.formTemplate);        
+    }
 
     inputChangedHandler = (event, inputIdentifier) => {
         const updatedForm = {
-            ...this.props.component.state[this.props.form]
+            ...this.props.form
         };
         const updatedFormElement = {
             ...updatedForm[inputIdentifier]
@@ -28,7 +37,8 @@ class Form extends Component {
         for(let ip in updatedForm) {
             formIsValid = updatedForm[ip].valid && formIsValid;
         }
-        this.props.component.setState({[this.props.form]: updatedForm, formIsValid: formIsValid});
+        this.props.onSetForm(updatedForm);
+        this.setState({formIsValid: formIsValid});
     };
 
     getForm = (formElementsArray, handler, imageUrl, button) => {    
@@ -55,7 +65,7 @@ class Form extends Component {
             ))}    
             {imageUrl != null ? <Image src={imageUrl}/> : null}
             <Button 
-                disabled={!this.props.component.state.formIsValid}>{strButton}</Button>
+                disabled={!this.state.formIsValid}>{strButton}</Button>
             </form>            
         );
     };
@@ -73,4 +83,16 @@ class Form extends Component {
     }
 }
 
-export default Form;
+const mapStateToProps = state => {
+    return {
+        form: state.form.form
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onSetForm: form => dispatch(actions.setForm(form))
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Form);

@@ -11,21 +11,15 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import axios from '../../axios-orders';
 class Auth extends Component {
 
-    state = {
-        authFormu: authFormu,
-        formIsValid: false
-    };
-
     submitHandler = (event) => {
         event.preventDefault();
-        this.props.onAuth(this.state.authFormu.user.value, this.state.authFormu.password.value, false);
-        // this.props.history.push('/home');
+        this.props.onAuth(this.props.form.user.value, this.props.form.password.value, false);
     };
 
     render() {
         const formElementsArray = [];
-        for (let key in this.state.authFormu) {
-            const formElement = this.state.authFormu[key];
+        for (let key in this.props.form) {
+            const formElement = this.props.form[key];
             formElementsArray.push({
                 id: key,
                 config: formElement
@@ -37,8 +31,7 @@ class Auth extends Component {
         }
         else {
             form = <Form elements={formElementsArray}
-                component={this} 
-                form={'authFormu'}
+                formTemplate={authFormu}
                 handler={this.submitHandler} 
                 imageUrl={null} 
                 loading={this.props.loading} />;
@@ -68,7 +61,8 @@ const mapStateToProps = state => {
     return {
         loading: state.auth.loading,
         error: state.auth.error,
-        isAuthenticated: state.auth.access_token !== null
+        isAuthenticated: state.auth.access_token !== null,
+        form: state.form.form
     };
 };
 

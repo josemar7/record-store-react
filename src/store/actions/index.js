@@ -43,3 +43,7 @@ export {
     logout,
     authCheckState
 } from './auth';
+
+export {
+    setForm
+} from './form';
