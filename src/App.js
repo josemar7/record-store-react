@@ -63,7 +63,8 @@ class App extends Component {
                     <Route path="/records/new" render={(props) => <Record {...props}/>}/>
                     <Route path="/records/delete/:id" render={(props) => <Records {...props}/>}/>
                     <Route path="/records/:id" render={(props) => <Record {...props}/>}/>
-                    <Route path="/records" render={(props) => <Records {...props}/>}/>                    
+                    <Route path="/records" render={(props) => <Records {...props}/>}/>          
+                    <Route path="/auth" render={(props) => <Auth {...props}/>}/>          
                     {/* <Route path="/:id" render={(props) => <Test {...props}/>}/>                     */}
                     {/* <Redirect to="/home"/> */}
                     {/*<Route render={() => <h1>Not found</h1>}/>*/}

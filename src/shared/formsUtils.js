@@ -174,8 +174,10 @@ export const authFormu = {
         elementType: 'input',
         elementConfig: {
             type: 'text',
-            placeholder: 'User'
+            placeholder: 'User',
+            label: 'User'
         },
+        value: '',
         validation: {
             required: true
         },
@@ -186,8 +188,10 @@ export const authFormu = {
         elementType: 'input',
         elementConfig: {
             type: 'password',
-            placeholder: 'Password'
+            placeholder: 'Password',
+            label: 'Password'
         },
+        value: '',
         validation: {
             required: true,
             minLength: 4

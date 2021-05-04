@@ -9,7 +9,7 @@ const initialState = {
 };
 
 const authStart = (state) => {
-    return updateObject(state, {error: null, loading: true});
+    return updateObject(state, {error: null, loading: true, access_token: null, jti: null});
 };
 
 const authSuccess = (state, action) => {
@@ -18,7 +18,7 @@ const authSuccess = (state, action) => {
         jti: action.jti,
         error: null,
         loading: false
-    })
+    });
 };
 
 const authFail = (state, action) => {

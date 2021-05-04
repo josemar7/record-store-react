@@ -1,10 +1,10 @@
 import * as actionTypes from "./actionTypes";
-import axios from "axios";
+import axios from '../../axios-orders';
 import qs from "qs";
 
 export const authStart = () => {
   return {
-    type: actionTypes.AUTH_START,
+    type: actionTypes.AUTH_START
   };
 };
 
@@ -12,14 +12,14 @@ export const authSuccess = (access_token, jti) => {
   return {
     type: actionTypes.AUTH_SUCCESS,
     access_token: access_token,
-    jti: jti,
+    jti: jti
   };
 };
 
 export const authFail = (error) => {
   return {
     type: actionTypes.AUTH_FAIL,
-    error: error,
+    error: error
   };
 };
 
@@ -41,7 +41,7 @@ export const checkAuthTimeout = (expirationDate) => {
 };
 
 export const auth = (user, password, isSignup) => {
-  return (dispatch) => {
+  return dispatch => {
     dispatch(authStart());
     let url = null;
     if (!isSignup) {

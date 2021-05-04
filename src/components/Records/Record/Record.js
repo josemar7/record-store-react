@@ -25,7 +25,6 @@ class Record extends Component {
     };
 
     componentDidMount() {    
-        console.log('record!');
         this.props.onGetFormats(this.props.access_token);
         this.props.onGetArtists(this.props.access_token);
         if (this.props.match.params.id !== undefined) {
