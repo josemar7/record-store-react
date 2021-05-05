@@ -4,7 +4,8 @@ const initialState = {
     artists: [],
     loading: false,
     artist: null,
-    closeDialog: false
+    closeDialog: false,
+    saved: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -13,7 +14,8 @@ const reducer = (state = initialState, action) => {
             ...state,
             artists: action.artists,
             loading: false,
-            closeDialog: false
+            closeDialog: false,
+            saved: null
         };
     }
     if (action.type === actionTypes.SET_ARTISTS_PAGED) {
@@ -21,7 +23,8 @@ const reducer = (state = initialState, action) => {
             ...state,
             page: action.page,
             loading: false,
-            closeDialog: false
+            closeDialog: false,
+            saved: null
         };
     }
     else if (action.type === actionTypes.FETCH_ARTISTS_START || action.type === actionTypes.SAVE_ARTIST_START
@@ -31,7 +34,8 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             loading: true,
-            closeDialog: false
+            closeDialog: false,
+            saved: null
         };
     }
     else if (action.type === actionTypes.SAVE_ARTIST_SUCCESS
@@ -40,7 +44,8 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             loading: false,
-            closeDialog: true
+            closeDialog: true,
+            saved: true
         };   
     }
     else if (action.type === actionTypes.FETCH_ARTISTS_FAILED 
@@ -52,7 +57,8 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             loading: false,
-            closeDialog: false
+            closeDialog: false,
+            saved: null
         };   
     }
     else if (action.type === actionTypes.SET_ARTIST_BY_ID) {
@@ -60,7 +66,8 @@ const reducer = (state = initialState, action) => {
             ...state,
             loading: false,
             artist: action.artist,
-            artistError: false,closeDialog: undefined
+            artistError: false,closeDialog: undefined,
+            saved: null
         };
     }
     return state;

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import { Redirect } from 'react-router';
 
 import axios from '../../../axios-orders';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
@@ -144,10 +145,10 @@ class Artist extends Component {
             }
         };
         if (!this.state.isEdit) {
-            this.props.onSaveArtist(artist, this.props.access_token, this.props.history);
+            this.props.onSaveArtist(artist, this.props.access_token);
         }
         else {
-            this.props.onUpdateArtistById(artist, this.props.access_token, this.props.match.params.id, this.props.history);
+            this.props.onUpdateArtistById(artist, this.props.access_token, this.props.match.params.id);
         }        
     };
 
@@ -177,8 +178,13 @@ class Artist extends Component {
         if (!Artist.isidArtistInformed(this.props)) {
             artistLbl = 'New Artist';
         }
+        let artistRedirect = null;
+        if (this.props.saved) {
+            artistRedirect = <Redirect to="/artists"/>
+        }
         return (
                 <div className={classes.Artist}>
+                    {artistRedirect}
                     <Label>{artistLbl}</Label>
                     {form}       
                     {this.styleModal()}
@@ -200,7 +206,8 @@ const mapStateToProps = state => {
         loading: state.commons.loading,
         access_token: state.auth.access_token,
         artist: state.artist.artist,
-        closeDialog: state.artist.closeDialog
+        closeDialog: state.artist.closeDialog,
+        saved: state.artist.saved
     };
 };
 
@@ -208,10 +215,10 @@ const mapDispatchToProps = dispatch => {
     return {
         onGetStyles: (token) => dispatch(actions.getStyles(token)),
         onGetNationalities: (token) => dispatch(actions.getNationalities(token)),
-        onSaveArtist: (artist, token, history) => dispatch(actions.saveArtist(artist, token, history)),
+        onSaveArtist: (artist, token) => dispatch(actions.saveArtist(artist, token)),
         onGetArtistById: (token, id) => dispatch(actions.getArtistById(token, id)),
-        onUpdateArtistById: (artist, token, id, history) => 
-                                            dispatch(actions.updateArtistById(artist, token, id, history))
+        onUpdateArtistById: (artist, token, id) => 
+                                            dispatch(actions.updateArtistById(artist, token, id))
     };
 };
 

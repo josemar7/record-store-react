@@ -52,14 +52,13 @@ export const saveArtistFailed = () => {
     };
 };
 
-export const saveArtist = (artist, token, history) => {
+export const saveArtist = (artist, token) => {
     return dispatch => {
         dispatch(saveArtistStart());
         axios.post('/artist/new', artist, getConfigBearer(token))
         .then(response => {
             dispatch(saveArtistSuccess());
             dispatch(getArtists(token));
-            history.replace('/artists');
         })
         .catch(error => {
             dispatch(saveArtistFailed());
@@ -132,13 +131,12 @@ export const deleteArtistByIdFailed = () => {
     };
 };
 
-export const updateArtistById = (artist, token, id, history) => {
+export const updateArtistById = (artist, token, id) => {
     return dispatch => {
         dispatch(updateArtistByIdStart());
         axios.put(`/artist/${id}`, artist, getConfigBearer(token))
         .then(response => {
             dispatch(updateArtistByIdSuccess());
-            history.replace('/artists');
         })
         .catch(error => {
             dispatch(updateArtistByIdFailed());
