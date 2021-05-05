@@ -105,7 +105,7 @@ export const deleteArtistById = (token, id) => {
         axios.delete(`/artist/${id}`, getConfigBearer(token))
         .then(response => {
             dispatch(deleteArtistByIdSuccess());
-            dispatch(getArtists(token));
+            dispatch(getArtistsPaged(token, 0, 5));
         })
         .catch(error => {
             dispatch(deleteArtistByIdFailed());
