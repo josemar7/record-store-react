@@ -8,8 +8,9 @@ const toolbar = (props) => {
     return (
         <header className={classes.Toolbar}>
             <div className={classes.Logo}>
-                <Logo/>
+                <Logo height='80px'/>
             </div>
+            <div style={{fontFamily: 'Creepster', fontSize: '35px', color: 'whitesmoke'}}>Your Creepy Record Shop</div>
             <nav className={classes.DesktopOnly}>
                 <NavigationItems isAuthenticated={props.isAuth}/>
             </nav>

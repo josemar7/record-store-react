@@ -59,7 +59,8 @@ class Form extends Component {
                             changed={(event) => this.inputChangedHandler(event, formElement.id,)}
                             invalid={!formElement.config.valid}
                             shouldValidate={formElement.config.validation}
-                            touched={formElement.config.touched}/>                
+                            touched={formElement.config.touched}
+                            autofocus={formElement.config.autofocus}/>                
                     {this.drawAddButton(formElement.config.onClickModal)}
                 </div>
             ))}    

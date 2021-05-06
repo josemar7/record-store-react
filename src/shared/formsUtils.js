@@ -20,7 +20,8 @@ export const artistForm = {
         },
         valid: false,
         touched: false,
-        onClickModal: null
+        onClickModal: null,
+        autofocus: true
     },
     nationality: {
         elementType: 'selectReact',
@@ -66,7 +67,8 @@ export const recordForm = {
         },
         valid: false,
         touched: false,
-        onClickModal: null
+        onClickModal: null,
+        autofocus: true
     },
     format: {
         elementType: 'selectReact',
@@ -137,7 +139,8 @@ export const fetchForm = {
             label: 'Artist'
         },
         value: '',
-        valid: true
+        valid: true,
+        autofocus: true
     },
     name: {
         elementType: 'input',
@@ -182,7 +185,8 @@ export const authFormu = {
             required: true
         },
         valid: false,
-        touched: false
+        touched: false,
+        autofocus: true
     },
     password: {
         elementType: 'input',
@@ -242,7 +246,8 @@ export const getForm = (formElementsArray, handler, component, form, imageUrl, b
                         changed={(event) => inputChangedHandler(event, formElement.id, component, form)}
                         invalid={!formElement.config.valid}
                         shouldValidate={formElement.config.validation}
-                        touched={formElement.config.touched}/>                
+                        touched={formElement.config.touched}
+                        autofocus={formElement.config.autofocus}/>                
                 {drawAddButton(formElement.config.onClickModal)}
             </div>
         ))}    

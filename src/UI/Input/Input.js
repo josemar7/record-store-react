@@ -14,6 +14,7 @@ const Input = props => {
             inputElement = <input {...props.elementConfig} 
             value={props.value}
             onChange={props.changed}
+            autoFocus={props.autofocus}
             className={inputClasses.join(' ')}/>;
             break;
         case('select'):
