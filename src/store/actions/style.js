@@ -21,10 +21,10 @@ export const fetchStylesStart = () => {
     };
 };
 
-export const getStyles = (token) => {
+export const getStyles = () => {
     return dispatch => {
         dispatch(fetchStylesStart());
-        axios.get('style/all', getConfigBearer(token))
+        axios.get('style/all')
         .then(response => {
             dispatch(setStyles(response.data));
         })
@@ -62,7 +62,7 @@ export const saveStyle = (token, style) => {
             }
             else {
                 dispatch(saveStyleSuccess());
-                dispatch(getStyles(token));
+                dispatch(getStyles());
             }            
         })
         .catch((error) => {

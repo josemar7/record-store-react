@@ -25,10 +25,10 @@ class Record extends Component {
     };
 
     componentDidMount() {    
-        this.props.onGetFormats(this.props.access_token);
-        this.props.onGetArtists(this.props.access_token);
+        this.props.onGetFormats();
+        this.props.onGetArtists();
         if (this.props.match.params.id !== undefined) {
-            this.props.onGetRecordById(this.props.access_token, this.props.match.params.id);   
+            this.props.onGetRecordById(this.props.match.params.id);   
         }
         let updatedControls = null; 
         updatedControls = updateObject(this.state.recordForm, {
@@ -216,10 +216,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onGetFormats: (token) => dispatch(actions.getFormats(token)),
-        onGetArtists: (token) => dispatch(actions.getArtists(token)),
+        onGetFormats: () => dispatch(actions.getFormats()),
+        onGetArtists: () => dispatch(actions.getArtists()),
         onSaveRecord: (record, token, history) => dispatch(actions.saveRecord(record, token, history)),
-        onGetRecordById: (token, id) => dispatch(actions.getRecordById(token, id)),
+        onGetRecordById: (id) => dispatch(actions.getRecordById(id)),
         onUpdateRecordById: (record, token, id, history) => 
                                             dispatch(actions.updateRecordById(record, token, id, history))
     };

@@ -20,7 +20,7 @@ class Artists extends Component {
     };
 
     componentDidMount() {   
-        this.props.onGetArtistsPaged(this.props.access_token, this.state.page, this.state.size);   
+        this.props.onGetArtistsPaged(this.state.page, this.state.size);   
     }
 
     onAddArtistHandler = () => {        
@@ -81,7 +81,7 @@ class Artists extends Component {
 
     onClickPage = page => {
         this.setState({page: page});
-        this.props.onGetArtistsPaged(this.props.access_token, page, this.state.size);        
+        this.props.onGetArtistsPaged(page, this.state.size);        
     };
 
     render() {
@@ -132,7 +132,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onGetArtistsPaged: (token, page, size) => dispatch(actions.getArtistsPaged(token, page, size)),
+        onGetArtistsPaged: (page, size) => dispatch(actions.getArtistsPaged(page, size)),
         onDeleteArtistById: (token, id) => dispatch(actions.deleteArtistById(token, id))
     };
 };

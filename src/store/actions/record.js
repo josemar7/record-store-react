@@ -21,19 +21,6 @@ export const fetchRecordsStart = () => {
     };
 };
 
-export const getRecords = (token) => {
-    return dispatch => {
-        dispatch(fetchRecordsStart());
-        axios.get('/record/all', getConfigBearer(token))
-        .then(response => {
-            dispatch(setRecords(response.data));
-        })
-        .catch(error => {
-            dispatch(fetchRecordsFailed());
-        });
-    };
-};
-
 export const saveRecordStart = () => {
     return {
         type: actionTypes.SAVE_RECORD_START
@@ -66,10 +53,10 @@ export const saveRecord = (record, token, history) => {
     };
 };
 
-export const getRecordById = (token, id) => {
+export const getRecordById = (id) => {
     return dispatch => {
         dispatch(getRecordByIdStart());
-        axios.get(`/record/${id}`, getConfigBearer(token))
+        axios.get(`/record/${id}`)
         .then(response => {
             dispatch(setRecordById(response.data));
         })
@@ -104,7 +91,7 @@ export const deleteRecordById = (token, id) => {
         axios.delete(`/record/${id}`, getConfigBearer(token))
         .then(response => {
             dispatch(deleteRecordByIdSuccess());
-            dispatch(getRecords(token));
+            dispatch(getRecordsPaged(0, 5));
         })
         .catch(error => {
             dispatch(deleteRecordByIdFailed());
@@ -164,12 +151,12 @@ export const updateRecordByIdFailed = () => {
     };
 };
 
-export const getRecordsFiltered = (token, filter, page, size) => {
+export const getRecordsFiltered = (filter, page, size) => {
     return dispatch => {
         dispatch(fetchRecordsStartFiltered());
         let filterStr = '';
         Object.keys(filter).forEach(key => filterStr = filterStr.concat(key, '=', filter[key], '&'));
-        axios.get(`/record/filter?page=${page}&size=${size}&` + filterStr.slice(0, -1), getConfigBearer(token))
+        axios.get(`/record/filter?page=${page}&size=${size}&` + filterStr.slice(0, -1))
         .then(response => {
             dispatch(setRecordsFiltered(response.data));
         })

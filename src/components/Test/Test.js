@@ -28,7 +28,7 @@ class Test extends Component {
     componentDidMount() {
         console.log(decode(this.props.access_token), decode(this.props.access_token, {complete: true}));
         this.props.onGetRecordsTest(null);   
-        this.props.onGetArtistsFiltered(this.props.access_token, null);  
+        this.props.onGetArtistsFiltered(null);  
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -150,7 +150,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onGetRecordsTest: (name) => dispatch(actions.getRecordsTest(name)),
-        onGetArtistsFiltered: (token, text) => dispatch(actions.getArtistsFiltered(token, text))
+        onGetArtistsFiltered: (text) => dispatch(actions.getArtistsFiltered(text))
     };
 };
 

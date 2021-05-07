@@ -52,10 +52,10 @@ class Artist extends Component {
     };
 
     componentDidMount() {     
-        this.props.onGetStyles(this.props.access_token);
-        this.props.onGetNationalities(this.props.access_token);
+        this.props.onGetStyles();
+        this.props.onGetNationalities();
         if (Artist.isidArtistInformed(this.props)) {
-            this.props.onGetArtistById(this.props.access_token, this.props.match.params.id);   
+            this.props.onGetArtistById(this.props.match.params.id);   
         }    
         let updatedControls = null; 
         updatedControls = updateObject(this.state.artistForm, {
@@ -179,7 +179,7 @@ class Artist extends Component {
             artistLbl = 'New Artist';
         }
         let artistRedirect = null;
-        if (this.props.saved) {
+        if (this.props.saved && this.props.origin === undefined) {
             artistRedirect = <Redirect to="/artists"/>
         }
         return (
@@ -213,10 +213,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onGetStyles: (token) => dispatch(actions.getStyles(token)),
-        onGetNationalities: (token) => dispatch(actions.getNationalities(token)),
+        onGetStyles: () => dispatch(actions.getStyles()),
+        onGetNationalities: () => dispatch(actions.getNationalities()),
         onSaveArtist: (artist, token) => dispatch(actions.saveArtist(artist, token)),
-        onGetArtistById: (token, id) => dispatch(actions.getArtistById(token, id)),
+        onGetArtistById: (id) => dispatch(actions.getArtistById(id)),
         onUpdateArtistById: (artist, token, id) => 
                                             dispatch(actions.updateArtistById(artist, token, id))
     };

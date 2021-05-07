@@ -9,7 +9,6 @@ export {
 } from './artist';
 
 export {
-    getRecords,
     saveRecord,
     getRecordById,
     deleteRecordById,

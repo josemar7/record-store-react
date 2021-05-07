@@ -1,24 +1,8 @@
-.Inline { 
-    display: inline-block; 
-    background-color: rgb(228, 231, 231); 
-    margin:10px;
-    border-radius: 20px;
-    padding-top: 5px;
-}
-
-.Centered {
-    margin-right: auto; 
-    margin-left: auto; 
-    width: 90%;
-}
-
-.Card {
-    width: 250px;
-    max-width: 250px;
-    height: 100px;
-    max-height: 100px;
-    overflow: hidden;
-    text-align: center;
-    padding: 5px 0;
-    text-align: center;
+.Records {
+    display: grid;
+    grid-template-columns: 20% 80%;
+    grid-template-rows: 30vw;
+    grid-gap: 1em;
+    margin: 0 auto;
+    padding: 1em;    
 }

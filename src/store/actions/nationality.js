@@ -21,10 +21,10 @@ export const fetchNationalitiesStart = () => {
     };
 };
 
-export const getNationalities = (token) => {
+export const getNationalities = () => {
     return dispatch => {
         dispatch(fetchNationalitiesStart());
-        axios.get('nationality/all', getConfigBearer(token))
+        axios.get('nationality/all')
         .then(response => {
             dispatch(setNationalities(response.data));
         })
@@ -62,7 +62,7 @@ export const saveNationality = (token, nationality) => {
             }
             else {
                 dispatch(saveNationalitySuccess());
-                dispatch(getNationalities(token));
+                dispatch(getNationalities());
             }            
         })
         .catch((error) => {

@@ -21,10 +21,10 @@ export const fetchFormatsStart = () => {
     };
 };
 
-export const getFormats = (token) => {
+export const getFormats = () => {
     return dispatch => {
         dispatch(fetchFormatsStart());
-        axios.get('format/all', getConfigBearer(token))
+        axios.get('format/all')
         .then(response => {
             dispatch(setFormats(response.data));
         })
@@ -62,7 +62,7 @@ export const saveFormat = (token, format) => {
             }
             else {
                 dispatch(saveFormatSuccess());
-                dispatch(getFormats(token));
+                dispatch(getFormats());
             }            
         })
         .catch((error) => {

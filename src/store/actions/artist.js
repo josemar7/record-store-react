@@ -21,10 +21,10 @@ export const fetchArtistsStart = () => {
     };
 };
 
-export const getArtists = (token) => {
+export const getArtists = () => {
     return dispatch => {
         dispatch(fetchArtistsStart());
-        axios.get('/artist/all', getConfigBearer(token))
+        axios.get('/artist/all')
         .then(response => {
             dispatch(setArtists(response.data));
         })
@@ -58,7 +58,7 @@ export const saveArtist = (artist, token) => {
         axios.post('/artist/new', artist, getConfigBearer(token))
         .then(response => {
             dispatch(saveArtistSuccess());
-            dispatch(getArtists(token));
+            dispatch(getArtists());
         })
         .catch(error => {
             dispatch(saveArtistFailed());
@@ -66,10 +66,10 @@ export const saveArtist = (artist, token) => {
     };
 };
 
-export const getArtistById = (token, id) => {
+export const getArtistById = (id) => {
     return dispatch => {
         dispatch(getArtistByIdStart());
-        axios.get(`/artist/${id}`, getConfigBearer(token))
+        axios.get(`/artist/${id}`)
         .then(response => {
             dispatch(setArtistById(response.data));
         })
@@ -104,7 +104,7 @@ export const deleteArtistById = (token, id) => {
         axios.delete(`/artist/${id}`, getConfigBearer(token))
         .then(response => {
             dispatch(deleteArtistByIdSuccess());
-            dispatch(getArtistsPaged(token, 0, 5));
+            dispatch(getArtistsPaged(0, 5));
         })
         .catch(error => {
             dispatch(deleteArtistByIdFailed());
@@ -182,13 +182,13 @@ export const fetchArtistsStartFiltered = () => {
     };
 };
 
-export const getArtistsFiltered = (token, text) => {
+export const getArtistsFiltered = (text) => {
     return dispatch => {
         dispatch(fetchArtistsStartFiltered());
         if (text === null) {
             text = '';
         }
-        axios.get('/artist/filter?name=' + text, getConfigBearer(token))
+        axios.get('/artist/filter?name=' + text)
         .then(response => {
             dispatch(setArtistsFiltered(response.data));
         })
@@ -217,10 +217,10 @@ export const fetchArtistsPagedStart = () => {
     };
 };
 
-export const getArtistsPaged = (token, page, size) => {
+export const getArtistsPaged = (page, size) => {
     return dispatch => {
         dispatch(fetchArtistsPagedStart());        
-        axios.get(`/artist/all/paged?page=${page}&size=${size}`, getConfigBearer(token))
+        axios.get(`/artist/all/paged?page=${page}&size=${size}`)
         .then(response => {
             dispatch(setArtistsPaged(response.data));
         })

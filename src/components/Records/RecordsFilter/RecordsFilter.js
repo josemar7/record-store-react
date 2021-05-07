@@ -30,12 +30,12 @@ class RecordsFilter extends Component {
             }
         }
         this.props.onSetFilter(filter);
-        this.props.onGetRecordsFiltered(this.props.access_token, filter, 0, 5);
+        this.props.onGetRecordsFiltered(filter, 0, 5);
     };
 
     componentDidMount() {     
-        this.props.onGetFormats(this.props.access_token);
-        this.props.onGetStyles(this.props.access_token);
+        this.props.onGetFormats();
+        this.props.onGetStyles();
     }
 
     render() {
@@ -79,16 +79,15 @@ const mapStateToProps = state => {
         loadingFormats: state.format.loading,
         loadingRecords: state.record.loading,
         loadingStyles: state.style.loading,
-        access_token: state.auth.access_token,
         page: state.record.page
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onGetFormats: (token) => dispatch(actions.getFormats(token)),
-        onGetStyles: token => dispatch(actions.getStyles(token)),
-        onGetRecordsFiltered: (token, filter, page, size) => dispatch(actions.getRecordsFiltered(token, filter, page, size)),
+        onGetFormats: () => dispatch(actions.getFormats()),
+        onGetStyles: () => dispatch(actions.getStyles()),
+        onGetRecordsFiltered: (filter, page, size) => dispatch(actions.getRecordsFiltered(filter, page, size)),
         onSetFilter: filter => dispatch(actions.setFilter(filter))
     };
 };
