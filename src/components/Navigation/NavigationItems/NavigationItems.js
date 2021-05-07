@@ -2,6 +2,7 @@ import React from 'react';
 
 import classes from './NavigationItems.css';
 import NavigationItem from './NavigationItem/NavigationItem';
+import { FaShoppingCart } from 'react-icons/fa';
 
 const navigationItems = (props) => (
     <ul className={classes.NavigationItems}>
@@ -13,6 +14,9 @@ const navigationItems = (props) => (
         {props.isAuthenticated ? <NavigationItem link="/records">Records</NavigationItem> : null}
         {props.isAuthenticated ? <NavigationItem link="/logout">Logout</NavigationItem> :
             <NavigationItem link="/auth">Authenticate</NavigationItem>}
+        <NavigationItem link="/auth">
+            <FaShoppingCart style={{fontSize: '1.5em', paddingTop: '5px', color: 'white'}}/>
+        </NavigationItem>            
     </ul>
 );
 

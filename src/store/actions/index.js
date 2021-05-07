@@ -46,3 +46,9 @@ export {
 export {
     setForm
 } from './form';
+
+export {
+    addCart,
+    removeCart,
+    updateItemUnits
+} from './cart';

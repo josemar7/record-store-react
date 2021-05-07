@@ -76,3 +76,7 @@ export const FETCH_RECORDS_PAGED_START = 'FETCH_RECORDS_PAGED_START';
 export const SET_FILTER = 'SET_FILTER';
 
 export const SET_FORM = 'SET_FORM';
+
+export const ADD_CART = 'ADD_CART';
+export const REMOVE_CART = 'REMOVE_CART';
+export const UPDATE_ITEM_UNITS = 'UPDATE_ITEM_UNITS';
