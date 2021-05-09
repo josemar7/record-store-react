@@ -6,6 +6,7 @@ const initialState = {
     artist: null,
     closeDialog: false,
     saved: null,
+    deleted: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -15,7 +16,8 @@ const reducer = (state = initialState, action) => {
             artists: action.artists,
             loading: false,
             closeDialog: false,
-            saved: null
+            saved: null,
+            deleted: null
         };
     }
     if (action.type === actionTypes.SET_ARTISTS_PAGED) {
@@ -24,7 +26,8 @@ const reducer = (state = initialState, action) => {
             page: action.page,
             loading: false,
             closeDialog: false,
-            saved: null
+            saved: null,
+            deleted: null
         };
     }
     else if (action.type === actionTypes.FETCH_ARTISTS_START || action.type === actionTypes.SAVE_ARTIST_START
@@ -35,18 +38,28 @@ const reducer = (state = initialState, action) => {
             ...state,
             loading: true,
             closeDialog: false,
-            saved: null
+            saved: null,
+            deleted: null
         };
     }
     else if (action.type === actionTypes.SAVE_ARTIST_SUCCESS
-        || action.type === actionTypes.DELETE_ARTIST_BY_ID_SUCCESS
         || action.type === actionTypes.UPDATE_ARTIST_BY_ID_SUCCESS) {
         return {
             ...state,
             loading: false,
             closeDialog: true,
-            saved: true
+            saved: true,
+            deleted: null
         };   
+    }
+    else if (action.type === actionTypes.DELETE_ARTIST_BY_ID_SUCCESS) {
+        return {
+            ...state,
+            loading: false,
+            closeDialog: true,
+            saved: null,
+            deleted: true
+        };           
     }
     else if (action.type === actionTypes.FETCH_ARTISTS_FAILED 
         || action.type === actionTypes.SAVE_ARTIST_FAILED || action.type === actionTypes.GET_ARTIST_BY_ID_FAILED
@@ -58,7 +71,8 @@ const reducer = (state = initialState, action) => {
             ...state,
             loading: false,
             closeDialog: false,
-            saved: null
+            saved: null,
+            deleted: null
         };   
     }
     else if (action.type === actionTypes.SET_ARTIST_BY_ID) {
@@ -67,7 +81,8 @@ const reducer = (state = initialState, action) => {
             loading: false,
             artist: action.artist,
             artistError: false,closeDialog: undefined,
-            saved: null
+            saved: null,
+            deleted: null
         };
     }
     return state;

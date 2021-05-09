@@ -4,6 +4,8 @@ import {Provider} from 'react-redux';
 import {createStore, applyMiddleware, compose, combineReducers} from 'redux';
 import thunk from 'redux-thunk';
 import {BrowserRouter} from 'react-router-dom';
+import { transitions, positions, Provider as AlertProvider } from 'react-alert';
+import AlertTemplate from 'react-alert-template-basic';
 
 import './index.css';
 import App from './App';
@@ -20,6 +22,15 @@ import formReducer from './store/reducers/form';
 import cartReducer from './store/reducers/cart';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const options = {
+    // you can also just use 'bottom center'
+    position: positions.BOTTOM_CENTER,
+    timeout: 5000,
+    offset: '30px',
+    // you can also just use 'scale'
+    transition: transitions.SCALE,
+  }
 
 const rootReducer = combineReducers({
     artist: artistReducer,
@@ -40,7 +51,9 @@ const store = createStore(rootReducer, composeEnhancers(
 ReactDOM.render(
     <Provider store={store}>
         <BrowserRouter>
-            <App/>
+            <AlertProvider template={AlertTemplate} {...options}>
+                <App/>
+            </AlertProvider>
         </BrowserRouter>
     </Provider>,
     document.getElementById('root')

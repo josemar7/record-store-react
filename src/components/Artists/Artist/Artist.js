@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import { Redirect } from 'react-router';
+import { withAlert } from 'react-alert';
 
 import axios from '../../../axios-orders';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
@@ -74,6 +75,7 @@ class Artist extends Component {
             return Artist.loadArtistForm(props, state);
         }
         if (props.closeDialog && props.origin !== undefined) {
+            props.onGetArtists();
             props.origin.setState({showArtist: false});
         }
         return state;
@@ -180,6 +182,12 @@ class Artist extends Component {
         }
         let artistRedirect = null;
         if (this.props.saved && this.props.origin === undefined) {
+            if (!Artist.isidArtistInformed(this.props)) {
+                this.props.alert.success('Artist added successfully');
+            }
+            else {
+                this.props.alert.success('Artist updated successfully');
+            }
             artistRedirect = <Redirect to="/artists"/>
         }
         return (
@@ -217,9 +225,10 @@ const mapDispatchToProps = dispatch => {
         onGetNationalities: () => dispatch(actions.getNationalities()),
         onSaveArtist: (artist, token) => dispatch(actions.saveArtist(artist, token)),
         onGetArtistById: (id) => dispatch(actions.getArtistById(id)),
+        onGetArtists: () => dispatch(actions.getArtists()),
         onUpdateArtistById: (artist, token, id) => 
                                             dispatch(actions.updateArtistById(artist, token, id))
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Artist, axios));
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(withAlert()(Artist), axios));

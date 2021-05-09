@@ -1,13 +1,10 @@
 import React from 'react';
-import {FaTrash, FaEdit, FaShoppingCart} from 'react-icons/fa';
+import {FaTrash, FaEdit} from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 import classes from './Table.css';
 
 const table = (props) => {
-    let shoppingCart = null;
-    if (props.shopping) {
-        shoppingCart = <a href='#'><FaShoppingCart/></a>;
-    }
     const header = (
         <thead>
             <tr>
@@ -26,9 +23,8 @@ const table = (props) => {
                     {Object.keys(value).map(k => <td key={value[k]}>{value[k]}</td>)}
                     {props.actions ? 
                     <td colSpan="2" style={{textAlign: 'center'}}>
-                        <a href={'/' + props.type + '/' + value.id}><FaEdit/></a>
-                        <a href='#' onClick={() => props.delete(props.token, value.id)}><FaTrash/></a>
-                        {shoppingCart}
+                        <Link to={'/' + props.type + '/' + value.id}><FaEdit/></Link>
+                        <Link onClick={() => props.delete(props.token, value.id)}><FaTrash/></Link>
                     </td> : null}
                 </tr>
             );})

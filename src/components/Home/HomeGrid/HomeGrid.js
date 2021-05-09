@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
+import { withAlert } from 'react-alert'
 
 import axios from '../../../axios-orders';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
@@ -9,15 +10,11 @@ import Pagination from '../../../UI/Pagination/Pagination';
 import Image from '../../../UI/Image/Image';
 import { FaShoppingCart } from 'react-icons/fa';
 import classes from './HomeGrid.css';
-import Modal from '../../../UI/Modal/Modal';
-
 class HomeGrid extends Component {
 
     state = {
-        show: false,
         page: 0,
-        size: 5,
-        error: null
+        size: 5
     };
 
     componentDidMount() {        
@@ -30,28 +27,27 @@ class HomeGrid extends Component {
         this.props.onGetRecordsFiltered(this.props.filter, page, this.state.size);        
     };
 
-    checkRecord = record => {
+    checkRecord = record => {        
         const myCart = [...this.props.cart];        
         var filtered = myCart.filter( value => value.id === record.id);
         if (filtered.length === 0) {
             if (record.units > 0) {
                 this.props.onAddCart({...record, cartUnits: 1});
-                this.setState({error: `Record ${record.name} successfully added to the buying cart`});
+                this.props.alert.success(`Record ${record.name} successfully added to the buying cart`);
             }
             else {
-                this.setState({error: `You've overcame the units number of the record ${record.name}`});
+                this.props.alert.error(`You've overcame the units number of the record ${record.name}`);
             }
         }
         else {
             if (filtered[0].cartUnits + 1 <= record.units) {
                 this.props.onUpdateItemUnits(filtered[0], filtered[0].cartUnits + 1);
-                this.setState({error: `Record ${record.name} successfully added to the buying cart`});
+                this.props.alert.success(`Record ${record.name} successfully added to the buying cart`);
             }
             else {
-                this.setState({error: `You've overcame the units number of the record ${record.name}`});
+                this.props.alert.error(`You've overcame the units number of the record ${record.name}`);
             }
         }
-        this.setState({show: true});
     };
 
     render() {
@@ -80,8 +76,6 @@ class HomeGrid extends Component {
             });
             records = (
                 <div>
-                    <Modal modalClosed={() => {this.setState({show: false});}}
-                        show={this.state.show}>{this.state.error}</Modal>
                     <div className={classes.Centered}>
                     {recordsDiv}
                     </div>                    
@@ -115,4 +109,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(HomeGrid, axios));
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(withAlert()(HomeGrid), axios));

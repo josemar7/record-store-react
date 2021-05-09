@@ -4,21 +4,27 @@ const initialState = {
     records: [],
     loading: false,
     record: null,
-    filter: ''
+    filter: '',
+    deleted: null,
+    saved: null
 };
 
 const reducer = (state = initialState, action) => {
     if (action.type === actionTypes.SET_FILTER) {
         return {
             ...state,
-            filter: action.filter
+            filter: action.filter,
+            deleted: null,
+            saved: null
         };
     }
     if (action.type === actionTypes.SET_RECORDS) {
         return {
             ...state,
             records: action.records,
-            loading: false
+            loading: false,
+            deleted: null,
+            saved: null
         };
     }
     if (action.type === actionTypes.SET_RECORDS_PAGED || action.type === actionTypes.SET_RECORDS_FILTERED) {
@@ -26,7 +32,9 @@ const reducer = (state = initialState, action) => {
             ...state,
             page: action.page,
             loading: false,
-            closeDialog: false
+            closeDialog: false,
+            deleted: null,
+            saved: null
         };
     }
     else if (action.type === actionTypes.FETCH_RECORDS_START || action.type === actionTypes.SAVE_RECORD_START
@@ -35,24 +43,45 @@ const reducer = (state = initialState, action) => {
         || action.type === actionTypes.FETCH_RECORDS_PAGED_START) {
         return {
             ...state,
-            loading: true
+            loading: true,
+            deleted: null,
+            saved: null
         };
     }
-    else if (action.type === actionTypes.FETCH_RECORDS_FAILED || action.type === actionTypes.SAVE_RECORD_SUCCESS
-        || action.type === actionTypes.SAVE_RECORD_FAILED || action.type === actionTypes.GET_RECORD_BY_ID_FAILED
-        || action.type === actionTypes.DELETE_RECORD_BY_ID_SUCCESS || action.type === actionTypes.DELETE_RECORD_BY_ID_FAILED
-        || action.type === actionTypes.UPDATE_RECORD_BY_ID_SUCCESS || action.type === actionTypes.UPDATE_RECORD_BY_ID_FAILED
-        || action.type === actionTypes.FETCH_RECORDS_FAILED_FILTERED || action.type === actionTypes.FETCH_RECORDS_PAGED_FAILED) {
+    else if (action.type === actionTypes.FETCH_RECORDS_FAILED || action.type === actionTypes.SAVE_RECORD_FAILED 
+        || action.type === actionTypes.GET_RECORD_BY_ID_FAILED || action.type === actionTypes.DELETE_RECORD_BY_ID_FAILED 
+        || action.type === actionTypes.UPDATE_RECORD_BY_ID_FAILED || action.type === actionTypes.FETCH_RECORDS_FAILED_FILTERED 
+        || action.type === actionTypes.FETCH_RECORDS_PAGED_FAILED) {
         return {
             ...state,
-            loading: false
+            loading: false,
+            deleted: null,
+            saved: null
+        };   
+    }
+    else  if (action.type === actionTypes.SAVE_RECORD_SUCCESS || action.type === actionTypes.UPDATE_RECORD_BY_ID_SUCCESS ) {
+        return {
+            ...state,
+            loading: false,
+            deleted: null,
+            saved: true
+        };   
+    }
+    else if (action.type === actionTypes.DELETE_RECORD_BY_ID_SUCCESS) {
+        return {
+            ...state,
+            loading: false,
+            deleted: true,
+            saved: null
         };   
     }
     else if (action.type === actionTypes.SET_RECORD_BY_ID) {
         return {
             ...state,
             loading: false,
-            record: action.record
+            record: action.record,
+            deleted: null,
+            saved: null
         };
     }
     return state;

@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router";
+import { withAlert } from "react-alert";
 
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import axios from '../../../axios-orders';
@@ -100,6 +102,10 @@ class Record extends Component {
                     value: props.record.units,
                     valid: true
                 }),
+                'price': updateObject(state.recordForm['price'], {
+                    value: props.record.price,
+                    valid: true
+                }),
                 'image': updateObject(state.recordForm['image'], {
                     value: props.record.image,
                     valid: true
@@ -130,6 +136,7 @@ class Record extends Component {
         let idArtist;
         let idFormat;
         let image;
+        let price;
         for (let formElementIdentifier in this.state.recordForm) {
             if (formElementIdentifier === 'name') {
                 name = this.state.recordForm[formElementIdentifier].value;
@@ -142,6 +149,9 @@ class Record extends Component {
             }
             else if (formElementIdentifier === 'units') {
                 units = this.state.recordForm[formElementIdentifier].value;
+            }
+            else if (formElementIdentifier === 'price') {
+                price = this.state.recordForm[formElementIdentifier].value;
             }
             else if (formElementIdentifier === 'image') {
                 image = this.state.recordForm[formElementIdentifier].value;
@@ -156,7 +166,8 @@ class Record extends Component {
             format: {
                 id: idFormat
             },
-            image: image
+            image: image,
+            price: price
         };
         if (!this.state.isEdit) {
             this.props.onSaveRecord(record, this.props.access_token, this.props.history);
@@ -193,8 +204,19 @@ class Record extends Component {
         if (this.props.match.params.id === undefined) {
             recordLbl = 'New Record';
         }
+        let recordRedirect = null;
+        if (this.props.saved) {
+            if (this.props.match.params.id === undefined) {
+                this.props.alert.success('Record added successfully');
+            }
+            else {
+                this.props.alert.success('Record updated successfully');
+            }
+            recordRedirect = <Redirect to="/records"/>
+        }
         return(
             <div className={classes.Record}>
+                {recordRedirect}
                 <Label>{recordLbl}</Label>
                 {form}       
                 {this.formatModal()}
@@ -211,6 +233,7 @@ const mapStateToProps = state => {
         loadingRecord: state.record.loading,
         access_token: state.auth.access_token,
         record: state.record.record,
+        saved: state.record.saved
     };
 };
 
@@ -218,11 +241,11 @@ const mapDispatchToProps = dispatch => {
     return {
         onGetFormats: () => dispatch(actions.getFormats()),
         onGetArtists: () => dispatch(actions.getArtists()),
-        onSaveRecord: (record, token, history) => dispatch(actions.saveRecord(record, token, history)),
+        onSaveRecord: (record, token) => dispatch(actions.saveRecord(record, token)),
         onGetRecordById: (id) => dispatch(actions.getRecordById(id)),
-        onUpdateRecordById: (record, token, id, history) => 
-                                            dispatch(actions.updateRecordById(record, token, id, history))
+        onUpdateRecordById: (record, token, id) => 
+                                            dispatch(actions.updateRecordById(record, token, id))
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Record, axios));
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(withAlert()(Record), axios));

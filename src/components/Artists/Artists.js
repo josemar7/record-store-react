@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import { withAlert } from 'react-alert';
 
 import Table from '../../UI/Table/Table';
 import Button from '../../UI/Button/Button';
@@ -21,6 +22,14 @@ class Artists extends Component {
 
     componentDidMount() {   
         this.props.onGetArtistsPaged(this.state.page, this.state.size);   
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        if (props.deleted) {
+            props.onGetArtistsPaged(state.page, state.size);
+            props.alert.success('Record deleted successfully');
+        }
+        return state;
     }
 
     onAddArtistHandler = () => {        
@@ -126,7 +135,8 @@ const mapStateToProps = state => {
     return {
         page: state.artist.page,
         loading: state.artist.loading,
-        access_token: state.auth.access_token
+        access_token: state.auth.access_token,
+        deleted: state.artist.deleted
     };
 };
 
@@ -137,4 +147,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Artists, axios));
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(withAlert()(Artists), axios));

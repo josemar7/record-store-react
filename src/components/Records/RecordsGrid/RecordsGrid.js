@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
+import { withAlert } from 'react-alert';
 
 import axios from '../../../axios-orders';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
@@ -21,6 +22,14 @@ class RecordsGrid extends Component {
 
     componentDidMount() {        
         this.props.onGetRecordsFiltered(this.props.filter, this.state.page, this.state.size);   
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        if (props.deleted) {
+            props.onGetRecordsFiltered(props.filter, state.page, state.size);   
+            props.alert.success('Record deleted successfully');
+        }
+        return state;
     }
 
     onAddRecordHandler = () => {     
@@ -96,8 +105,7 @@ class RecordsGrid extends Component {
                     actions={true}
                     delete={this.onClickDelete}
                     token={this.props.access_token}
-                    type='records'
-                    shopping={true}/>
+                    type='records'/>
                     <Pagination page={this.props.page} currentPage={this.state.page}
                     onClickPage={this.onClickPage}/>
                     <div style={{paddingTop: '10px'}}>
@@ -126,7 +134,8 @@ const mapStateToProps = state => {
         page: state.record.page,
         loading: state.record.loading,
         access_token: state.auth.access_token,
-        filter: state.record.filter
+        filter: state.record.filter,
+        deleted: state.record.deleted
     };
 };
 
@@ -137,4 +146,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(RecordsGrid, axios));
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(withAlert()(RecordsGrid), axios));

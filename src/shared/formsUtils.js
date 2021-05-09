@@ -116,6 +116,24 @@ export const recordForm = {
         touched: false,
         onClickModal: null
     },
+    price: {
+        elementType: 'input',
+        elementConfig: {
+            type: 'text',
+            placeholder: 'Price...',
+            label: 'Price'
+        },
+        value: '',
+        validation: {
+            required: false,
+            isNumeric: true,
+            min: 0,
+            max: 1000
+        },
+        valid: true,
+        touched: false,
+        onClickModal: null
+    },
     image: {
         elementType: 'input',
         elementConfig: {

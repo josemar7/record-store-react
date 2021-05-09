@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Suspense} from 'react';
-import {Route, Switch, withRouter} from 'react-router-dom';
+import {Redirect, Route, Switch, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 
 import Layout from './hoc/Layout/Layout';
@@ -47,6 +47,9 @@ class App extends Component {
                 <Route path="/:id" render={(props) => <Test {...props}/>}/>
                 <Route render={() => <h1>Not found</h1>}/> */}
                 {/* <Redirect to="/home"/> */}
+                <Route path="/cart" render={(props) => <Auth {...props}/>}>
+                    <Redirect to="/auth" />
+                </Route>
             </Switch>
         );
         if (this.props.isAuthenticated) {
@@ -64,7 +67,8 @@ class App extends Component {
                     <Route path="/records/delete/:id" render={(props) => <Records {...props}/>}/>
                     <Route path="/records/:id" render={(props) => <Record {...props}/>}/>
                     <Route path="/records" render={(props) => <Records {...props}/>}/>          
-                    <Route path="/auth" render={(props) => <Auth {...props}/>}/>          
+                    <Route path="/auth" render={(props) => <Auth {...props}/>}/>
+                    <Route path="/cart" render={(props) => <Records {...props}/>} />          
                     {/* <Route path="/:id" render={(props) => <Test {...props}/>}/>                     */}
                     {/* <Redirect to="/home"/> */}
                     {/*<Route render={() => <h1>Not found</h1>}/>*/}

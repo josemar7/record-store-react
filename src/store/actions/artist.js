@@ -58,7 +58,6 @@ export const saveArtist = (artist, token) => {
         axios.post('/artist/new', artist, getConfigBearer(token))
         .then(response => {
             dispatch(saveArtistSuccess());
-            dispatch(getArtists());
         })
         .catch(error => {
             dispatch(saveArtistFailed());
@@ -104,7 +103,6 @@ export const deleteArtistById = (token, id) => {
         axios.delete(`/artist/${id}`, getConfigBearer(token))
         .then(response => {
             dispatch(deleteArtistByIdSuccess());
-            dispatch(getArtistsPaged(0, 5));
         })
         .catch(error => {
             dispatch(deleteArtistByIdFailed());

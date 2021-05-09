@@ -39,13 +39,12 @@ export const saveRecordFailed = () => {
     };
 };
 
-export const saveRecord = (record, token, history) => {
+export const saveRecord = (record, token) => {
     return dispatch => {
         dispatch(saveRecordStart());
         axios.post('/record/new', record, getConfigBearer(token))
         .then(response => {
             dispatch(saveRecordSuccess());
-            history.replace('/records');
         })
         .catch(error => {
             dispatch(saveRecordFailed());
@@ -91,7 +90,6 @@ export const deleteRecordById = (token, id) => {
         axios.delete(`/record/${id}`, getConfigBearer(token))
         .then(response => {
             dispatch(deleteRecordByIdSuccess());
-            dispatch(getRecordsPaged(0, 5));
         })
         .catch(error => {
             dispatch(deleteRecordByIdFailed());
@@ -118,13 +116,12 @@ export const deleteRecordByIdFailed = () => {
     };
 };
 
-export const updateRecordById = (record, token, id, history) => {
+export const updateRecordById = (record, token, id) => {
     return dispatch => {
         dispatch(updateRecordByIdStart());
         axios.put(`/record/${id}`, record, getConfigBearer(token))
         .then(response => {
             dispatch(updateRecordByIdSuccess());
-            history.replace('/records');
         })
         .catch(error => {
             dispatch(updateRecordByIdFailed());
