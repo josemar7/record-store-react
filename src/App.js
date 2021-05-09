@@ -31,6 +31,10 @@ const Auth = React.lazy(() => {
 const Home = React.lazy(() => {
     return import('./components/Home/Home');
 });
+
+const Cart = React.lazy(() => {
+    return import('./components/Cart/Cart');
+});
 class App extends Component {
 
     componentDidMount() {
@@ -68,7 +72,7 @@ class App extends Component {
                     <Route path="/records/:id" render={(props) => <Record {...props}/>}/>
                     <Route path="/records" render={(props) => <Records {...props}/>}/>          
                     <Route path="/auth" render={(props) => <Auth {...props}/>}/>
-                    <Route path="/cart" render={(props) => <Records {...props}/>} />          
+                    <Route path="/cart" render={(props) => <Cart {...props}/>} />          
                     {/* <Route path="/:id" render={(props) => <Test {...props}/>}/>                     */}
                     {/* <Redirect to="/home"/> */}
                     {/*<Route render={() => <h1>Not found</h1>}/>*/}
