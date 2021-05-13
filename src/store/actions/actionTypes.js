@@ -80,3 +80,12 @@ export const SET_FORM = 'SET_FORM';
 export const ADD_CART = 'ADD_CART';
 export const REMOVE_CART = 'REMOVE_CART';
 export const UPDATE_ITEM_UNITS = 'UPDATE_ITEM_UNITS';
+export const EMPTY_CART = 'EMPTY_CART';
+
+export const SET_ORDERS = 'SET_ORDERS';
+export const FETCH_ORDERS_FAILED = 'FETCH_ORDERS_FAILED';
+export const FETCH_ORDERS_START = 'FETCH_ORDERS_START';
+export const SAVE_ORDER_START = 'SAVE_ORDER_START';
+export const SAVE_ORDER_SUCCESS = 'SAVE_ORDER_SUCCESS';
+export const SAVE_ORDER_FAILED = 'SAVE_ORDER_FAILED';
+export const INIT_ORDERS = 'INIT_ORDERS';

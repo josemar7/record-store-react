@@ -28,6 +28,12 @@ const reducer = (state = initialState, action) => {
             cart: filtered
         };      
     }
+    else if (action.type === actionTypes.EMPTY_CART) {        
+        return {
+            ...state,
+            cart: []
+        };      
+    }
     return state;
 };
 

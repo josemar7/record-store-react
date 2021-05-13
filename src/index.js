@@ -20,6 +20,7 @@ import recordReducer from './store/reducers/record';
 import formatReducer from './store/reducers/format';
 import formReducer from './store/reducers/form';
 import cartReducer from './store/reducers/cart';
+import orderReducer from './store/reducers/order';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -42,7 +43,8 @@ const rootReducer = combineReducers({
     record: recordReducer,
     format: formatReducer,
     form: formReducer,
-    cart: cartReducer
+    cart: cartReducer,
+    order: orderReducer
 });
 const store = createStore(rootReducer, composeEnhancers(
     applyMiddleware(thunk)

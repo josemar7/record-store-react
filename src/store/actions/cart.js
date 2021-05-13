@@ -20,3 +20,9 @@ export const updateItemUnits = (item, units) => {
         item: {...item, cartUnits: units}
     };
 };
+
+export const emptyCart = () => {
+    return {
+        type: actionTypes.EMPTY_CART
+    };
+};

@@ -50,5 +50,12 @@ export {
 export {
     addCart,
     removeCart,
-    updateItemUnits
+    updateItemUnits,
+    emptyCart
 } from './cart';
+
+export {
+    getOrders,
+    saveOrder,
+    initOrders
+} from './order';

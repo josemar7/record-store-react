@@ -5,7 +5,8 @@ const initialState = {
     access_token: null,
     jti: null,
     error: null,
-    loading: false
+    loading: false,
+    user: null
 };
 
 const authStart = (state) => {
@@ -17,7 +18,8 @@ const authSuccess = (state, action) => {
         access_token: action.access_token,
         jti: action.jti,
         error: null,
-        loading: false
+        loading: false,
+        user: action.user.user_name
     });
 };
 

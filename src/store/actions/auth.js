@@ -1,3 +1,5 @@
+import { decode } from 'jsonwebtoken';
+
 import * as actionTypes from "./actionTypes";
 import axios from '../../axios-orders';
 import qs from "qs";
@@ -12,7 +14,8 @@ export const authSuccess = (access_token, jti) => {
   return {
     type: actionTypes.AUTH_SUCCESS,
     access_token: access_token,
-    jti: jti
+    jti: jti,
+    user: decode(access_token)
   };
 };
 
