@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { connect } from "react-redux";
 import { FaTrash } from "react-icons/fa";
@@ -57,7 +57,6 @@ const FormSection = ({ control, outerIndex, register, section, errors, props }) 
     control,
     name: `order.${section}`
   });
-
   return (
     <div>
       {fields.map((item, index) => {
@@ -82,10 +81,9 @@ const FormSection = ({ control, outerIndex, register, section, errors, props }) 
 
 const Cart = props => {
 
-  const cartCpy = [...props.cart];
   const { register, control, handleSubmit, formState: { errors } } = useForm({defaultValues: {
     order: {
-      orderLines: cartCpy
+      orderLines: [...props.cart]
     }
   }});
 

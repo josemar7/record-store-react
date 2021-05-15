@@ -23,8 +23,13 @@ const table = (props) => {
                     {Object.keys(value).map(k => <td key={value[k]}>{value[k]}</td>)}
                     {props.actions ? 
                     <td colSpan="2" style={{textAlign: 'center'}}>
+                        {props.openDialog ? 
+                        <Link onClick={() => props.edit(value.id)}><FaEdit/></Link> :
                         <Link to={'/' + props.type + '/' + value.id}><FaEdit/></Link>
-                        <Link onClick={() => props.delete(props.token, value.id)}><FaTrash/></Link>
+                        }
+                        {!props.onlyEdit ?
+                        <Link onClick={() => props.delete(props.token, value.id)}><FaTrash/></Link> : null
+                        }
                     </td> : null}
                 </tr>
             );})

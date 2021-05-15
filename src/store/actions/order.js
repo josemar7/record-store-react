@@ -2,10 +2,10 @@ import axios from '../../axios-orders';
 import { getConfigBearer } from '../../shared/utility';
 import * as actionTypes from './actionTypes';
 
-export const setOrders = (orders) => {
+export const setOrders = (page) => {
     return {
         type: actionTypes.SET_ORDERS,
-        orders: orders
+        page: page
     };
 };
 
@@ -52,10 +52,10 @@ export const saveOrder = (order, user, token) => {
     };
 };
 
-export const getOrders = (user, page, size) => {
+export const getOrders = (user, page, size, token) => {
     return dispatch => {
         dispatch(fetchOrdersStart());
-        axios.get(`/orders/${user}?page=${page}&size=${size}`)
+        axios.get(`/orders/${user}?page=${page}&size=${size}`, getConfigBearer(token))
         .then(response => {
             dispatch(setOrders(response.data));
         })
@@ -68,5 +68,37 @@ export const getOrders = (user, page, size) => {
 export const initOrders = () => {
     return {
         type: actionTypes.INIT_ORDERS
+    };
+};
+
+export const getOrderById = (token, id) => {
+    return dispatch => {
+        dispatch(getOrderByIdStart());
+        axios.get(`/orders/one/${id}`, getConfigBearer(token))
+        .then(response => {
+            dispatch(setOrderById(response.data));
+        })
+        .catch(error => {
+            dispatch(getOrderByIdFailed());
+        });
+    };
+};
+
+export const getOrderByIdFailed = () => {
+    return {
+        type: actionTypes.GET_ORDER_BY_ID_FAILED
+    };
+};
+
+export const getOrderByIdStart = () => {
+    return {
+        type: actionTypes.GET_ORDER_BY_ID_START
+    };
+};
+
+export const setOrderById = (order) => {
+    return {
+        type: actionTypes.SET_ORDER_BY_ID,
+        order: order
     };
 };

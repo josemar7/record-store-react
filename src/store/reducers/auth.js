@@ -6,7 +6,8 @@ const initialState = {
     jti: null,
     error: null,
     loading: false,
-    user: null
+    user: null,
+    roles: []
 };
 
 const authStart = (state) => {
@@ -19,7 +20,8 @@ const authSuccess = (state, action) => {
         jti: action.jti,
         error: null,
         loading: false,
-        user: action.user.user_name
+        user: action.user.user_name,
+        roles: action.user.authorities
     });
 };
 
@@ -31,7 +33,7 @@ const authFail = (state, action) => {
 };
 
 const authLogout = (state) => {
-    return updateObject(state, {access_token: null, jti: null});
+    return updateObject(state, {access_token: null, jti: null, user: null, roles: []});
 };
 
 const reducer = (state = initialState, action) => {

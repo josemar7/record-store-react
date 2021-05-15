@@ -34,10 +34,6 @@ export {
 } from './style';
 
 export {
-    getRecordsTest
-} from './test';
-
-export {
     auth,
     logout,
     authCheckState
@@ -57,5 +53,6 @@ export {
 export {
     getOrders,
     saveOrder,
-    initOrders
+    initOrders,
+    getOrderById
 } from './order';

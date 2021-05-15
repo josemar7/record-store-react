@@ -8,10 +8,6 @@ import Logout from "./components/Auth/Logout/Logout";
 import * as actions from './store/actions/index';
 import Records from './components/Records/Records';
 
-const Test = React.lazy(() => {
-    return import('./components/Test/Test');
-});
-
 const Artists = React.lazy(() => {
     return import('./components/Artists/Artists');
 });
@@ -35,6 +31,14 @@ const Home = React.lazy(() => {
 const Cart = React.lazy(() => {
     return import('./components/Cart/Cart');
 });
+
+const Orders = React.lazy(() => {
+    return import('./components/Orders/Orders');
+});
+
+const Order = React.lazy(() => {
+    return import('./components/Orders/Order/Order');
+});
 class App extends Component {
 
     componentDidMount() {
@@ -46,10 +50,7 @@ class App extends Component {
             <Switch>
                 <Route path="/home" render={(props) => <Home {...props}/>}/>
                 <Route path="/auth" render={(props) => <Auth {...props}/>}/>
-                {/* <Route path="/params" render={(props) => <Test {...props}/>}/>
-                <Route path="/test" render={(props) => <Test {...props}/>}/>
-                <Route path="/:id" render={(props) => <Test {...props}/>}/>
-                <Route render={() => <h1>Not found</h1>}/> */}
+                {/* <Route render={() => <h1>Not found</h1>}/> */}
                 {/* <Redirect to="/home"/> */}
                 <Route path="/cart" render={(props) => <Auth {...props}/>}>
                     <Redirect to="/auth" />
@@ -61,21 +62,18 @@ class App extends Component {
                 <Switch>
                     <Route path="/home" render={(props) => <Home {...props}/>}/>
                     <Route path="/logout" component={Logout}/>
-                    {/* <Route path="/params" render={(props) => <Test {...props}/>}/> */}
                     <Route path="/artists/new" render={(props) => <Artist {...props}/>}/>
                     <Route path="/artists/delete/:id" render={(props) => <Artists {...props}/>}/>
                     <Route path="/artists/:id" render={(props) => <Artist {...props}/>}/>
                     <Route path="/artists" render={(props) => <Artists {...props}/>}/>                    
-                    {/* <Route path="/test" render={(props) => <Test {...props}/>}/> */}
                     <Route path="/records/new" render={(props) => <Record {...props}/>}/>
                     <Route path="/records/delete/:id" render={(props) => <Records {...props}/>}/>
                     <Route path="/records/:id" render={(props) => <Record {...props}/>}/>
                     <Route path="/records" render={(props) => <Records {...props}/>}/>          
-                    <Route path="/auth" render={(props) => <Auth {...props}/>}/>
-                    <Route path="/cart" render={(props) => <Cart {...props}/>} />          
-                    {/* <Route path="/:id" render={(props) => <Test {...props}/>}/>                     */}
-                    {/* <Redirect to="/home"/> */}
-                    {/*<Route render={() => <h1>Not found</h1>}/>*/}
+                    <Route path="/auth" render={(props) => <Auth {...props}/>}/>                    
+                    <Route path="/cart" render={(props) => <Cart {...props}/>} />
+                    <Route path="/orders/:id" render={(props) => <Order {...props}/>} />
+                    <Route path="/orders" render={(props) => <Orders {...props}/>} />                    
                 </Switch>
             );
         }

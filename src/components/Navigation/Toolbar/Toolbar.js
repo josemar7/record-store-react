@@ -11,9 +11,10 @@ const toolbar = (props) => {
                 <Logo height='80px'/>
             </div>
             <div style={{fontFamily: 'Creepster', fontSize: '35px', color: 'whitesmoke'}}>Your Creepy Record Shop</div>
-            <nav className={classes.DesktopOnly}>
-                <NavigationItems isAuthenticated={props.isAuth}/>
+            <nav style={{width: '5%'}}>
+                <NavigationItems isAuthenticated={props.isAuth} isAdmin={props.isAdmin} user={props.user}/>
             </nav>
+            <div style={{color: 'white'}}>{props.user}</div>
         </header>
     );
 };
