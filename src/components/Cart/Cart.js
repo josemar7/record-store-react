@@ -24,7 +24,8 @@ const FieldRow = ({
 }) => {
   return (
     <div className={classes.Row}>
-      <div className={classes.Label} style={{width: '35%'}}>{item.artist.name} : <b>{item.name}</b></div>   
+      <div className={classes.Label} style={{width: '30%'}}>{item.artist.name} : <b>{item.name}</b></div>   
+      <div className={classes.Label} style={{width: '10%'}}>{item.price} €</div>   
       <div className={classes.Label} style={{width: '30%'}}><Image src={item.image} width='75'/></div>  
       <div className={classes.Label} style={{width: '10%'}}>        
          <input name={`order.${section}[${index}].cartUnits`}

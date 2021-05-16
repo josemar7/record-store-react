@@ -21,13 +21,13 @@ class Artists extends Component {
     };
 
     componentDidMount() {   
-        this.props.onGetArtistsPaged(this.state.page, this.state.size);   
+        this.props.onGetArtistsPaged(0, 5);   
     }
 
     static getDerivedStateFromProps(props, state) {
         if (props.deleted) {
             props.onGetArtistsPaged(state.page, state.size);
-            props.alert.success('Record deleted successfully');
+            props.alert.success('Artist deleted successfully');
         }
         return state;
     }

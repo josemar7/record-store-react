@@ -21,7 +21,7 @@ class RecordsGrid extends Component {
     };
 
     componentDidMount() {        
-        this.props.onGetRecordsFiltered(this.props.filter, this.state.page, this.state.size);   
+        this.props.onGetRecordsFiltered({}, 0, 5);   
     }
 
     static getDerivedStateFromProps(props, state) {

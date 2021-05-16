@@ -144,7 +144,10 @@ export const recordForm = {
         value: '',
         valid: true,
         touched: false,
-        onClickModal: null
+        onClickModal: null,
+        validation: {
+            maxLength: 1000
+        }
     }
 };
 

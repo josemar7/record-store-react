@@ -51,6 +51,10 @@ class Record extends Component {
         return state;
     }
 
+    componentWillUnmount() {
+        this.props.onSetRecordById(null);
+    }
+
     formatModal = () => {
         return (
             <Modal modalClosed={() => {this.setState({showFormat: false});}}
@@ -243,6 +247,7 @@ const mapDispatchToProps = dispatch => {
         onGetArtists: () => dispatch(actions.getArtists()),
         onSaveRecord: (record, token) => dispatch(actions.saveRecord(record, token)),
         onGetRecordById: (id) => dispatch(actions.getRecordById(id)),
+        onSetRecordById: record => dispatch(actions.setRecordById(record)),
         onUpdateRecordById: (record, token, id) => 
                                             dispatch(actions.updateRecordById(record, token, id))
     };

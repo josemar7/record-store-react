@@ -12,6 +12,7 @@ import Pagination from '../../UI/Pagination/Pagination';
 import Button from '../../UI/Button/Button';
 import Modal from '../../UI/Modal/Modal';
 import Order from './Order/Order';
+import Moment from 'react-moment';
 
 class Orders extends Component {
 
@@ -45,7 +46,7 @@ class Orders extends Component {
             result = ordersCpy.map(orderCpy => {
                 return ({
                     id: orderCpy.id,
-                    date: orderCpy.date
+                    date: <Moment date={orderCpy.date} format='DD/MM/YYYY hh:mm:ss'/>
                 });
             });    
         }
